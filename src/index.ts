@@ -45,10 +45,19 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+import fs from 'fs';
+
 // ─── Static frontend & UI Route ───────────────────────────────────────────────
 // Serves public/index.html at GET / and static assets from public/
 app.get('/', (_req, res) => {
-  res.sendFile(path.resolve(process.cwd(), 'public/index.html'));
+  const possibleIndexPaths = [
+    path.resolve(process.cwd(), 'public/index.html'),
+    path.join(__dirname, '../public/index.html'),
+    path.join(__dirname, '../../public/index.html'),
+    path.resolve('./public/index.html'),
+  ];
+  const indexPath = possibleIndexPaths.find(p => fs.existsSync(p)) || possibleIndexPaths[0];
+  res.sendFile(indexPath);
 });
 app.use(express.static('public'));
 
@@ -66,14 +75,15 @@ app.use((_req, res) => {
 app.use(errorHandler);
 
 // ─── Start ────────────────────────────────────────────────────────────────────
-const PORT = Number(process.env.PORT ?? 3000);
-
-app.listen(PORT, () => {
-  console.log(`\n🚀  Interview Platform API`);
-  console.log(`   Environment : ${process.env.NODE_ENV ?? 'development'}`);
-  console.log(`   Listening on: http://localhost:${PORT}`);
-  console.log(`   Health check: http://localhost:${PORT}/health`);
-  console.log(`   Interview   : POST http://localhost:${PORT}/api/interview\n`);
-});
+if (!process.env.VERCEL && process.env.NODE_ENV !== 'test') {
+  const PORT = Number(process.env.PORT ?? 3000);
+  app.listen(PORT, () => {
+    console.log(`\n🚀  Interview Platform API`);
+    console.log(`   Environment : ${process.env.NODE_ENV ?? 'development'}`);
+    console.log(`   Listening on: http://localhost:${PORT}`);
+    console.log(`   Health check: http://localhost:${PORT}/health`);
+    console.log(`   Interview   : POST http://localhost:${PORT}/api/interview\n`);
+  });
+}
 
 export default app;

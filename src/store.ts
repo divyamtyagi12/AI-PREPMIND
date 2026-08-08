@@ -14,12 +14,24 @@ let _store: AppStore | null = null;
  * Must be called once at application startup before any route handlers run.
  */
 export function loadStore(): AppStore {
-  const curriculumPath = path.resolve(
-    process.env.CURRICULUM_PATH ?? './data/curriculum.json',
-  );
-  const candidatesPath = path.resolve(
-    process.env.CANDIDATES_PATH ?? './data/candidates.json',
-  );
+  const possibleCurriculumPaths = [
+    process.env.CURRICULUM_PATH,
+    path.join(process.cwd(), 'data/curriculum.json'),
+    path.join(__dirname, '../data/curriculum.json'),
+    path.join(__dirname, '../../data/curriculum.json'),
+    path.resolve('./data/curriculum.json'),
+  ].filter(Boolean) as string[];
+
+  const possibleCandidatesPaths = [
+    process.env.CANDIDATES_PATH,
+    path.join(process.cwd(), 'data/candidates.json'),
+    path.join(__dirname, '../data/candidates.json'),
+    path.join(__dirname, '../../data/candidates.json'),
+    path.resolve('./data/candidates.json'),
+  ].filter(Boolean) as string[];
+
+  const curriculumPath = possibleCurriculumPaths.find(p => fs.existsSync(p)) || possibleCurriculumPaths[0];
+  const candidatesPath = possibleCandidatesPaths.find(p => fs.existsSync(p)) || possibleCandidatesPaths[0];
 
   console.log(`[Store] Loading curriculum from  : ${curriculumPath}`);
   console.log(`[Store] Loading candidates from  : ${candidatesPath}`);
