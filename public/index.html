@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABTalks AI Interview Agent</title>
+  <meta name="description" content="ABTalks AI Interview Agent — AI-powered technical interviews with real-time feedback for top engineering candidates." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* ─── Scorecard Grid & Radar Chart ───────────────────── */
+    .score-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .score-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .score-card.score-main {
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(14,165,233,0.18));
+      border-color: rgba(124,58,237,0.4);
+    }
+    .score-card-label {
+      font-size: 11px;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .score-card-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-top: 2px;
+    }
+    .score-card-val span {
+      font-size: 12px;
+      color: var(--text2);
+      font-weight: 500;
+    }
+    .chart-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+    .chart-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .chart-canvas-wrap {
+      position: relative;
+      height: 280px;
+      min-height: 280px;
+      width: 100%;
+      display: block;
+    }
+    .chart-canvas-wrap canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    /* ─── Design Tokens ─────────────────────────────────────── */
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --surface2:  #21262d;
+      --border:    rgba(255,255,255,0.08);
+      --accent-from: #7c3aed;
+      --accent-to:   #0ea5e9;
+      --accent:    linear-gradient(135deg, #7c3aed, #0ea5e9);
+      --text:      #f0f6fc;
+      --text2:     #8b949e;
+      --success:   #3fb950;
+      --warning:   #d29922;
+      --info:      #388bfd;
+      --danger:    #f85149;
+      --radius:    12px;
+      --radius-lg: 18px;
+      --glass:     rgba(22,27,34,0.72);
+      --shadow:    0 8px 32px rgba(0,0,0,0.48);
+    }
+
+    /* ─── Reset & Base ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+
+    /* ─── Layout Shell ──────────────────────────────────────── */
+    #app {
+      display: grid;
+      grid-template-rows: 64px 1fr;
+      grid-template-columns: 320px 1fr;
+      height: 100vh;
+    }
+
+    /* ─── Header ────────────────────────────────────────────── */
+    #header {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 100;
+    }
+    #header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.5), rgba(14,165,233,0.5), transparent);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1px;
+      box-shadow: 0 0 20px rgba(124,58,237,0.4);
+    }
+    .brand-name {
+      font-size: 18px;
+      font-weight: 700;
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.3px;
+    }
+    .brand-tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text2);
+      letter-spacing: 0.04em;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+    }
+    #status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text2);
+      padding: 6px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      transition: all 0.3s;
+    }
+    #status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+      transition: all 0.3s;
+    }
+    #status-dot.thinking { background: var(--warning); box-shadow: 0 0 8px var(--warning); animation: pulse 1s infinite; }
+    #status-dot.error    { background: var(--danger);  box-shadow: 0 0 8px var(--danger); }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+    /* ─── Sidebar ───────────────────────────────────────────── */
+    #sidebar {
+      grid-column: 1;
+      grid-row: 2;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .sidebar-header {
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .sidebar-header h2 {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text2);
+      margin-bottom: 4px;
+    }
+    .sidebar-header p {
+      font-size: 12px;
+      color: rgba(139,148,158,0.6);
+    }
+    #candidate-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .cand-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .cand-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .cand-card:hover { border-color: rgba(124,58,237,0.4); transform: translateX(2px); }
+    .cand-card:hover::before { opacity: 0.04; }
+    .cand-card.selected {
+      border-color: rgba(124,58,237,0.7);
+      background: rgba(124,58,237,0.08);
+      box-shadow: 0 0 0 1px rgba(124,58,237,0.3), inset 0 0 20px rgba(124,58,237,0.05);
+    }
+    .cand-card.selected::before { opacity: 0.06; }
+    .cand-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .cand-avatar {
+      width: 36px; height: 36px; min-width: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .cand-info { flex: 1; min-width: 0; }
+    .cand-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cand-role {
+      font-size: 11px;
+      color: var(--text2);
+      line-height: 1.3;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cand-badges {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 99px;
+      display: flex; align-items: center; gap: 3px;
+      white-space: nowrap;
+    }
+    .badge-exp {
+      background: rgba(56,139,253,0.12);
+      color: var(--info);
+      border: 1px solid rgba(56,139,253,0.25);
+    }
+    .badge-missions {
+      background: rgba(63,185,80,0.12);
+      color: var(--success);
+      border: 1px solid rgba(63,185,80,0.25);
+    }
+    .badge-status.status-progress {
+      background: rgba(210,153,34,0.18);
+      color: #f0b429;
+      border: 1px solid rgba(210,153,34,0.4);
+    }
+    .badge-status.status-completed {
+      background: rgba(63,185,80,0.18);
+      color: #4ade80;
+      border: 1px solid rgba(63,185,80,0.4);
+    }
+    .badge-status.status-not-started {
+      background: rgba(139,148,158,0.12);
+      color: var(--text2);
+      border: 1px solid rgba(139,148,158,0.25);
+    }
+    .badge-status.badge-evaluated {
+      background: rgba(16,185,129,0.15);
+      color: #34d399;
+      border: 1px solid rgba(16,185,129,0.35);
+    }
+    .badge-status.badge-in-progress {
+      background: rgba(245,158,11,0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245,158,11,0.35);
+    }
+    .badge-status.badge-ready {
+      background: rgba(255,255,255,0.06);
+      color: var(--text2);
+      border: 1px solid var(--border);
+    }
+    .selected-check {
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 18px; height: 18px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+    .cand-card.selected .selected-check { display: flex; }
+
+    /* Sidebar search & filter pills */
+    .sidebar-search-wrap {
+      padding: 10px 14px 6px;
+    }
+    #candidate-search {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #candidate-search:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(124,58,237,0.25);
+    }
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+      padding: 6px 14px 10px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-pills::-webkit-scrollbar { display: none; }
+    .pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .pill span {
+      background: rgba(255,255,255,0.08);
+      padding: 1px 5px;
+      border-radius: 8px;
+      font-size: 10px;
+    }
+    .pill:hover {
+      border-color: var(--text2);
+      color: var(--text);
+    }
+    .pill.active {
+      background: rgba(124,58,237,0.15);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .pill.active span {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ─── Start Button ──────────────────────────────────────── */
+    .sidebar-footer {
+      padding: 14px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    #start-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0.4;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+    }
+    #start-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background 0.2s;
+    }
+    #start-btn:hover { opacity: 0.6; }
+    #start-btn:hover::after { background: rgba(255,255,255,0.08); }
+    #start-btn.active {
+      opacity: 1;
+      box-shadow: 0 4px 24px rgba(124,58,237,0.45);
+    }
+    #start-btn.active:hover { opacity: 1; }
+    #start-btn.active:active { transform: scale(0.98); }
+    @keyframes shake {
+      0%,100%{transform:translateX(0);}
+      20%{transform:translateX(-6px);}
+      40%{transform:translateX(6px);}
+      60%{transform:translateX(-4px);}
+      80%{transform:translateX(4px);}
+    }
+    #start-btn.shake { animation: shake 0.4s ease; }
+    /* pick-hint shown when no candidate selected */
+    #pick-hint {
+      font-size: 11px;
+      color: var(--warning);
+      text-align: center;
+      padding: 6px 0 0;
+      display: none;
+    }
+    /* API key warning */
+    #api-warn {
+      margin: 10px 14px 0;
+      padding: 10px 12px;
+      background: rgba(210,153,34,0.1);
+      border: 1px solid rgba(210,153,34,0.35);
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--warning);
+      line-height: 1.5;
+      display: none;
+    }
+
+    /* ─── Main Chat Area ────────────────────────────────────── */
+    #main {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Empty state styling */
+    #empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      gap: 20px;
+      overflow-y: auto;
+      color: var(--text2);
+      animation: fadeIn 0.6s ease;
+      text-align: center;
+    }
+    .empty-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      max-width: 520px;
+    }
+    .empty-icon {
+      width: 76px; height: 76px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    #empty-state h3 { font-size: 20px; font-weight: 700; color: var(--text); }
+    #empty-state p.empty-desc { font-size: 13px; text-align: center; max-width: 420px; line-height: 1.6; color: var(--text2); }
+
+    .empty-stats-row {
+      display: flex; gap: 14px; width: 100%; max-width: 540px; justify-content: center; margin: 4px 0;
+    }
+    .empty-stat-card {
+      flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 14px; text-align: center; backdrop-filter: blur(10px);
+    }
+    .empty-stat-val { font-size: 22px; font-weight: 700; color: var(--text); }
+    .empty-stat-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); margin-top: 4px; }
+
+    .quick-pick-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 540px;
+    }
+    .quick-pick-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text2); }
+    .quick-pick-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .quick-pick-btn {
+      background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+      padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; transition: all 0.2s ease;
+    }
+    .quick-pick-btn:hover { background: var(--surface); border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(124,58,237,0.25); }
+
+    /* Chat container */
+    #chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      display: none;
+    }
+
+    /* Messages */
+    .msg {
+      display: flex;
+      gap: 12px;
+      animation: msgIn 0.35s cubic-bezier(0.4,0,0.2,1);
+      max-width: 78%;
+    }
+    @keyframes msgIn {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .msg.interviewer { align-self: flex-start; }
+    .msg.candidate   { align-self: flex-end; flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 36px; height: 36px; min-width: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700;
+      margin-top: 2px;
+    }
+    .msg.interviewer .msg-avatar {
+      background: linear-gradient(135deg, #1f2937, #374151);
+      border: 1px solid var(--border);
+    }
+    .msg.candidate .msg-avatar {
+      background: var(--accent);
+      box-shadow: 0 4px 12px rgba(124,58,237,0.35);
+    }
+
+    .msg-bubble {
+      padding: 13px 16px;
+      border-radius: var(--radius-lg);
+      font-size: 14px;
+      line-height: 1.65;
+      max-width: 100%;
+      word-break: break-word;
+    }
+    .msg.interviewer .msg-bubble {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: var(--text);
+      border-top-left-radius: 4px;
+    }
+    .msg.candidate .msg-bubble {
+      background: linear-gradient(135deg, #7c3aed, #0ea5e9);
+      color: #fff;
+      border-top-right-radius: 4px;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+    }
+
+    /* Typing dots */
+    #typing-indicator {
+      display: none;
+      align-self: flex-start;
+      align-items: center;
+      gap: 12px;
+      animation: msgIn 0.3s ease;
+    }
+    .typing-avatar {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #1f2937, #374151);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+    .typing-bubble {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-lg);
+      border-top-left-radius: 4px;
+      padding: 14px 18px;
+      display: flex; gap: 5px; align-items: center;
+    }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--text2);
+      animation: dotBounce 1.2s infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotBounce {
+      0%,60%,100%{ transform:translateY(0); opacity:0.5; }
+      30%{ transform:translateY(-6px); opacity:1; }
+    }
+
+    /* Complete banner */
+    #complete-banner {
+      margin: 0 28px;
+      padding: 14px 18px;
+      background: linear-gradient(135deg, rgba(63,185,80,0.12), rgba(56,139,253,0.12));
+      border: 1px solid rgba(63,185,80,0.3);
+      border-radius: var(--radius);
+      display: none;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--success);
+      animation: fadeIn 0.5s ease;
+    }
+    #complete-banner .banner-icon { font-size: 20px; }
+
+    /* Input area */
+    #input-area {
+      padding: 16px 28px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      display: none;
+    }
+    .input-wrap {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 10px 10px 10px 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-wrap:focus-within {
+      border-color: rgba(124,58,237,0.5);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+    }
+    #msg-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      resize: none;
+      max-height: 120px;
+      line-height: 1.5;
+      padding: 4px 0;
+    }
+    #msg-input::placeholder { color: var(--text2); }
+    #msg-input:disabled { opacity: 0.4; cursor: not-allowed; }
+    #send-btn {
+      width: 38px; height: 38px; min-width: 38px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    #send-btn:hover { box-shadow: 0 4px 16px rgba(124,58,237,0.45); transform: scale(1.05); }
+    #send-btn:active { transform: scale(0.95); }
+    #send-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* ─── Feedback Panel ────────────────────────────────────── */
+    #feedback-panel {
+      position: fixed;
+      top: 64px; right: 0;
+      width: 380px;
+      height: calc(100vh - 64px);
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      transform: translateX(100%);
+      transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+      z-index: 50;
+    }
+    #feedback-panel.open {
+      display: flex;
+      transform: translateX(0);
+    }
+    .feedback-header {
+      padding: 22px 22px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(14,165,233,0.06));
+    }
+    .feedback-header h2 {
+      font-size: 16px; font-weight: 700;
+      background: var(--accent);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .feedback-header p { font-size: 12px; color: var(--text2); margin-top: 2px; }
+    .feedback-body { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+
+    .fb-summary-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text);
+      animation: fadeIn 0.5s ease 0.1s both;
+    }
+    .fb-summary-card .fb-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text2); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .fb-section {
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .fb-section-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+      padding: 0 2px;
+    }
+    .fb-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      font-size: 13px;
+      line-height: 1.5;
+      border-left: 3px solid transparent;
+      animation: fadeIn 0.4s ease both;
+    }
+    .fb-item:last-child { margin-bottom: 0; }
+    .fb-item.strength { border-left-color: var(--success); }
+    .fb-item.gap      { border-left-color: var(--warning); }
+    .fb-item.next     { border-left-color: var(--info); }
+    .fb-item-icon { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+
+    #new-interview-btn {
+      margin: 4px 18px 22px;
+      padding: 12px;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+      animation: fadeIn 0.5s ease 0.5s both;
+    }
+    #new-interview-btn:hover { box-shadow: 0 6px 28px rgba(124,58,237,0.5); transform: translateY(-1px); }
+
+    /* ─── Toast ─────────────────────────────────────────────── */
+    #toast-container {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      display: flex; flex-direction: column; gap: 8px;
+      align-items: center;
+    }
+    .toast {
+      background: rgba(248,81,73,0.15);
+      border: 1px solid rgba(248,81,73,0.4);
+      color: var(--danger);
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      font-size: 13px; font-weight: 500;
+      backdrop-filter: blur(12px);
+      animation: toastIn 0.3s ease;
+      display: flex; align-items: center; gap: 8px;
+    }
+    @keyframes toastIn {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ─── Avatar Colors ─────────────────────────────────────── */
+    .av-0 { background: linear-gradient(135deg, #7c3aed, #a855f7); }
+    .av-1 { background: linear-gradient(135deg, #0ea5e9, #38bdf8); }
+    .av-2 { background: linear-gradient(135deg, #10b981, #34d399); }
+    .av-3 { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+    .av-4 { background: linear-gradient(135deg, #ef4444, #f87171); }
+    .av-5 { background: linear-gradient(135deg, #8b5cf6, #c084fc); }
+    .av-6 { background: linear-gradient(135deg, #06b6d4, #67e8f9); }
+    .av-7 { background: linear-gradient(135deg, #ec4899, #f9a8d4); }
+
+    /* ─── Responsive tweak for feedback overlap ─────────────── */
+    #main.with-feedback { margin-right: 380px; transition: margin-right 0.45s cubic-bezier(0.4,0,0.2,1); }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Header ── -->
+  <header id="header">
+    <div class="brand">
+      <div class="brand-logo">AB</div>
+      <span class="brand-name">ABTalks AI Interview Agent</span>
+      <span class="brand-tag">v2.0</span>
+    </div>
+    <div id="status-indicator">
+      <div id="status-dot"></div>
+      <span id="status-text">Ready</span>
+    </div>
+  </header>
+
+  <!-- ── Sidebar ── -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <h2>Candidates</h2>
+      <p>Select a candidate to begin</p>
+    </div>
+
+    <!-- Search Input -->
+    <div class="sidebar-search-wrap">
+      <input type="text" id="candidate-search" placeholder="🔍 Search candidate or role…" />
+    </div>
+
+    <!-- Filter Pills / Tabs -->
+    <div class="filter-pills" id="filter-pills">
+      <button class="pill active" data-filter="all">All <span id="cnt-all">0</span></button>
+      <button class="pill" data-filter="in_progress">In progress <span id="cnt-progress">0</span></button>
+      <button class="pill" data-filter="evaluated">Evaluated <span id="cnt-evaluated">0</span></button>
+      <button class="pill" data-filter="ready">Ready <span id="cnt-ready">0</span></button>
+    </div>
+
+    <div id="candidate-list"></div>
+    <div id="api-warn">⚠ API key may be expired — the interviewer will use fallback mode. Provide a fresh key in <code>.env</code> for live AI responses.</div>
+    <div class="sidebar-footer">
+      <button id="start-btn">
+        <span>▶</span> Start Interview
+      </button>
+      <div id="pick-hint">👆 Select a candidate above first</div>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main id="main">
+    <!-- Empty state -->
+    <div id="empty-state">
+      <div class="empty-hero">
+        <div class="empty-icon">🤖</div>
+        <h3>AI Technical Interview Agent</h3>
+        <p class="empty-desc">Select a candidate from the sidebar and click <strong>Start Interview</strong> to begin an AI-powered technical evaluation.</p>
+      </div>
+
+      <div class="empty-stats-row">
+        <div class="empty-stat-card">
+          <div class="empty-stat-val" id="stat-cand-cnt">20</div>
+          <div class="empty-stat-lbl">Candidates</div>
+        </div>
+        <div class="empty-stat-card">
+          <div class="empty-stat-val" id="stat-days-cnt">31</div>
+          <div class="empty-stat-lbl">Curriculum Days</div>
+        </div>
+        <div class="empty-stat-card">
+          <div class="empty-stat-val" id="stat-rate-cnt">88%</div>
+          <div class="empty-stat-lbl">Avg Completion Rate</div>
+        </div>
+      </div>
+
+      <div class="quick-pick-wrap">
+        <div class="quick-pick-title">⚡ Quick-Pick Candidates</div>
+        <div class="quick-pick-btns">
+          <button class="quick-pick-btn" onclick="selectCandidate('CAND-001')">
+            <span>👩‍💻</span> Try Sarah Johnson <span style="opacity:0.6;font-size:11px;">(Senior DE)</span>
+          </button>
+          <button class="quick-pick-btn" onclick="selectCandidate('CAND-003')">
+            <span>👩‍🔬</span> Try Emily Chen <span style="opacity:0.6;font-size:11px;">(AI Eng)</span>
+          </button>
+          <button class="quick-pick-btn" onclick="selectCandidate('CAND-007')">
+            <span>🎓</span> Try Ethan Brooks <span style="opacity:0.6;font-size:11px;">(CS Intern)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat messages -->
+    <div id="chat-container"></div>
+
+    <!-- Typing indicator (inside chat) -->
+    <div id="typing-indicator-wrap" style="padding:0 28px 0; display:none;">
+      <div id="typing-indicator">
+        <div class="typing-avatar">🤖</div>
+        <div class="typing-bubble">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complete banner -->
+    <div id="complete-banner">
+      <span class="banner-icon">🎉</span>
+      <span>Interview Complete — See your detailed feedback on the right panel.</span>
+    </div>
+
+    <!-- Input area -->
+    <div id="input-area">
+      <div class="input-wrap">
+        <textarea id="msg-input" rows="1" placeholder="Your answer…"></textarea>
+        <button id="send-btn" title="Send">
+          ➤
+        </button>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- Feedback Panel -->
+<div id="feedback-panel">
+  <div class="feedback-header">
+    <h2>📋 Interview Feedback</h2>
+    <p id="feedback-cand-name">Candidate evaluation report</p>
+  </div>
+  <div class="feedback-body" id="feedback-body"></div>
+  <button id="new-interview-btn">
+    ↺ Start New Interview
+  </button>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════════ */
+const CANDIDATES = [
+  { id:'CAND-001', name:'Sarah Johnson',    jobRole:'Senior Data Engineer',          yearsExperience:9,  education:'MS Computer Science',              missions:9  },
+  { id:'CAND-002', name:'Alex Turner',      jobRole:'Backend Software Engineer',     yearsExperience:5,  education:'B.Tech Computer Science',          missions:10 },
+  { id:'CAND-003', name:'Emily Chen',       jobRole:'AI Engineer',                   yearsExperience:6,  education:'MS Artificial Intelligence',       missions:9  },
+  { id:'CAND-004', name:'David Miller',     jobRole:'Business Analyst',              yearsExperience:8,  education:'MBA',                              missions:10 },
+  { id:'CAND-005', name:'Michael Brown',    jobRole:'DevOps Engineer',               yearsExperience:10, education:'B.Tech Information Technology',    missions:10 },
+  { id:'CAND-006', name:'Wendy Foster',     jobRole:'Marketing Manager',             yearsExperience:12, education:'BA Marketing',                     missions:10 },
+  { id:'CAND-007', name:'Ethan Brooks',     jobRole:'Computer Science Intern',       yearsExperience:0,  education:'BS Computer Science (in progress)',missions:9  },
+  { id:'CAND-008', name:'Harold Whitfield', jobRole:'Distinguished Engineer',        yearsExperience:28, education:'BS Computer Science',              missions:10 },
+];
+
+const FULL_CANDIDATES = {
+  'CAND-001': {
+    member:{id:'CAND-001',name:'Sarah Johnson',jobRole:'Senior Data Engineer',yearsExperience:9,education:'MS Computer Science',status:'COMPLETED'},
+    missions:[
+      {day:7,title:'Embeddings Explained',passed:true,attempts:1},
+      {day:8,title:'Vector Databases Overview',passed:true,attempts:1},
+      {day:10,title:'Retrieval & Matching Engine',passed:true,attempts:2},
+      {day:12,title:'Prompt Engineering Fundamentals',passed:true,attempts:4},
+      {day:16,title:'Chatbot Backend & API Integration',passed:true,attempts:1},
+      {day:22,title:'Multi-Agent Orchestration',passed:true,attempts:2},
+      {day:28,title:'Docker & Kubernetes Deployment',passed:true,attempts:3},
+      {day:29,title:'Monitoring, Logging & Observability',skipped:true},
+      {day:31,title:'Capstone Project & Final Demo',passed:true,attempts:1}
+    ],
+    signals:{commitDays:28,missionsCompleted:30,missionsFirstTry:20}
+  },
+  'CAND-002': {
+    member:{id:'CAND-002',name:'Alex Turner',jobRole:'Backend Software Engineer',yearsExperience:5,education:'B.Tech Computer Science',status:'COMPLETED'},
+    missions:[
+      {day:7,title:'Embeddings Explained',passed:true,attempts:3},
+      {day:8,title:'Vector Databases Overview',passed:true,attempts:2},
+      {day:10,title:'Retrieval & Matching Engine',passed:true,attempts:4},
+      {day:12,title:'Prompt Engineering Fundamentals',passed:true,attempts:5},
+      {day:13,title:'Function Calling & Structured Outputs',passed:true,attempts:4},
+      {day:16,title:'Chatbot Backend & API Integration',passed:true,attempts:1},
+      {day:18,title:'Streaming Responses',passed:true,attempts:1},
+      {day:22,title:'Multi-Agent Orchestration',passed:true,attempts:3},
+      {day:28,title:'Docker & Kubernetes Deployment',passed:true,attempts:1},
+      {day:31,title:'Capstone Project & Final Demo',passed:true,attempts:2}
+    ],
+    signals:{commitDays:22,missionsCompleted:29,missionsFirstTry:10}
+  },
+  'CAND-003': {
+    member:{id:'CAND-003',name:'Emily Chen',jobRole:'AI Engineer',yearsExperience:6,education:'MS Artificial Intelligence',status:'COMPLETED'},
+    missions:[
+      {day:7,title:'Embeddings Explained',passed:true,attempts:1},
+      {day:8,title:'Vector Databases Overview',passed:true,attempts:1},
+      {day:10,title:'Retrieval & Matching Engine',passed:true,attempts:1},
+      {day:11,title:'RAG End-to-End & LLM API Basics',passed:true,attempts:1},
+      {day:12,title:'Prompt Engineering Fundamentals',passed:true,attempts:1},
+      {day:13,title:'Function Calling & Structured Outputs',passed:true,attempts:1},
+      {day:21,title:'LangChain Agents',passed:true,attempts:1},
+      {day:22,title:'Multi-Agent Orchestration',passed:true,attempts:1},
+      {day:23,title:'Model Context Protocol (MCP)',passed:true,attempts:1},
+      {day:31,title:'Capstone Project & Final Demo',passed:true,attempts:1}
+    ],
+    signals:{commitDays:31,missionsCompleted:31,missionsFirstTry:30}
+  },
+  'CAND-004': {
+    member:{id:'CAND-004',name:'David Miller',jobRole:'Business Analyst',yearsExperience:8,education:'MBA',status:'COMPLETED'},
+    missions:[
+      {day:7,title:'Embeddings Explained',passed:true,attempts:4},
+      {day:8,title:'Vector Databases Overview',passed:true,attempts:5},
+      {day:10,title:'Retrieval & Matching Engine',passed:true,attempts:5},
+      {day:12,title:'Prompt Engineering Fundamentals',passed:true,attempts:3},
+      {day:16,title:'Chatbot Backend & API Integration',passed:true,attempts:2},
+      {day:20,title:'Conversation Memory & Context Management',passed:true,attempts:3},
+      {day:22,title:'Multi-Agent Orchestration',passed:true,attempts:4},
+      {day:23,title:'Model Context Protocol (MCP)',passed:true,attempts:5},
+      {day:28,title:'Docker & Kubernetes Deployment',skipped:true},
+      {day:31,title:'Capstone Project & Final Demo',passed:true,attempts:2}
+    ],
+    signals:{commitDays:18,missionsCompleted:28,missionsFirstTry:6}
+  },
+  'CAND-005': {
+    member:{id:'CAND-005',name:'Michael Brown',jobRole:'DevOps Engineer',yearsExperience:10,education:'B.Tech Information Technology',status:'COMPLETED'},
+    missions:[
+      {day:7,title:'Embeddings Explained',passed:true,attempts:2},
+      {day:8,title:'Vector Databases Overview',passed:true,attempts:2},
+      {day:10,title:'Retrieval & Matching Engine',passed:true,attempts:2},
+      {day:12,title:'Prompt Engineering Fundamentals',passed:true,attempts:4},
+      {day:18,title:'Streaming Responses',passed:true,attempts:1},
+      {day:22,title:'Multi-Agent Orchestration',passed:true,attempts:2},
+      {day:23,title:'Model Context Protocol (MCP)',passed:true,attempts:3},
+      {day:28,title:'Docker & Kubernetes Deployment',passed:true,attempts:1},
+      {day:29,title:'Monitoring, Logging & Observability',passed:true,attempts:1},
+      {day:31,title:'Capstone Project & Final Demo',passed:true,attempts:1}
+    ],
+    signals:{commitDays:30,missionsCompleted:31,missionsFirstTry:22}
+  },
+  'CAND-006': {
+    member:{id:'CAND-006',name:'Wendy Foster',jobRole:'Marketing Manager',yearsExperience:12,education:'BA Marketing',status:'COMPLETED'},
+    missions:[
+      {day:1,title:'VS Code & Python Environment Setup',passed:true,attempts:3},
+      {day:7,title:'Embeddings Explained',passed:true,attempts:5},
+      {day:8,title:'Vector Databases Overview',passed:true,attempts:5},
+      {day:12,title:'Prompt Engineering Fundamentals',passed:true,attempts:4},
+      {day:16,title:'Chatbot Backend & API Integration',passed:true,attempts:4},
+      {day:17,title:'Chatbot Frontend Development',passed:true,attempts:2},
+      {day:22,title:'Multi-Agent Orchestration',passed:true,attempts:5},
+      {day:27,title:'Security, Privacy & Guardrails',skipped:true},
+      {day:28,title:'Docker & Kubernetes Deployment',skipped:true},
+      {day:31,title:'Capstone Project & Final Demo',passed:true,attempts:3}
+    ],
+    signals:{commitDays:19,missionsCompleted:24,missionsFirstTry:2}
+  },
+  'CAND-007': {
+    member:{id:'CAND-007',name:'Ethan Brooks',jobRole:'Computer Science Intern',yearsExperience:0,education:'BS Computer Science (in progress)',status:'COMPLETED'},
+    missions:[
+      {day:1,title:'VS Code & Python Environment Setup',passed:true,attempts:1},
+      {day:3,title:'First AI Project, React Frontend & GitHub',passed:true,attempts:1},
+      {day:7,title:'Embeddings Explained',passed:true,attempts:2},
+      {day:8,title:'Vector Databases Overview',passed:true,attempts:1},
+      {day:12,title:'Prompt Engineering Fundamentals',passed:true,attempts:1},
+      {day:16,title:'Chatbot Backend & API Integration',passed:true,attempts:1},
+      {day:22,title:'Multi-Agent Orchestration',passed:true,attempts:1},
+      {day:27,title:'Security, Privacy & Guardrails',skipped:true},
+      {day:28,title:'Docker & Kubernetes Deployment',skipped:true},
+      {day:31,title:'Capstone Project & Final Demo',passed:true,attempts:2}
+    ],
+    signals:{commitDays:26,missionsCompleted:27,missionsFirstTry:22}
+  },
+  'CAND-008': {
+    member:{id:'CAND-008',name:'Harold Whitfield',jobRole:'Distinguished Engineer',yearsExperience:28,education:'BS Computer Science',status:'COMPLETED'},
+    missions:[
+      {day:1,title:'VS Code & Python Environment Setup',passed:true,attempts:1},
+      {day:4,title:'Reading & Processing Structured Data',passed:true,attempts:1},
+      {day:5,title:'Reading & Processing Unstructured Data',passed:true,attempts:1},
+      {day:14,title:'Fine-Tuning: Concepts & When to Use It',skipped:true},
+      {day:15,title:'Fine-Tuning: Hands-On with LoRA & QLoRA',skipped:true},
+      {day:21,title:'LangChain Agents',passed:true,attempts:5},
+      {day:22,title:'Multi-Agent Orchestration',passed:true,attempts:4},
+      {day:23,title:'Model Context Protocol (MCP)',passed:true,attempts:3},
+      {day:27,title:'Security, Privacy & Guardrails',passed:true,attempts:2},
+      {day:31,title:'Capstone Project & Final Demo',passed:true,attempts:1}
+    ],
+    signals:{commitDays:24,missionsCompleted:27,missionsFirstTry:18}
+  }
+};
+
+/* ══════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════ */
+const state = {
+  sessionId: null,
+  candidateId: null,
+  phase: 'select',   // 'select' | 'interviewing' | 'done'
+  history: [],
+  searchQuery: '',
+  statusFilter: 'all'  // 'all' | 'in_progress' | 'evaluated' | 'ready'
+};
+
+let COHORT_STATS = {
+  totalCandidates: 20,
+  totalCurriculumDays: 31,
+  totalModules: 8,
+  avgCompletionRate: 88
+};
+
+function getCandidateStatus(id) {
+  const session = candidateSessions[id];
+  if (!session) return 'ready';
+  if (session.phase === 'done') return 'evaluated';
+  if (session.phase === 'interviewing') return 'in_progress';
+  return 'ready';
+}
+
+function updateFilterCounts() {
+  const allCount = CANDIDATES.length;
+  let inProgressCount = 0;
+  let evaluatedCount = 0;
+  let readyCount = 0;
+
+  CANDIDATES.forEach(c => {
+    const st = getCandidateStatus(c.id);
+    if (st === 'in_progress') inProgressCount++;
+    else if (st === 'evaluated') evaluatedCount++;
+    else readyCount++;
+  });
+
+  const elAll = document.getElementById('cnt-all');
+  const elProg = document.getElementById('cnt-progress');
+  const elEval = document.getElementById('cnt-evaluated');
+  const elReady = document.getElementById('cnt-ready');
+
+  if (elAll) elAll.textContent = allCount;
+  if (elProg) elProg.textContent = inProgressCount;
+  if (elEval) elEval.textContent = evaluatedCount;
+  if (elReady) elReady.textContent = readyCount;
+}
+
+function renderDefaultEmptyState() {
+  const emptyState = document.getElementById('empty-state');
+  if (!emptyState) return;
+
+  const totalCand = CANDIDATES.length || COHORT_STATS.totalCandidates;
+  const days = COHORT_STATS.totalCurriculumDays;
+  const rate = COHORT_STATS.avgCompletionRate;
+
+  const elCand = document.getElementById('stat-cand-cnt');
+  const elDays = document.getElementById('stat-days-cnt');
+  const elRate = document.getElementById('stat-rate-cnt');
+  if (elCand) elCand.textContent = totalCand;
+  if (elDays) elDays.textContent = days;
+  if (elRate) elRate.textContent = rate + '%';
+}
+
+async function initCandidates() {
+  try {
+    const res = await fetch('/api/candidates');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.success && Array.isArray(data.candidates)) {
+      if (data.stats) {
+        COHORT_STATS = data.stats;
+      }
+      CANDIDATES.length = 0;
+      data.candidates.forEach(c => {
+        const m = c.member;
+        CANDIDATES.push({
+          id: m.id,
+          name: m.name,
+          jobRole: m.jobRole,
+          yearsExperience: m.yearsExperience,
+          education: m.education,
+          missions: c.missions ? c.missions.length : 10
+        });
+        FULL_CANDIDATES[m.id] = c;
+      });
+
+      renderCandidates();
+      renderDefaultEmptyState();
+    }
+  } catch(err) {
+    console.warn('[Candidates] Fetch failed:', err);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════════ */
+function initials(name) {
+  return name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+
+function avatarClass(index) {
+  return `av-${index % 8}`;
+}
+
+function setStatus(mode) {
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-text');
+  dot.className = '';
+  if (mode === 'thinking') { dot.classList.add('thinking'); txt.textContent = 'Thinking…'; }
+  else if (mode === 'error') { dot.classList.add('error'); txt.textContent = 'Error'; }
+  else { txt.textContent = 'Ready'; }
+}
+
+function showToast(msg) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span>⚠</span> ${msg}`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.4s';
+    setTimeout(() => toast.remove(), 400);
+  }, 5000);
+}
+
+function showTyping() {
+  const chat = document.getElementById('chat-container');
+  let el = document.getElementById('typing-indicator-wrap');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'typing-indicator-wrap';
+    el.style.padding = '0 0 12px';
+    el.innerHTML = `
+      <div id="typing-indicator" style="display:flex">
+        <div class="typing-avatar">🤖</div>
+        <div class="typing-bubble">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>`;
+  }
+  chat.appendChild(el);
+  el.style.display = 'block';
+  scrollToBottom();
+}
+function hideTyping() {
+  const el = document.getElementById('typing-indicator-wrap');
+  if (el) el.remove();
+}
+
+function scrollToBottom() {
+  const chat = document.getElementById('chat-container');
+  setTimeout(() => chat.scrollTop = chat.scrollHeight, 60);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function setInputDisabled(disabled) {
+  document.getElementById('msg-input').disabled = disabled;
+  document.getElementById('send-btn').disabled = disabled;
+}
+
+/* ══════════════════════════════════════════════════════
+   RENDER CANDIDATES
+══════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   PER-CANDIDATE SESSION STORE
+══════════════════════════════════════════════════════ */
+const candidateSessions = {};
+
+/* ══════════════════════════════════════════════════════
+   RENDER CANDIDATES & STATUS BADGES
+══════════════════════════════════════════════════════ */
+function renderCandidates() {
+  updateFilterCounts();
+
+  const list = document.getElementById('candidate-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  const query = state.searchQuery.trim().toLowerCase();
+  const filter = state.statusFilter;
+
+  const filtered = CANDIDATES.filter(c => {
+    if (query) {
+      const matchName = c.name.toLowerCase().includes(query);
+      const matchRole = c.jobRole.toLowerCase().includes(query);
+      if (!matchName && !matchRole) return false;
+    }
+
+    const status = getCandidateStatus(c.id);
+    if (filter === 'in_progress' && status !== 'in_progress') return false;
+    if (filter === 'evaluated' && status !== 'evaluated') return false;
+    if (filter === 'ready' && status !== 'ready') return false;
+
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <div style="padding: 24px 16px; text-align: center; color: var(--text2); font-size: 13px;">
+        🔍 No candidates match criteria
+      </div>`;
+    return;
+  }
+
+  filtered.forEach((c) => {
+    const i = CANDIDATES.findIndex(orig => orig.id === c.id);
+    const card = document.createElement('div');
+    card.className = 'cand-card';
+    card.id = `card-${c.id}`;
+    if (c.id === state.candidateId) {
+      card.classList.add('selected');
+    }
+    const expLabel = c.yearsExperience === 0 ? 'Intern' : `${c.yearsExperience}y exp`;
+    const status = getCandidateStatus(c.id);
+
+    let statusBadge = '<span class="badge badge-status badge-ready">⚪ Ready</span>';
+    if (status === 'in_progress') {
+      statusBadge = '<span class="badge badge-status badge-in-progress">⏳ In progress</span>';
+    } else if (status === 'evaluated') {
+      statusBadge = '<span class="badge badge-status badge-evaluated">✅ Evaluated</span>';
+    }
+
+    card.innerHTML = `
+      <div class="cand-top">
+        <div class="cand-avatar ${avatarClass(i >= 0 ? i : 0)}">${initials(c.name)}</div>
+        <div class="cand-info">
+          <div class="cand-name">${escapeHtml(c.name)}</div>
+          <div class="cand-role">${escapeHtml(c.jobRole)}</div>
+        </div>
+        <div class="selected-check">✓</div>
+      </div>
+      <div class="cand-badges">
+        ${statusBadge}
+        <span class="badge badge-exp">📅 ${expLabel}</span>
+        <span class="badge badge-missions">✅ ${c.missions} missions</span>
+      </div>
+    `;
+    card.addEventListener('click', () => selectCandidate(c.id));
+    list.appendChild(card);
+  });
+}
+
+function selectCandidate(id) {
+  // Save current active candidate session
+  if (state.candidateId && state.candidateId !== id) {
+    candidateSessions[state.candidateId] = {
+      sessionId: state.sessionId,
+      phase: state.phase,
+      history: [...state.history],
+      feedback: state.feedback || null,
+    };
+  }
+
+  state.candidateId = id;
+  renderCandidates();
+
+  const btn = document.getElementById('start-btn');
+
+  // Hide feedback panel on switch
+  const panel = document.getElementById('feedback-panel');
+  panel.classList.remove('open');
+  document.getElementById('main').classList.remove('with-feedback');
+  panel.style.display = 'none';
+
+  const session = candidateSessions[id];
+
+  if (!session || session.phase === 'select') {
+    state.sessionId = null;
+    state.phase = 'select';
+    state.history = [];
+    state.feedback = null;
+
+    document.getElementById('chat-container').innerHTML = '';
+    document.getElementById('chat-container').style.display = 'none';
+    document.getElementById('input-area').style.display = 'none';
+    document.getElementById('complete-banner').style.display = 'none';
+    document.getElementById('empty-state').style.display = 'flex';
+
+    btn.style.display = 'inline-flex';
+    btn.classList.add('active');
+    btn.style.opacity = '1';
+    btn.textContent = '🚀 Start Interview';
+    setInputDisabled(false);
+    setStatus('ready');
+  } else if (session.phase === 'interviewing') {
+    state.sessionId = session.sessionId;
+    state.phase = 'interviewing';
+    state.history = [...session.history];
+    state.feedback = null;
+
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('complete-banner').style.display = 'none';
+    document.getElementById('chat-container').style.display = 'flex';
+    document.getElementById('input-area').style.display = 'block';
+
+    renderChatTranscript(state.history);
+
+    btn.style.display = 'inline-flex';
+    btn.classList.remove('active');
+    btn.style.opacity = '0.5';
+    btn.textContent = '⏳ Resume Interview';
+    setInputDisabled(false);
+    setStatus('ready');
+    document.getElementById('msg-input').focus();
+  } else if (session.phase === 'done') {
+    state.sessionId = session.sessionId;
+    state.phase = 'done';
+    state.history = [...session.history];
+    state.feedback = session.feedback;
+
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('input-area').style.display = 'none';
+    document.getElementById('chat-container').style.display = 'flex';
+    document.getElementById('complete-banner').style.display = 'flex';
+
+    renderChatTranscript(state.history);
+
+    btn.style.display = 'inline-flex';
+    btn.classList.remove('active');
+    btn.style.opacity = '0.5';
+    btn.textContent = '✅ Interview Completed';
+    setInputDisabled(true);
+    setStatus('ready');
+
+    if (session.feedback) {
+      renderFeedback(session.feedback);
+    }
+  }
+}
+
+function renderChatTranscript(history) {
+  const chat = document.getElementById('chat-container');
+  chat.innerHTML = '';
+  history.forEach(msg => {
+    const div = document.createElement('div');
+    div.className = `msg ${msg.role}`;
+    const candIdx = CANDIDATES.findIndex(c => c.id === state.candidateId);
+    const candName = state.candidateId ? CANDIDATES[candIdx]?.name : 'Candidate';
+    const candInitials = state.candidateId ? initials(candName) : '?';
+
+    if (msg.role === 'interviewer') {
+      div.innerHTML = `
+        <div class="msg-avatar" style="font-size:20px;">🤖</div>
+        <div class="msg-bubble">${escapeHtml(msg.text)}</div>
+      `;
+    } else {
+      div.innerHTML = `
+        <div class="msg-avatar ${avatarClass(candIdx)}">${candInitials}</div>
+        <div class="msg-bubble">${escapeHtml(msg.text)}</div>
+      `;
+    }
+    chat.appendChild(div);
+  });
+  scrollToBottom();
+}
+
+/* ══════════════════════════════════════════════════════
+   CHAT RENDERING
+══════════════════════════════════════════════════════ */
+function appendMessage(role, text) {
+  const chat = document.getElementById('chat-container');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+
+  const candIdx = CANDIDATES.findIndex(c => c.id === state.candidateId);
+  const candName = state.candidateId ? CANDIDATES[candIdx]?.name : 'Candidate';
+  const candInitials = state.candidateId ? initials(candName) : '?';
+
+  if (role === 'interviewer') {
+    div.innerHTML = `
+      <div class="msg-avatar" style="font-size:20px;">🤖</div>
+      <div class="msg-bubble">${escapeHtml(text)}</div>
+    `;
+  } else {
+    div.innerHTML = `
+      <div class="msg-avatar ${avatarClass(candIdx)}">${candInitials}</div>
+      <div class="msg-bubble">${escapeHtml(text)}</div>
+    `;
+  }
+  chat.appendChild(div);
+  scrollToBottom();
+  state.history.push({ role, text });
+
+  // Update per-candidate session state cache
+  if (state.candidateId) {
+    candidateSessions[state.candidateId] = {
+      sessionId: state.sessionId,
+      phase: state.phase,
+      history: [...state.history],
+      feedback: state.feedback || null,
+    };
+  }
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+/* ══════════════════════════════════════════════════════
+   API
+══════════════════════════════════════════════════════ */
+async function apiPost(body) {
+  const res = await fetch('/api/interview', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error(`Server error ${res.status}`);
+  return res.json();
+}
+
+/* ══════════════════════════════════════════════════════
+   INTERVIEW FLOW
+══════════════════════════════════════════════════════ */
+async function startInterview() {
+  if (!state.candidateId) {
+    const btn = document.getElementById('start-btn');
+    btn.classList.remove('shake');
+    void btn.offsetWidth;
+    btn.classList.add('shake');
+    document.getElementById('pick-hint').style.display = 'block';
+    setTimeout(() => btn.classList.remove('shake'), 500);
+    return;
+  }
+  const btn = document.getElementById('start-btn');
+
+  // Transition UI
+  state.sessionId = `sess-${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
+  state.phase = 'interviewing';
+  state.history = [];
+  state.feedback = null;
+
+  candidateSessions[state.candidateId] = {
+    sessionId: state.sessionId,
+    phase: 'interviewing',
+    history: [],
+    feedback: null,
+  };
+  renderCandidates();
+
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('chat-container').style.display = 'flex';
+  document.getElementById('input-area').style.display = 'block';
+  document.getElementById('complete-banner').style.display = 'none';
+  document.getElementById('chat-container').innerHTML = '';
+
+  btn.classList.remove('active');
+  btn.style.opacity = '0.5';
+  btn.textContent = '⏳ Interview In Progress';
+
+  setStatus('thinking');
+  showTyping();
+  setInputDisabled(true);
+
+  const candidate = FULL_CANDIDATES[state.candidateId];
+
+  try {
+    const data = await apiPost({ sessionId: state.sessionId, candidate });
+    hideTyping();
+    setStatus('ready');
+    appendMessage('interviewer', data.reply);
+    if (data.done) {
+      handleDone(data);
+    } else {
+      setInputDisabled(false);
+      document.getElementById('msg-input').focus();
+    }
+  } catch(err) {
+    hideTyping();
+    setStatus('error');
+    showToast('Failed to start interview — check server is running and API key is valid.');
+    document.getElementById('api-warn').style.display = 'block';
+    setInputDisabled(false);
+    state.phase = 'select';
+    delete candidateSessions[state.candidateId];
+    renderCandidates();
+  }
+}
+
+async function sendMessage() {
+  const input = document.getElementById('msg-input');
+  const text = input.value.trim();
+  if (!text || state.phase !== 'interviewing') return;
+
+  appendMessage('candidate', text);
+  input.value = '';
+  input.style.height = 'auto';
+
+  setInputDisabled(true);
+  setStatus('thinking');
+  showTyping();
+
+  try {
+    const data = await apiPost({ sessionId: state.sessionId, message: text });
+    hideTyping();
+    setStatus('ready');
+    appendMessage('interviewer', data.reply);
+
+    if (data.done) {
+      handleDone(data);
+    } else {
+      setInputDisabled(false);
+      input.focus();
+    }
+  } catch(err) {
+    hideTyping();
+    setStatus('error');
+    showToast('Network error — please try again.');
+    setInputDisabled(false);
+  }
+}
+
+function handleDone(data) {
+  state.phase = 'done';
+  state.feedback = data.feedback || null;
+  setInputDisabled(true);
+  document.getElementById('input-area').style.display = 'none';
+
+  if (state.candidateId) {
+    candidateSessions[state.candidateId] = {
+      sessionId: state.sessionId,
+      phase: 'done',
+      history: [...state.history],
+      feedback: data.feedback || null,
+    };
+  }
+  renderCandidates();
+
+  const btn = document.getElementById('start-btn');
+  btn.textContent = '✅ Interview Completed';
+
+  const banner = document.getElementById('complete-banner');
+  banner.style.display = 'flex';
+
+  if (data.feedback) {
+    renderFeedback(data.feedback);
+  }
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function createSVGRadarChart(topicScores) {
+  if (!Array.isArray(topicScores) || topicScores.length === 0) {
+    return '<div style="color:var(--text2); text-align:center; padding:20px;">No topic scores available</div>';
+  }
+
+  const N = topicScores.length;
+  const CX = 200;
+  const CY = 145;
+  const R = 95;
+
+  // 1. Grid rings (at 20%, 40%, 60%, 80%, 100%)
+  const rings = [0.2, 0.4, 0.6, 0.8, 1.0];
+  let gridPolygonsSvg = '';
+  rings.forEach(r => {
+    const pts = [];
+    for (let i = 0; i < N; i++) {
+      const angle = -Math.PI / 2 + (2 * Math.PI * i) / N;
+      const x = CX + R * r * Math.cos(angle);
+      const y = CY + R * r * Math.sin(angle);
+      pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+    }
+    const isOuter = r === 1.0;
+    gridPolygonsSvg += `<polygon points="${pts.join(' ')}" fill="none" stroke="${isOuter ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.08)'}" stroke-width="${isOuter ? 1.5 : 1}" />`;
+  });
+
+  // 2. Radial Axis Lines & Labels
+  let axisLinesSvg = '';
+  let labelsSvg = '';
+
+  topicScores.forEach((t, i) => {
+    const angle = -Math.PI / 2 + (2 * Math.PI * i) / N;
+    const xOuter = CX + R * Math.cos(angle);
+    const yOuter = CY + R * Math.sin(angle);
+
+    axisLinesSvg += `<line x1="${CX}" y1="${CY}" x2="${xOuter.toFixed(1)}" y2="${yOuter.toFixed(1)}" stroke="rgba(255,255,255,0.12)" stroke-width="1" />`;
+
+    // Label positioning
+    const labelRadius = R + 24;
+    const lx = CX + labelRadius * Math.cos(angle);
+    const ly = CY + labelRadius * Math.sin(angle);
+
+    let textAnchor = 'middle';
+    const cosA = Math.cos(angle);
+    if (cosA > 0.25) textAnchor = 'start';
+    else if (cosA < -0.25) textAnchor = 'end';
+
+    const shortTitle = t.title.length > 15 ? t.title.slice(0, 13) + '..' : t.title;
+    labelsSvg += `
+      <text x="${lx.toFixed(1)}" y="${(ly + 3).toFixed(1)}" fill="#c9d1d9" font-size="10" font-family="Inter, system-ui, sans-serif" font-weight="600" text-anchor="${textAnchor}">
+        Day ${t.day}: ${escapeHtml(shortTitle)} (${t.score})
+      </text>
+    `;
+  });
+
+  // 3. Candidate Data Polygon & Data Points
+  const dataPts = [];
+  let dotsSvg = '';
+
+  topicScores.forEach((t, i) => {
+    const angle = -Math.PI / 2 + (2 * Math.PI * i) / N;
+    const ratio = Math.min(1.0, Math.max(0.05, t.score / 100));
+    const vx = CX + R * ratio * Math.cos(angle);
+    const vy = CY + R * ratio * Math.sin(angle);
+
+    dataPts.push(`${vx.toFixed(1)},${vy.toFixed(1)}`);
+
+    dotsSvg += `
+      <circle cx="${vx.toFixed(1)}" cy="${vy.toFixed(1)}" r="4" fill="#0ea5e9" stroke="#ffffff" stroke-width="1.5">
+        <title>Day ${t.day} (${t.title}): ${t.score}/100</title>
+      </circle>
+    `;
+  });
+
+  const dataPolygonSvg = `<polygon points="${dataPts.join(' ')}" fill="rgba(124, 58, 237, 0.35)" stroke="#7c3aed" stroke-width="2.5" stroke-linejoin="round" />`;
+
+  return `
+    <svg viewBox="0 0 400 300" style="width:100%; height:100%; max-height:280px; overflow:visible; display:block;">
+      <g class="radar-grid">
+        ${gridPolygonsSvg}
+        ${axisLinesSvg}
+      </g>
+      <g class="radar-data">
+        ${dataPolygonSvg}
+        ${dotsSvg}
+      </g>
+      <g class="radar-labels">
+        ${labelsSvg}
+      </g>
+    </svg>
+  `;
+}
+
+let currentRadarChart = null;
+
+function renderRadarChart(topicScores) {
+  console.log('[Scorecard] topicScores right before chart build:', topicScores);
+  const wrap = document.querySelector('.chart-canvas-wrap');
+  if (!wrap) {
+    console.error('[Scorecard] Container .chart-canvas-wrap element not found in DOM');
+    return;
+  }
+
+  if (!Array.isArray(topicScores) || topicScores.length === 0) {
+    console.warn('[Scorecard] topicScores is empty or not an array:', topicScores);
+    return;
+  }
+
+  // 1. Render Pure SVG Radar Chart (100% reliable, zero-dependency, works offline & in all environments)
+  wrap.innerHTML = createSVGRadarChart(topicScores);
+
+  // 2. If Chart.js CDN is available, also attempt Chart.js canvas render
+  if (typeof Chart !== 'undefined') {
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.id = 'scorecard-chart';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+
+      const labels = topicScores.map(t => `Day ${t.day}: ${t.title.length > 16 ? t.title.slice(0, 14) + '...' : t.title}`);
+      const data = topicScores.map(t => t.score);
+
+      if (currentRadarChart) {
+        currentRadarChart.destroy();
+        currentRadarChart = null;
+      }
+
+      // Replace wrapper content with canvas if Chart.js compiles successfully
+      wrap.innerHTML = '';
+      wrap.appendChild(canvas);
+
+      currentRadarChart = new Chart(canvas, {
+        type: 'radar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Proficiency Score',
+            data: data,
+            backgroundColor: 'rgba(124, 58, 237, 0.35)',
+            borderColor: '#7c3aed',
+            borderWidth: 2,
+            pointBackgroundColor: '#0ea5e9',
+            pointBorderColor: '#ffffff',
+            pointRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              angleLines: { color: 'rgba(255, 255, 255, 0.15)' },
+              grid: { color: 'rgba(255, 255, 255, 0.15)' },
+              pointLabels: {
+                color: '#c9d1d9',
+                font: { size: 10, family: 'Inter', weight: '600' }
+              },
+              ticks: {
+                color: '#8b949e',
+                backdropColor: 'transparent',
+                stepSize: 20,
+              },
+              suggestedMin: 0,
+              suggestedMax: 100
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    } catch (err) {
+      console.warn('[Scorecard] Chart.js failed, falling back to Pure SVG Radar:', err);
+      wrap.innerHTML = createSVGRadarChart(topicScores);
+    }
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   FEEDBACK & SCORECARD
+══════════════════════════════════════════════════════ */
+function renderFeedback(fb) {
+  const candName = CANDIDATES.find(c => c.id === state.candidateId)?.name || 'Candidate';
+  document.getElementById('feedback-cand-name').textContent = `Evaluation & Scorecard for ${candName}`;
+
+  const body = document.getElementById('feedback-body');
+  body.innerHTML = '';
+
+  // ── Metric Cards Grid ─────────────────────────────────
+  const overall = typeof fb.overallScore === 'number' ? fb.overallScore : 80;
+  const candObj = FULL_CANDIDATES[state.candidateId] || CANDIDATES.find(c => c.id === state.candidateId);
+  
+  // Calculate distinct interview topics discussed in this session vs overall cohort completion
+  const candidateTurns = state.history ? state.history.filter(h => h.role === 'candidate') : [];
+  const interviewTopicsCount = candidateTurns.length > 0
+    ? Math.max(1, Math.min(fb.topicScores ? fb.topicScores.length : 6, new Set(candidateTurns.map(t => t.text.slice(0, 30))).size + 1))
+    : (fb.topicScores ? Math.min(6, fb.topicScores.length) : 6);
+
+  const cohortMissionsCompleted = candObj?.signals?.missionsCompleted ?? 30;
+  const totalMissions = 31;
+  const skippedCount = candObj?.missions ? candObj.missions.filter(m => m.skipped).length : 0;
+  const firstTryCount = candObj?.signals?.missionsFirstTry ?? 0;
+  const firstTryRate = cohortMissionsCompleted > 0 ? Math.round((firstTryCount / cohortMissionsCompleted) * 100) : 0;
+
+  const scoreGrid = document.createElement('div');
+  scoreGrid.className = 'score-card-grid';
+  scoreGrid.innerHTML = `
+    <div class="score-card score-main">
+      <div class="score-card-label">Overall Score</div>
+      <div class="score-card-val">${overall}<span>/100</span></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">Interview Coverage</div>
+      <div class="score-card-val">${interviewTopicsCount} <span>topics</span></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">Cohort Completion</div>
+      <div class="score-card-val">${cohortMissionsCompleted}<span>/31</span></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">First-Try Rate</div>
+      <div class="score-card-val">${firstTryRate}<span>%</span></div>
+    </div>
+  `;
+  body.appendChild(scoreGrid);
+
+  // ── Radar Chart Card ─────────────────────────────────
+  if (fb.topicScores && fb.topicScores.length > 0) {
+    const chartCard = document.createElement('div');
+    chartCard.className = 'chart-card';
+    chartCard.innerHTML = `
+      <div class="chart-title">📊 Technical Topic Proficiency Radar</div>
+      <div class="chart-canvas-wrap">
+        <canvas id="scorecard-chart"></canvas>
+      </div>
+    `;
+    body.appendChild(chartCard);
+  }
+
+  // Summary
+  if (fb.summary) {
+    const card = document.createElement('div');
+    card.className = 'fb-summary-card';
+    card.innerHTML = `
+      <div class="fb-label">📝 Summary</div>
+      ${escapeHtml(fb.summary)}
+    `;
+    body.appendChild(card);
+  }
+
+  // Strengths
+  if (fb.strengths && fb.strengths.length) {
+    const sec = document.createElement('div');
+    sec.className = 'fb-section';
+    sec.innerHTML = `<div class="fb-section-title" style="color:var(--success)">✅ Strengths</div>`;
+    fb.strengths.forEach((s, i) => {
+      const item = document.createElement('div');
+      item.className = 'fb-item strength';
+      item.style.animationDelay = `${0.1 + i * 0.07}s`;
+      item.innerHTML = `<span class="fb-item-icon">✔</span><span>${escapeHtml(s)}</span>`;
+      sec.appendChild(item);
+    });
+    body.appendChild(sec);
+  }
+
+  // Gaps
+  if (fb.gaps && fb.gaps.length) {
+    const sec = document.createElement('div');
+    sec.className = 'fb-section';
+    sec.innerHTML = `<div class="fb-section-title" style="color:var(--warning); margin-top:8px;">⚠ Areas to Improve</div>`;
+    fb.gaps.forEach((g, i) => {
+      const item = document.createElement('div');
+      item.className = 'fb-item gap';
+      item.style.animationDelay = `${0.2 + i * 0.07}s`;
+      item.innerHTML = `<span class="fb-item-icon">△</span><span>${escapeHtml(g)}</span>`;
+      sec.appendChild(item);
+    });
+    body.appendChild(sec);
+  }
+
+  // Next steps
+  if (fb.next && fb.next.length) {
+    const sec = document.createElement('div');
+    sec.className = 'fb-section';
+    sec.innerHTML = `<div class="fb-section-title" style="color:var(--info); margin-top:8px;">🚀 Next Steps</div>`;
+    fb.next.forEach((n, i) => {
+      const item = document.createElement('div');
+      item.className = 'fb-item next';
+      item.style.animationDelay = `${0.3 + i * 0.07}s`;
+      item.innerHTML = `<span class="fb-item-icon">→</span><span>${escapeHtml(n)}</span>`;
+      sec.appendChild(item);
+    });
+    body.appendChild(sec);
+  }
+
+  // Open panel and trigger Chart rendering AFTER panel animation completes
+  const panel = document.getElementById('feedback-panel');
+  document.getElementById('main').classList.add('with-feedback');
+  panel.style.display = 'flex';
+  requestAnimationFrame(() => {
+    panel.classList.add('open');
+    setTimeout(() => {
+      if (fb.topicScores && fb.topicScores.length > 0) {
+        renderRadarChart(fb.topicScores);
+      }
+    }, 250);
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   RESET
+══════════════════════════════════════════════════════ */
+function resetInterview() {
+  if (state.candidateId) {
+    delete candidateSessions[state.candidateId];
+  }
+  state.sessionId = null;
+  state.phase = 'select';
+  state.history = [];
+  state.feedback = null;
+
+  // Reset feedback panel
+  const panel = document.getElementById('feedback-panel');
+  panel.classList.remove('open');
+  document.getElementById('main').classList.remove('with-feedback');
+  setTimeout(() => { panel.style.display = 'none'; }, 450);
+
+  // Reset chat
+  document.getElementById('chat-container').innerHTML = '';
+  document.getElementById('chat-container').style.display = 'none';
+  document.getElementById('input-area').style.display = 'none';
+  document.getElementById('complete-banner').style.display = 'none';
+  document.getElementById('empty-state').style.display = 'flex';
+
+  // Reset msg input
+  const inp = document.getElementById('msg-input');
+  inp.value = '';
+  inp.style.height = 'auto';
+  setInputDisabled(false);
+
+  renderCandidates();
+  setStatus('ready');
+
+  const btn = document.getElementById('start-btn');
+  btn.style.display = 'inline-flex';
+  btn.classList.add('active');
+  btn.style.opacity = '1';
+  btn.textContent = '🚀 Start Interview';
+}
+
+/* ══════════════════════════════════════════════════════
+   INIT & EVENT LISTENERS
+══════════════════════════════════════════════════════ */
+document.getElementById('start-btn').addEventListener('click', startInterview);
+document.getElementById('send-btn').addEventListener('click', sendMessage);
+document.getElementById('msg-input').addEventListener('keydown', handleKey);
+document.getElementById('msg-input').addEventListener('input', (e) => autoResize(e.target));
+document.getElementById('new-interview-btn').addEventListener('click', resetInterview);
+
+// Search input listener
+document.getElementById('candidate-search')?.addEventListener('input', (e) => {
+  state.searchQuery = e.target.value;
+  renderCandidates();
+});
+
+// Filter pills click listener
+document.querySelectorAll('#filter-pills .pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#filter-pills .pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    state.statusFilter = btn.dataset.filter || 'all';
+    renderCandidates();
+  });
+});
+
+renderCandidates();
+renderDefaultEmptyState();
+initCandidates();
+</script>
+</body>
+</html>
