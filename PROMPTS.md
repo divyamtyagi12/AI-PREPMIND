@@ -267,6 +267,42 @@ ALL ACCEPTANCE CRITERIA VERIFIED.
 
 ---
 
+## Phase 7 — Sidebar Search, Live Filter Tabs, Status Badges & Enhanced Empty State
+
+**User prompt:**
+> The sidebar has regressed — an earlier version had a search box, status filter tabs ("All/In Progress/Evaluated/Ready"), and per-candidate status badges, but the current build shows a plain list with no search, no filters, and no status indicators. Restore and improve this:
+>
+> Sidebar:
+> Add a search input at the top that filters the candidate list by name or job role as the user types.
+> Add filter tabs/pills above the list: All (count), In progress (count), Evaluated (count), Ready/not started (count) — clicking one filters the visible list. Counts should be computed live from actual session state, not hardcoded.
+> Each candidate row gets a small status badge on the right: "Evaluated" (green) if done: true, "In progress" (amber) if a session exists but isn't done, "Ready" (neutral) if no session started yet.
+>
+> Empty state (right panel, before any candidate selected):
+> Add a small 3-stat summary row: total candidates, total curriculum days, and average cohort completion rate — all computed from candidates.json, not hardcoded.
+> Add 2 quick-pick buttons (e.g. "Try Sarah Johnson", "Try Emily Chen") that jump straight into that candidate's profile view when clicked.
+> Keep the layout centered and uncluttered — this is filling dead space, not building a new dashboard.
+
+**What the AI built:**
+- `src/routes/candidates.ts` — GET `/api/candidates` returning all 20 candidate profiles and live cohort stats (`totalCandidates`, `totalCurriculumDays`, `avgCompletionRate`)
+- `src/index.ts` — mounted candidates router at `/api/candidates`
+- `public/index.html` — added `#candidate-search` input, dynamic `#filter-pills` with live status counters, per-candidate status badges (`Evaluated`, `In progress`, `Ready`), 3-stat cohort summary row, and quick-pick candidate shortcut buttons
+- Fixed layout squishing by enforcing `flex-shrink: 0` on `.cand-card` and sidebar flex items
+
+---
+
+## Phase 8 — Vercel Serverless Function Deployment & Path Resolution
+
+**User prompt:**
+> *(User provided Vercel deployment error screenshot: `500: INTERNAL_SERVER_ERROR (FUNCTION_INVOCATION_FAILED)`)*
+> why
+
+**What the AI built:**
+- `vercel.json` — created Vercel configuration using `@vercel/node` routing all requests (`/(.*)`) to Express app entrypoint
+- `src/index.ts` — wrapped `app.listen()` inside `if (!process.env.VERCEL)` to prevent serverless function invocation hanging/crashing, added static file path fallback resolution for `public/index.html`
+- `src/store.ts` — updated `loadStore()` to search across `process.cwd()`, `__dirname`, and relative paths for `curriculum.json` and `candidates.json` in Vercel serverless environment
+
+---
+
 ## AI Usage Log Prompt
 
 **User prompt:**
@@ -291,7 +327,9 @@ ALL ACCEPTANCE CRITERIA VERIFIED.
 | 4 — Feedback | ~35 | 2 | 33 | 33/33 |
 | 5 — Acceptance | ~25 | 1 | 96 | 96/96 |
 | 6 — Demo Polish | ~15 | 6 | 0 | — |
-| **Total** | **~195** | **28** | **144** | **144/144** |
+| 7 — Sidebar & Empty State | ~25 | 3 | 0 | — |
+| 8 — Vercel Deployment | ~10 | 3 | 0 | — |
+| **Total** | **~230** | **34** | **144** | **144/144** |
 
 ### Zero lines of code were typed by hand.
 
@@ -304,4 +342,5 @@ the plan at each phase boundary.
 *Tool: Google Antigravity AI coding agent (Gemini 2.5 Pro)*
 *Conversation ID: d304fe75-c709-4a77-b27d-d82f15df2a40*
 *Session duration: ~6 hours (2026-08-07 to 2026-08-08)*
+
 
