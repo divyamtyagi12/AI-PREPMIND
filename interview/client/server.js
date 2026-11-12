@@ -1,4 +1,5 @@
 import http from 'node:http';
+import https from 'node:https';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -33,39 +34,47 @@ const MIME_TYPES = {
 function proxyApiRequest(req, res, targetUrl) {
   try {
     const parsedTarget = new URL(targetUrl);
-    const targetPath = parsedTarget.pathname.replace(/\/$/, '') + req.url;
+    const targetPath = (parsedTarget.pathname === '/' ? '' : parsedTarget.pathname.replace(/\/$/, '')) + req.url;
     const isHttps = parsedTarget.protocol === 'https:';
-    const lib = isHttps ? import('node:https') : import('node:http');
+    const client = isHttps ? https : http;
 
-    lib.then((client) => {
-      const headers = { ...req.headers, host: parsedTarget.host };
-      const proxyReq = client.request(
-        {
-          protocol: parsedTarget.protocol,
-          hostname: parsedTarget.hostname,
-          port: parsedTarget.port || (isHttps ? 443 : 80),
-          method: req.method,
-          path: targetPath,
-          headers,
-        },
-        (proxyRes) => {
-          res.writeHead(proxyRes.statusCode || 500, proxyRes.headers);
-          proxyRes.pipe(res);
-        }
-      );
+    const headers = {
+      ...req.headers,
+      host: parsedTarget.host,
+      'x-forwarded-host': req.headers.host || '',
+      'x-forwarded-proto': req.headers['x-forwarded-proto'] || (isHttps ? 'https' : 'http'),
+    };
 
-      proxyReq.on('error', (err) => {
-        console.error('API Proxy Error:', err.message);
+    const proxyReq = client.request(
+      {
+        protocol: parsedTarget.protocol,
+        hostname: parsedTarget.hostname,
+        port: parsedTarget.port || (isHttps ? 443 : 80),
+        method: req.method,
+        path: targetPath,
+        headers,
+      },
+      (proxyRes) => {
+        res.writeHead(proxyRes.statusCode || 500, proxyRes.headers);
+        proxyRes.pipe(res);
+      }
+    );
+
+    proxyReq.on('error', (err) => {
+      console.error('API Proxy Error:', err.message);
+      if (!res.headersSent) {
         res.writeHead(502, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Bad Gateway: failed to reach backend API' }));
-      });
-
-      req.pipe(proxyReq);
+      }
     });
+
+    req.pipe(proxyReq);
   } catch (err) {
     console.error('Invalid BACKEND_URL:', err.message);
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Internal server configuration error' }));
+    if (!res.headersSent) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Internal server configuration error' }));
+    }
   }
 }
 
