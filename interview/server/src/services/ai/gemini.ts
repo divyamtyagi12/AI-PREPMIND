@@ -20,12 +20,29 @@ export interface Message {
 export interface LLMResponse {
   text: string;
   finishReason?: string;
+  usageMetadata?: {
+    promptTokenCount?: number;
+    candidatesTokenCount?: number;
+    totalTokenCount?: number;
+  };
 }
 
 export interface ChatOptions {
   temperature?: number;
   maxOutputTokens?: number;
   json?: boolean;
+}
+
+type MockChatHandler = (
+  systemPrompt: string,
+  messages: Message[],
+  options: ChatOptions,
+) => Promise<LLMResponse>;
+
+let mockChatHandler: MockChatHandler | null = null;
+
+export function setMockChatHandler(handler: MockChatHandler | null): void {
+  mockChatHandler = handler;
 }
 
 function getApiKey(): string {
@@ -65,6 +82,13 @@ async function callWithRetry(
       return {
         text: (response.text ?? '').trim(),
         finishReason: response.candidates?.[0]?.finishReason,
+        usageMetadata: response.usageMetadata
+          ? {
+              promptTokenCount: response.usageMetadata.promptTokenCount,
+              candidatesTokenCount: response.usageMetadata.candidatesTokenCount,
+              totalTokenCount: response.usageMetadata.totalTokenCount,
+            }
+          : undefined,
       };
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -87,6 +111,9 @@ export function chat(
   messages: Message[],
   options: ChatOptions = {},
 ): Promise<LLMResponse> {
+  if (mockChatHandler) {
+    return mockChatHandler(systemPrompt, messages, options);
+  }
   return callWithRetry(systemPrompt, messages, options);
 }
 

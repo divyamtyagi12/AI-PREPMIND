@@ -29,14 +29,15 @@ export async function listExternalProblems(req: Request, res: Response) {
   const skip = (page - 1) * limit;
 
   const filter: any = { status: 'Published' };
-  if (platform) filter.sourcePlatform = platform;
-  if (difficulty) filter.difficulty = difficulty;
-  if (topicId) filter.topicIds = topicId;
-  if (search) {
+  if (platform && typeof platform === 'string') filter.sourcePlatform = platform;
+  if (difficulty && typeof difficulty === 'string') filter.difficulty = difficulty;
+  if (topicId && typeof topicId === 'string') filter.topicIds = topicId;
+  if (search && typeof search === 'string') {
+    const escapedSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     filter.$or = [
-      { title: { $regex: String(search), $options: 'i' } },
-      { tags: { $regex: String(search), $options: 'i' } },
-      { externalProblemId: { $regex: String(search), $options: 'i' } },
+      { title: { $regex: escapedSearch, $options: 'i' } },
+      { tags: { $regex: escapedSearch, $options: 'i' } },
+      { externalProblemId: { $regex: escapedSearch, $options: 'i' } },
     ];
   }
 

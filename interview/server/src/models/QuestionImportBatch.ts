@@ -14,6 +14,7 @@ const questionImportBatchSchema = new Schema(
   },
   {
     timestamps: true,
+    suppressReservedKeysWarning: true,
     toJSON: {
       transform(_doc, ret: Record<string, unknown>) {
         ret.id = String(ret._id);

@@ -55,7 +55,7 @@ export class TestClient {
   }
 
   async send(
-    method: 'get' | 'post' | 'patch',
+    method: 'get' | 'post' | 'put' | 'patch' | 'delete',
     url: string,
     body?: unknown,
     opts: { csrf?: boolean; headers?: Record<string, string> } = {},
@@ -75,8 +75,12 @@ export class TestClient {
   get = (url: string) => this.send('get', url);
   post = (url: string, body?: unknown, opts?: { csrf?: boolean; headers?: Record<string, string> }) =>
     this.send('post', url, body, opts);
+  put = (url: string, body?: unknown, opts?: { csrf?: boolean; headers?: Record<string, string> }) =>
+    this.send('put', url, body, opts);
   patch = (url: string, body?: unknown, opts?: { csrf?: boolean; headers?: Record<string, string> }) =>
     this.send('patch', url, body, opts);
+  delete = (url: string, opts?: { csrf?: boolean; headers?: Record<string, string> }) =>
+    this.send('delete', url, undefined, opts);
 }
 
 export async function registerClient(app: Express, overrides: Partial<typeof validUser> = {}) {

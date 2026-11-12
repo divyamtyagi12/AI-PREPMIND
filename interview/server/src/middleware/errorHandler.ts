@@ -29,6 +29,26 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     return;
   }
 
+  // Mongoose invalid ObjectId CastError -> 400 Bad Request
+  const errName = (err as { name?: string })?.name;
+  if (errName === 'CastError') {
+    res.status(400).json({
+      success: false,
+      error: { code: 'INVALID_ID', message: 'Invalid resource identifier format' },
+    });
+    return;
+  }
+
+  // MongoDB duplicate key error -> 409 Conflict
+  const mongoCode = (err as { code?: number })?.code;
+  if (mongoCode === 11000) {
+    res.status(409).json({
+      success: false,
+      error: { code: 'DUPLICATE_RESOURCE', message: 'Resource with the given unique field already exists' },
+    });
+    return;
+  }
+
   // Log message + stack only; never request bodies, cookies or headers.
   if (getConfig().env !== 'test') {
     console.error('[error]', err instanceof Error ? err.stack ?? err.message : String(err));

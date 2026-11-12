@@ -127,12 +127,13 @@ export async function listQuestions(req: Request, res: Response) {
     filter.topicId = { $in: topics.map((t) => t._id) };
   }
 
-  if (difficulty) filter.difficulty = difficulty;
-  if (type) filter.type = type;
-  if (search) {
+  if (difficulty && typeof difficulty === 'string') filter.difficulty = difficulty;
+  if (type && typeof type === 'string') filter.type = type;
+  if (search && typeof search === 'string') {
+    const escapedSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     filter.$or = [
-      { title: { $regex: String(search), $options: 'i' } },
-      { tags: { $regex: String(search), $options: 'i' } },
+      { title: { $regex: escapedSearch, $options: 'i' } },
+      { tags: { $regex: escapedSearch, $options: 'i' } },
     ];
   }
 

@@ -10,6 +10,7 @@ import {
   BookOpen,
   ArrowRight,
   Eye,
+  Bot,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -252,18 +253,32 @@ export default function PracticeQuestion() {
 
             {/* Submit Action or Next Question */}
             <div className="flex items-center justify-between pt-2">
-              {question.hints?.length > 0 && (
+              <div className="flex items-center gap-2">
+                {question.hints?.length > 0 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowHint(!showHint)}
+                    className="text-xs text-muted-foreground"
+                  >
+                    <Lightbulb className="mr-1 size-3.5" />
+                    {showHint ? 'Hide Hint' : 'Need a hint?'}
+                  </Button>
+                )}
                 <Button
                   type="button"
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
-                  onClick={() => setShowHint(!showHint)}
-                  className="text-xs text-muted-foreground"
+                  asChild
+                  className="text-xs text-indigo-600 border-indigo-200 hover:bg-indigo-50 dark:border-indigo-800 dark:hover:bg-indigo-950/40"
                 >
-                  <Lightbulb className="mr-1 size-3.5" />
-                  {showHint ? 'Hide Hint' : 'Need a hint?'}
+                  <Link to={`/ai-tutor?contextType=practice&referenceId=${question.id || question._id}`}>
+                    <Bot className="mr-1.5 size-3.5" />
+                    Ask AI Tutor
+                  </Link>
                 </Button>
-              )}
+              </div>
 
               {!feedback ? (
                 <Button type="submit" loading={submitting} className="ml-auto">

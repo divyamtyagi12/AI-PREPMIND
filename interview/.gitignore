@@ -7,6 +7,8 @@ node_modules/
 # Build output
 dist/
 coverage/
+test-results/
+playwright-report/
 
 # Environment - NEVER commit real keys
 .env

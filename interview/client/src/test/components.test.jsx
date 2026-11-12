@@ -533,3 +533,494 @@ describe('Phase 3: Assessment List, Runner, Timer, Autosave & History', () => {
     expect(screen.getByText('32 / 40')).toBeInTheDocument();
   });
 });
+
+describe('Phase 4: Adaptive Practice Components', () => {
+  it('renders DifficultyBadge with proper styling across Easy, Medium, and Hard', async () => {
+    const { DifficultyBadge } = await import('../components/adaptive/DifficultyBadge');
+
+    const { rerender } = render(<DifficultyBadge difficulty="Easy" />);
+    expect(screen.getByText('Easy')).toBeInTheDocument();
+
+    rerender(<DifficultyBadge difficulty="Medium" />);
+    expect(screen.getByText('Medium')).toBeInTheDocument();
+
+    rerender(<DifficultyBadge difficulty="Hard" />);
+    expect(screen.getByText('Hard')).toBeInTheDocument();
+  });
+
+  it('renders MasteryCard with probability, band, and confidence badge', async () => {
+    const { MasteryCard } = await import('../components/adaptive/MasteryCard');
+
+    render(
+      <MemoryRouter>
+        <MasteryCard
+          topic={{
+            topicId: 'top_1',
+            topicName: 'Dynamic Programming',
+            categoryName: 'DSA',
+            masteryProbability: 0.78,
+            masteryClassification: 'Strong',
+            evidenceLevel: 'Sufficient Evidence',
+            observationsProcessed: 6,
+          }}
+        />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Dynamic Programming')).toBeInTheDocument();
+    expect(screen.getByText('DSA')).toBeInTheDocument();
+    expect(screen.getByText('Strong')).toBeInTheDocument();
+    expect(screen.getByText('78%')).toBeInTheDocument();
+    expect(screen.getByText(/Sufficient Evidence/i)).toBeInTheDocument();
+  });
+
+  it('renders RecommendationCard with priority badge and action link', async () => {
+    const { RecommendationCard } = await import('../components/adaptive/RecommendationCard');
+
+    render(
+      <MemoryRouter>
+        <RecommendationCard
+          recommendation={{
+            topicId: 'top_1',
+            topicName: 'Binary Trees',
+            subjectName: 'Data Structures',
+            currentMastery: 0.35,
+            priority: 'high',
+            reason: 'Mastery is low (35%) with sufficient evidence',
+            suggestedAction: 'Start Practice',
+            relatedRoute: '/adaptive/setup',
+          }}
+        />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Binary Trees')).toBeInTheDocument();
+    expect(screen.getByText('High Priority')).toBeInTheDocument();
+    expect(screen.getByText(/Mastery: 35%/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /start practice/i })).toBeInTheDocument();
+  });
+
+  it('renders AdaptiveSessionProgress showing step counter and percentage', async () => {
+    const { AdaptiveSessionProgress } = await import(
+      '../components/adaptive/AdaptiveSessionProgress'
+    );
+
+    render(
+      <AdaptiveSessionProgress
+        currentQuestionIndex={3}
+        maxQuestions={5}
+        answeredCount={2}
+        correctCount={2}
+      />
+    );
+
+    expect(screen.getByText(/Question 3 of 5/i)).toBeInTheDocument();
+    expect(screen.getByText(/2 \/ 2/i)).toBeInTheDocument();
+  });
+});
+
+describe('Phase 5: Personalized Learning Roadmap Components', () => {
+  it('renders RoadmapProgressCard with title, days remaining, and progress percentage', async () => {
+    const { RoadmapProgressCard } = await import('../components/roadmap/RoadmapProgressCard');
+
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 45);
+
+    render(
+      <RoadmapProgressCard
+        roadmap={{
+          title: 'Software Development Engineer Placement Roadmap',
+          preparationGoal: 'Software Development Engineer',
+          targetDate: futureDate.toISOString(),
+          progressPercentage: 42,
+          totalEstimatedMinutes: 1800,
+          completedMinutes: 756,
+          isProvisional: false,
+          status: 'active',
+        }}
+        todayTasksCount={3}
+        pendingCount={12}
+      />
+    );
+
+    expect(screen.getByText('Software Development Engineer Placement Roadmap')).toBeInTheDocument();
+    expect(screen.getByText('Software Development Engineer')).toBeInTheDocument();
+    expect(screen.getByText('42%')).toBeInTheDocument();
+    expect(screen.getByText(/3 scheduled/i)).toBeInTheDocument();
+  });
+
+  it('renders StudyTaskCard with task type badge, estimated minutes, and action button', async () => {
+    const { StudyTaskCard } = await import('../components/roadmap/StudyTaskCard');
+
+    render(
+      <MemoryRouter>
+        <StudyTaskCard
+          task={{
+            id: 'task_1',
+            title: 'Learn Binary Search Fundamentals',
+            description: 'Understand low/high pointers and invariant conditions',
+            taskType: 'learn',
+            difficulty: 'Easy',
+            estimatedMinutes: 25,
+            status: 'pending',
+            topicId: { name: 'Binary Search' },
+            linkedRoute: '/practice',
+          }}
+          onComplete={vi.fn()}
+          onSkip={vi.fn()}
+        />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Learn Binary Search Fundamentals')).toBeInTheDocument();
+    expect(screen.getByText('Concept Study')).toBeInTheDocument();
+    expect(screen.getByText('25 min')).toBeInTheDocument();
+    expect(screen.getByText('Binary Search')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /start/i })).toBeInTheDocument();
+  });
+
+  it('renders MilestoneCard with title, criteria, and target date', async () => {
+    const { MilestoneCard } = await import('../components/roadmap/MilestoneCard');
+
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 20);
+
+    render(
+      <MilestoneCard
+        milestone={{
+          title: 'Foundation DSA Milestone',
+          description: 'Complete basic array and string patterns',
+          targetDate: targetDate.toISOString(),
+          completionCriteria: 'Finish 10 practice problems in linear structures',
+          status: 'pending',
+        }}
+      />
+    );
+
+    expect(screen.getByText('Foundation DSA Milestone')).toBeInTheDocument();
+    expect(screen.getByText('UPCOMING')).toBeInTheDocument();
+    expect(screen.getByText(/Finish 10 practice problems/i)).toBeInTheDocument();
+  });
+
+  it('renders RoadmapFeasibilityAlert when workload exceeds capacity', async () => {
+    const { RoadmapFeasibilityAlert } = await import('../components/roadmap/RoadmapFeasibilityAlert');
+
+    render(
+      <RoadmapFeasibilityAlert
+        feasibility={{
+          isFeasible: false,
+          availableMinutes: 1200,
+          requiredMinutes: 2400,
+          shortfallMinutes: 1200,
+          suggestedDeadlineExtensionDays: 14,
+          suggestedDailyIncreaseMinutes: 40,
+          warningMessage: 'Workload exceeds available study time warning',
+        }}
+      />
+    );
+
+    expect(screen.getByText(/Workload Exceeds Capacity Warning/i)).toBeInTheDocument();
+    expect(screen.getByText(/Workload exceeds available study time warning/i)).toBeInTheDocument();
+    expect(screen.getByText(/\+14 days/i)).toBeInTheDocument();
+  });
+});
+
+describe('Phase 6: AI Tutor UI Components', () => {
+  it('renders TutorSidebar with daily quota and conversation list', async () => {
+    const TutorSidebar = (await import('../components/tutor/TutorSidebar')).default;
+
+    const mockConversations = [
+      { id: 'conv-1', title: 'Binary Search Basics', contextType: 'topic' },
+      { id: 'conv-2', title: 'Two Pointer Hint', contextType: 'practice' },
+    ];
+
+    render(
+      <TutorSidebar
+        conversations={mockConversations}
+        currentId="conv-1"
+        onSelect={vi.fn()}
+        onNewChat={vi.fn()}
+        onDelete={vi.fn()}
+        quota={{ usedToday: 5, dailyLimit: 30, remaining: 25 }}
+      />
+    );
+
+    expect(screen.getByText('AI Tutor')).toBeInTheDocument();
+    expect(screen.getByText('5 / 30')).toBeInTheDocument();
+    expect(screen.getByText('25 questions remaining today')).toBeInTheDocument();
+    expect(screen.getByText('Binary Search Basics')).toBeInTheDocument();
+    expect(screen.getByText('Two Pointer Hint')).toBeInTheDocument();
+  });
+
+  it('renders TutorMessage correctly for model role with code formatting', async () => {
+    const TutorMessage = (await import('../components/tutor/TutorMessage')).default;
+
+    const message = {
+      id: 'msg-1',
+      role: 'model',
+      content: 'Here is how to calculate mid without overflow:\n```cpp\nint mid = low + (high - low) / 2;\n```\nAlways test boundaries.',
+      mode: 'explain',
+    };
+
+    render(<TutorMessage message={message} />);
+
+    expect(screen.getByText('PrepMind Tutor')).toBeInTheDocument();
+    expect(screen.getByText(/EXPLAIN/i)).toBeInTheDocument();
+    expect(screen.getByText(/Always test boundaries/i)).toBeInTheDocument();
+    expect(screen.getByText('cpp')).toBeInTheDocument();
+    expect(screen.getByText(/int mid = low \+ \(high - low\) \/ 2;/i)).toBeInTheDocument();
+  });
+
+  it('renders TutorModeSelector and allows switching pedagogical modes', async () => {
+    const TutorModeSelector = (await import('../components/tutor/TutorModeSelector')).default;
+    const user = userEvent.setup();
+    const handleSelectMode = vi.fn();
+
+    render(
+      <TutorModeSelector
+        currentMode="explain"
+        onSelectMode={handleSelectMode}
+        hintLevel={1}
+        onSetHintLevel={vi.fn()}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: /explain/i })).toBeInTheDocument();
+    const hintBtn = screen.getByRole('button', { name: /hint/i });
+    expect(hintBtn).toBeInTheDocument();
+
+    await user.click(hintBtn);
+    expect(handleSelectMode).toHaveBeenCalledWith('hint');
+  });
+});
+
+describe('Phase 7: Coding Platform UI Components', () => {
+  it('renders LanguageSelector and triggers selection event', async () => {
+    const LanguageSelector = (await import('../components/coding/LanguageSelector')).default;
+    const user = userEvent.setup();
+    const handleSelectLanguage = vi.fn();
+
+    render(
+      <LanguageSelector
+        language="python"
+        onSelectLanguage={handleSelectLanguage}
+      />
+    );
+
+    expect(screen.getByText(/Language:/i)).toBeInTheDocument();
+    const select = screen.getByRole('combobox');
+    expect(select).toHaveValue('python');
+
+    await user.selectOptions(select, 'cpp');
+    expect(handleSelectLanguage).toHaveBeenCalledWith('cpp');
+  });
+
+  it('renders SubmissionStatusBadge across different evaluation verdicts', async () => {
+    const SubmissionStatusBadge = (await import('../components/coding/SubmissionStatusBadge')).default;
+
+    const { rerender } = render(
+      <SubmissionStatusBadge verdict="accepted" passedCount={5} totalCount={5} />
+    );
+    expect(screen.getByText('Accepted')).toBeInTheDocument();
+    expect(screen.getByText('(5/5)')).toBeInTheDocument();
+
+    rerender(
+      <SubmissionStatusBadge verdict="wrong_answer" passedCount={3} totalCount={5} />
+    );
+    expect(screen.getByText('Wrong Answer')).toBeInTheDocument();
+    expect(screen.getByText('(3/5)')).toBeInTheDocument();
+
+    rerender(<SubmissionStatusBadge verdict="compilation_error" />);
+    expect(screen.getByText('Compilation Error')).toBeInTheDocument();
+  });
+
+  it('renders ProblemDescription with difficulty, tags, and examples', async () => {
+    const ProblemDescription = (await import('../components/coding/ProblemDescription')).default;
+
+    const mockProblem = {
+      title: 'Two Sum Integer Problem',
+      difficulty: 'Easy',
+      topicIds: [{ _id: '1', name: 'Arrays' }],
+      description: 'Given an array of integers, return indices.',
+      examples: [
+        { input: '[2,7,11,15], 9', output: '[0,1]', explanation: '2 + 7 = 9' },
+      ],
+      constraints: ['2 <= nums.length <= 10^4'],
+      timeLimitMs: 2000,
+    };
+
+    render(<ProblemDescription problem={mockProblem} />);
+
+    expect(screen.getByText('Two Sum Integer Problem')).toBeInTheDocument();
+    expect(screen.getByText('Easy')).toBeInTheDocument();
+    expect(screen.getByText('Arrays')).toBeInTheDocument();
+    expect(screen.getByText('Given an array of integers, return indices.')).toBeInTheDocument();
+    expect(screen.getByText('[2,7,11,15], 9')).toBeInTheDocument();
+    expect(screen.getByText(/Time Limit: 2000ms/i)).toBeInTheDocument();
+  });
+});
+
+describe('Phase 8: AI Mock Interview UI Components', () => {
+  it('renders InterviewQuestionCard with question details and competencies', async () => {
+    const InterviewQuestionCard = (await import('../components/interview/InterviewQuestionCard')).default;
+
+    const mockQuestion = {
+      questionText: 'Explain the difference between SQL and NoSQL databases.',
+      questionType: 'technical',
+      expectedCompetencies: ['Schema Design', 'ACID Transactions'],
+    };
+
+    render(
+      <InterviewQuestionCard
+        question={mockQuestion}
+        currentOrder={1}
+        totalQuestions={5}
+        isFollowUp={false}
+      />
+    );
+
+    expect(screen.getByText('Question 1 of 5')).toBeInTheDocument();
+    expect(screen.getByText('Explain the difference between SQL and NoSQL databases.')).toBeInTheDocument();
+    expect(screen.getByText('Schema Design')).toBeInTheDocument();
+    expect(screen.getByText('ACID Transactions')).toBeInTheDocument();
+  });
+
+  it('renders InterviewQuestionCard with follow-up badge when adaptive follow-up is active', async () => {
+    const InterviewQuestionCard = (await import('../components/interview/InterviewQuestionCard')).default;
+
+    const mockFollowUp = {
+      questionText: 'What are the write penalties associated with indexes?',
+      questionType: 'technical',
+      expectedCompetencies: ['Write amplification'],
+    };
+
+    render(
+      <InterviewQuestionCard
+        question={mockFollowUp}
+        currentOrder={2}
+        totalQuestions={5}
+        isFollowUp={true}
+      />
+    );
+
+    expect(screen.getByText('Adaptive Follow-Up')).toBeInTheDocument();
+    expect(screen.getByText('What are the write penalties associated with indexes?')).toBeInTheDocument();
+  });
+
+  it('renders VoiceAnswerRecorder and informs when voice is unsupported/fallback', async () => {
+    const VoiceAnswerRecorder = (await import('../components/interview/VoiceAnswerRecorder')).default;
+
+    render(<VoiceAnswerRecorder onTranscriptUpdate={vi.fn()} />);
+
+    // In JSDOM headless test environment, window.SpeechRecognition is undefined
+    expect(
+      screen.getByText(/Voice recognition unavailable in this browser/i)
+    ).toBeInTheDocument();
+  });
+});
+
+describe('Phase 9: Platform Completeness & Unified Progress Analytics', () => {
+  it('verifies all student navigation items are ready with zero Coming Soon placeholders', async () => {
+    const { NAV_ITEMS, COMING_SOON_ITEMS, ADMIN_NAV_ITEMS } = await import('../lib/navigation');
+
+    expect(COMING_SOON_ITEMS).toHaveLength(0);
+    expect(NAV_ITEMS.every((item) => item.ready === true)).toBe(true);
+    expect(ADMIN_NAV_ITEMS.some((item) => item.to === '/admin/coding')).toBe(true);
+  });
+
+  it('renders ProgressAnalytics unified readiness dashboard after loading', async () => {
+    const ProgressAnalytics = (await import('../pages/ProgressAnalytics')).default;
+
+    render(
+      <MemoryRouter>
+        <ProgressAnalytics />
+      </MemoryRouter>
+    );
+
+    const heading = await screen.findByText(/Placement Readiness & Progress Analytics/i);
+    expect(heading).toBeInTheDocument();
+    expect(screen.getAllByText(/Readiness Index/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByTestId('readiness-index-value')).toBeInTheDocument();
+    expect(screen.getByText(/Bayesian Mastery Curves/i)).toBeInTheDocument();
+  });
+
+  it('computes Placement Readiness Index accurately with missing data, zero-division safety, and deduplication', async () => {
+    const { calculatePlacementReadiness, READINESS_WEIGHTS } = await import('../lib/readinessIndex');
+
+    // 1. Verify weights sum to 1.0 (100%)
+    const totalWeight = Object.values(READINESS_WEIGHTS).reduce((a, b) => a + b, 0);
+    expect(totalWeight).toBeCloseTo(1.0, 5);
+
+    // 2. Verify empty / null inputs do not divide by zero or return NaN
+    const emptyResult = calculatePlacementReadiness({
+      masteryOverview: null,
+      skillProfileData: { skills: [] },
+      codingAnalytics: null,
+      interviewAnalytics: null,
+      activeRoadmap: null,
+      codingBenchmark: 0, // Edge case: 0 benchmark should fallback safely without NaN
+    });
+    expect(emptyResult.overallReadinessIndex).toBe(0);
+    expect(emptyResult.activeReadinessAverage).toBe(0);
+    expect(emptyResult.activePillarsCount).toBe(0);
+
+    // 3. Verify deduplication of repeated topicId in skillProfile and weighted calculation
+    const populatedResult = calculatePlacementReadiness({
+      masteryOverview: {
+        summary: { averageMastery: 0.8, assessedTopicsCount: 5, proficientTopicsCount: 4 },
+      },
+      skillProfileData: {
+        skills: [
+          { topicId: 't1', accuracy: 50 },
+          { topicId: 't1', accuracy: 90 }, // Latest for t1 should overwrite duplicate t1
+          { topicId: 't2', accuracy: 70 },
+        ],
+      },
+      codingAnalytics: { totalSolved: 5, totalAttempted: 25 }, // 5 / 10 benchmark = 50%
+      interviewAnalytics: { averageScore: 85, totalInterviews: 2 },
+      activeRoadmap: { id: 'rm1', progressPercentage: 60, preparationGoal: 'SDE' },
+      codingBenchmark: 10,
+    });
+
+    // BKT: 80 * 0.35 = 28
+    // Assessments: ((90 + 70) / 2 = 80) * 0.25 = 20
+    // Interviews: 85 * 0.20 = 17
+    // Coding: 50 * 0.10 = 5
+    // Roadmap: 60 * 0.10 = 6
+    // Total = 28 + 20 + 17 + 5 + 6 = 76
+    expect(populatedResult.pillars.assessments.topicsAssessed).toBe(2);
+    expect(populatedResult.pillars.assessments.score).toBe(80);
+    expect(populatedResult.overallReadinessIndex).toBe(76);
+    expect(populatedResult.activePillarsCount).toBe(5);
+
+    // 4. Verify Data Completeness indicator and Insufficient Evidence threshold (< 2 pillars)
+    expect(emptyResult.dataCompleteness.percentage).toBe(0);
+    expect(emptyResult.dataCompleteness.status).toBe('Insufficient Evidence');
+    expect(emptyResult.dataCompleteness.isSufficient).toBe(false);
+
+    // Partial Evidence (e.g. only 2 pillars active)
+    const partialResult = calculatePlacementReadiness({
+      masteryOverview: { summary: { averageMastery: 0.7, assessedTopicsCount: 2 } },
+      skillProfileData: { skills: [{ topicId: 't1', accuracy: 80 }] },
+      codingAnalytics: null,
+      interviewAnalytics: null,
+      activeRoadmap: null,
+    });
+    expect(partialResult.dataCompleteness.percentage).toBe(40);
+    expect(partialResult.dataCompleteness.status).toBe('Partial Evidence');
+    expect(partialResult.dataCompleteness.isSufficient).toBe(true);
+
+    // Robust Evidence (all 5 pillars active)
+    expect(populatedResult.dataCompleteness.percentage).toBe(100);
+    expect(populatedResult.dataCompleteness.status).toBe('Robust Evidence');
+    expect(populatedResult.dataCompleteness.isSufficient).toBe(true);
+    expect(populatedResult.dataCompleteness.checklist).toHaveLength(5);
+    expect(populatedResult.dataCompleteness.checklist.every((c) => c.hasEvidence)).toBe(true);
+  });
+});
+
+
+
+
+
+

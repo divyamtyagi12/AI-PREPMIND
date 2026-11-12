@@ -14,6 +14,35 @@ import * as qbAdmin from '../controllers/questionBankAdmin.controller';
 import * as assessments from '../controllers/assessment.controller';
 import * as assessmentAdmin from '../controllers/assessmentAdmin.controller';
 import * as adaptive from '../controllers/adaptive.controller';
+import * as roadmap from '../controllers/roadmap.controller';
+import * as tutor from '../controllers/tutor.controller';
+import * as coding from '../controllers/coding.controller';
+import * as interview from '../controllers/interview.controller';
+import {
+  createInterviewSchema,
+  submitAnswerSchema,
+} from '../validators/interview.validators';
+import {
+  runCodeSchema,
+  submitCodeSchema,
+  saveDraftSchema,
+  createCodingProblemSchema,
+  createTestCaseSchema,
+} from '../validators/coding.validators';
+import {
+  generateRoadmapSchema,
+  updateRoadmapSettingsSchema,
+  replanRoadmapSchema,
+  completeTaskSchema,
+  rescheduleTaskSchema,
+  addPrerequisiteSchema,
+  updateRoadmapConfigSchema,
+} from '../validators/roadmap.validators';
+import {
+  createConversationSchema,
+  sendMessageSchema,
+  updateAdminConfigSchema,
+} from '../validators/tutor.validators';
 import {
   startAdaptiveSessionSchema,
   submitAdaptiveAnswerSchema,
@@ -167,6 +196,82 @@ export function buildApiRouter(limiters: ReturnType<typeof createRateLimiters>):
   adaptiveRouter.get('/analytics', asyncHandler(adaptive.getAnalytics));
   api.use('/adaptive', adaptiveRouter);
 
+  // Phase 5: Personalized Learning Roadmaps, Scheduling, Revisions & Tasks
+  const roadmapRouter = Router();
+  roadmapRouter.use(requireAuth);
+  roadmapRouter.post('/generate', validateBody(generateRoadmapSchema), asyncHandler(roadmap.generate));
+  roadmapRouter.get('/active', asyncHandler(roadmap.getActive));
+  roadmapRouter.get('/:roadmapId', asyncHandler(roadmap.getById));
+  roadmapRouter.patch('/:roadmapId/settings', validateBody(updateRoadmapSettingsSchema), asyncHandler(roadmap.updateSettings));
+  roadmapRouter.post('/:roadmapId/replan', validateBody(replanRoadmapSchema), asyncHandler(roadmap.replan));
+  roadmapRouter.post('/:roadmapId/pause', asyncHandler(roadmap.pause));
+  roadmapRouter.post('/:roadmapId/resume', asyncHandler(roadmap.resume));
+  roadmapRouter.get('/:roadmapId/tasks', asyncHandler(roadmap.getTasks));
+  roadmapRouter.get('/:roadmapId/tasks/today', asyncHandler(roadmap.getToday));
+  roadmapRouter.get('/:roadmapId/tasks/week', asyncHandler(roadmap.getWeek));
+  roadmapRouter.get('/:roadmapId/progress', asyncHandler(roadmap.getProgress));
+  roadmapRouter.get('/:roadmapId/milestones', asyncHandler(roadmap.getMilestones));
+  roadmapRouter.get('/:roadmapId/analytics', asyncHandler(roadmap.getAnalytics));
+  api.use('/roadmaps', roadmapRouter);
+
+  const taskRouter = Router();
+  taskRouter.use(requireAuth);
+  taskRouter.post('/:taskId/complete', validateBody(completeTaskSchema), asyncHandler(roadmap.completeTaskHandler));
+  taskRouter.post('/:taskId/skip', asyncHandler(roadmap.skipTaskHandler));
+  taskRouter.post('/:taskId/reschedule', validateBody(rescheduleTaskSchema), asyncHandler(roadmap.rescheduleTaskHandler));
+  api.use('/roadmap-tasks', taskRouter);
+
+  const revisionRouter = Router();
+  revisionRouter.use(requireAuth);
+  revisionRouter.get('/due', asyncHandler(roadmap.getDue));
+  revisionRouter.get('/upcoming', asyncHandler(roadmap.getDue));
+  revisionRouter.post('/:revisionId/complete', asyncHandler(roadmap.completeRevision));
+  api.use('/revisions', revisionRouter);
+
+  // Phase 6: Student AI Tutor Routes
+  const tutorRouter = Router();
+  tutorRouter.use(requireAuth);
+  tutorRouter.get('/quota', asyncHandler(tutor.getTutorQuota));
+  tutorRouter.get('/conversations', asyncHandler(tutor.listConversations));
+  tutorRouter.post('/conversations', validateBody(createConversationSchema), asyncHandler(tutor.createConversation));
+  tutorRouter.post('/quick-context', asyncHandler(tutor.createQuickContextConversation));
+  tutorRouter.get('/conversations/:id', asyncHandler(tutor.getConversation));
+  tutorRouter.post('/conversations/:id/messages', validateBody(sendMessageSchema), asyncHandler(tutor.postMessage));
+  tutorRouter.delete('/conversations/:id', asyncHandler(tutor.deleteConversation));
+  api.use('/tutor', tutorRouter);
+
+  // Phase 7: Student Online Coding Platform Routes
+  const codingRouter = Router();
+  codingRouter.use(requireAuth);
+  codingRouter.get('/problems', asyncHandler(coding.listCodingProblems));
+  codingRouter.get('/problems/:id', asyncHandler(coding.getCodingProblem));
+  codingRouter.post('/problems/:id/run', validateBody(runCodeSchema), asyncHandler(coding.runCode));
+  codingRouter.post('/problems/:id/submit', validateBody(submitCodeSchema), asyncHandler(coding.submitCode));
+  codingRouter.get('/problems/:id/draft', asyncHandler(coding.getCodeDraft));
+  codingRouter.put('/problems/:id/draft', validateBody(saveDraftSchema), asyncHandler(coding.saveCodeDraft));
+  codingRouter.post('/problems/:id/draft', validateBody(saveDraftSchema), asyncHandler(coding.saveCodeDraft));
+  codingRouter.get('/submissions', asyncHandler(coding.listSubmissions));
+  codingRouter.get('/submissions/:id', asyncHandler(coding.getSubmission));
+  codingRouter.get('/analytics', asyncHandler(coding.getCodingAnalytics));
+  api.use('/coding', codingRouter);
+
+  // Phase 8: AI Mock Interview Routes
+  const interviewRouter = Router();
+  interviewRouter.use(requireAuth);
+  interviewRouter.get('/config', asyncHandler(interview.getInterviewConfig));
+  interviewRouter.post('/', validateBody(createInterviewSchema), asyncHandler(interview.createInterview));
+  interviewRouter.get('/', asyncHandler(interview.listInterviews));
+  interviewRouter.get('/analytics', asyncHandler(interview.getInterviewAnalytics));
+  interviewRouter.get('/:sessionId', asyncHandler(interview.getInterview));
+  interviewRouter.post('/:sessionId/start', asyncHandler(interview.startInterview));
+  interviewRouter.get('/:sessionId/current-question', asyncHandler(interview.getCurrentQuestion));
+  interviewRouter.post('/:sessionId/answer', validateBody(submitAnswerSchema), asyncHandler(interview.submitAnswer));
+  interviewRouter.post('/:sessionId/complete', asyncHandler(interview.completeInterview));
+  interviewRouter.post('/:sessionId/abandon', asyncHandler(interview.abandonInterview));
+  interviewRouter.get('/:sessionId/report', asyncHandler(interview.getInterviewReport));
+  interviewRouter.get('/:sessionId/review', asyncHandler(interview.getInterviewReview));
+  api.use('/interviews', interviewRouter);
+
   // Administrator Management routes (Strictly requires admin role)
   const adminRouter = Router();
   adminRouter.use(requireAuth);
@@ -243,6 +348,43 @@ export function buildApiRouter(limiters: ReturnType<typeof createRateLimiters>):
     '/adaptive/config',
     validateBody(updateBKTConfigSchema),
     asyncHandler(adaptive.updateAdminBKTConfig),
+  );
+
+  // Phase 5: Admin Prerequisite Graph & Roadmap Configuration
+  adminRouter.get('/roadmap/prerequisites', asyncHandler(roadmap.listPrerequisites));
+  adminRouter.post(
+    '/roadmap/prerequisites',
+    validateBody(addPrerequisiteSchema),
+    asyncHandler(roadmap.createPrerequisite),
+  );
+  adminRouter.delete('/roadmap/prerequisites/:id', asyncHandler(roadmap.deletePrerequisite));
+  adminRouter.get('/roadmap/config', asyncHandler(roadmap.getConfig));
+  adminRouter.patch(
+    '/roadmap/config',
+    validateBody(updateRoadmapConfigSchema),
+    asyncHandler(roadmap.updateConfig),
+  );
+
+  // Phase 6: Admin AI Tutor Configuration & Telemetry
+  adminRouter.get('/tutor/config', asyncHandler(tutor.getAdminConfig));
+  adminRouter.patch(
+    '/tutor/config',
+    validateBody(updateAdminConfigSchema),
+    asyncHandler(tutor.updateAdminConfig),
+  );
+  adminRouter.get('/tutor/analytics', asyncHandler(tutor.getAdminUsageAnalytics));
+
+  // Phase 7: Admin Coding Problem Management
+  adminRouter.post(
+    '/coding/problems',
+    validateBody(createCodingProblemSchema),
+    asyncHandler(coding.adminCreateCodingProblem),
+  );
+  adminRouter.patch('/coding/problems/:id', asyncHandler(coding.adminUpdateCodingProblem));
+  adminRouter.post(
+    '/coding/problems/:id/testcases',
+    validateBody(createTestCaseSchema),
+    asyncHandler(coding.adminAddTestCase),
   );
 
   api.use('/admin', adminRouter);

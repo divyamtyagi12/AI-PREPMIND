@@ -15,6 +15,7 @@ import {
   Sparkles,
   Target,
   TrendingUp,
+  Bot,
 } from 'lucide-react';
 import api from '@/services/api';
 import { EmptyState } from '@/components/common/States';
@@ -163,7 +164,7 @@ export default function Dashboard() {
       done: (adaptiveStats?.adaptiveSessionsCompleted || 0) > 0,
       inProgress: Boolean(adaptiveStats?.activeSession),
     },
-    { label: 'Personalized roadmap (Phase 5)', status: 'Coming Soon', locked: true },
+    { label: 'Personalized roadmap', status: 'Active', done: true, ready: true },
   ];
 
   return (
@@ -179,6 +180,11 @@ export default function Dashboard() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <Button asChild size="sm" variant="outline" className="border-indigo-200 text-indigo-600 hover:bg-indigo-50 dark:border-indigo-800 dark:hover:bg-indigo-950/40">
+            <Link to="/ai-tutor">
+              <Bot className="mr-1.5 size-4" /> Ask AI Tutor
+            </Link>
+          </Button>
           <Button asChild size="sm" variant="outline">
             <Link to="/skill-profile">
               <BarChart3 className="mr-1.5 size-4" /> Skill Profile
