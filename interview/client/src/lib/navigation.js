@@ -1,0 +1,110 @@
+import {
+  BarChart3,
+  BookOpen,
+  Bot,
+  ClipboardCheck,
+  Code2,
+  FolderTree,
+  History,
+  LayoutDashboard,
+  Map,
+  Mic,
+  Settings,
+  ShieldCheck,
+  Sigma,
+  User,
+} from 'lucide-react';
+
+/** Single source of truth for sidebar items, routes and pages. */
+export const NAV_ITEMS = [
+  { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard, ready: true },
+  {
+    label: 'DSA Practice',
+    to: '/dsa',
+    icon: Code2,
+    ready: true,
+    description: 'Curated LeetCode & CodeChef problem tracking across 21 core DSA topics.',
+    quickAccess: true,
+  },
+  {
+    label: 'Core CS',
+    to: '/categories/core-cs',
+    icon: BookOpen,
+    ready: true,
+    description: 'Revise operating systems, DBMS, computer networks and OOP with topic-wise questions.',
+    quickAccess: true,
+  },
+  {
+    label: 'Aptitude',
+    to: '/categories/aptitude',
+    icon: Sigma,
+    ready: true,
+    description: 'Build speed and accuracy in quantitative and logical reasoning.',
+    quickAccess: true,
+  },
+  {
+    label: 'Practice History',
+    to: '/practice/history',
+    icon: History,
+    ready: true,
+  },
+  {
+    label: 'Assessments',
+    to: '/assessments',
+    icon: ClipboardCheck,
+    ready: true,
+    description: 'Take timed diagnostic, DSA, Core CS, and Aptitude assessments with instant scoring.',
+    quickAccess: true,
+  },
+  {
+    label: 'Skill Profile',
+    to: '/skill-profile',
+    icon: BarChart3,
+    ready: true,
+    description: 'View your topic-wise baseline skill levels established from completed assessments.',
+  },
+  {
+    label: 'AI Tutor',
+    to: '/ai-tutor',
+    icon: Bot,
+    phase: 6,
+    description: 'Get personalized explanations and guidance from an AI tutor.',
+    quickAccess: true,
+  },
+  {
+    label: 'Mock Interviews',
+    to: '/mock-interviews',
+    icon: Mic,
+    phase: 8,
+    description: 'Rehearse technical interviews and receive structured feedback.',
+    quickAccess: true,
+  },
+  {
+    label: 'Learning Roadmap',
+    to: '/roadmap',
+    icon: Map,
+    phase: 5,
+    description: 'Follow a personalized roadmap generated from your assessment results.',
+  },
+  {
+    label: 'Progress Analytics',
+    to: '/analytics',
+    icon: BarChart3,
+    phase: 9,
+    description: 'Track your placement readiness and progress over time.',
+  },
+  { label: 'Profile', to: '/profile', icon: User, ready: true },
+  { label: 'Settings', to: '/settings', icon: Settings, ready: true },
+];
+
+export const ADMIN_NAV_ITEMS = [
+  { label: 'Admin Overview', to: '/admin', icon: ShieldCheck, admin: true },
+  { label: 'Assessments', to: '/admin/assessments', icon: ClipboardCheck, admin: true },
+  { label: 'Question Bank', to: '/admin/questions', icon: FolderTree, admin: true },
+  { label: 'AI Generator', to: '/admin/generate', icon: Bot, admin: true },
+  { label: 'Review Queue', to: '/admin/review', icon: ClipboardCheck, admin: true },
+  { label: 'Bulk Import', to: '/admin/import', icon: Map, admin: true },
+  { label: 'Manage Topics', to: '/admin/topics', icon: BookOpen, admin: true },
+];
+
+export const COMING_SOON_ITEMS = NAV_ITEMS.filter((n) => !n.ready);

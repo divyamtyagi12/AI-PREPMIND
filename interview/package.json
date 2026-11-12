@@ -1,0 +1,28 @@
+{
+  "name": "prepmind-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PrepMind AI - AI-Powered Adaptive Learning & Placement Preparation System",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,client -c blue,magenta \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w server && npm run build -w client",
+    "test": "npm run test -w server && npm run test -w client",
+    "seed:assessments": "npm run seed:assessments -w server --",
+    "seed:taxonomy": "npm run seed:taxonomy -w server --",
+    "seed:external": "npm run seed:external -w server --",
+    "lint": "npm run lint -w server && npm run lint -w client",
+    "format": "prettier --write \"**/*.{ts,js,jsx,json,md,css}\" --ignore-path .gitignore"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.4.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
+
