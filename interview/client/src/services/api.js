@@ -8,16 +8,19 @@ const api = axios.create({
   timeout: 15000,
 });
 
+let memoryCsrf = null;
+
 function readCookie(name) {
+  if (typeof document === 'undefined') return null;
   const match = document.cookie.split('; ').find((c) => c.startsWith(`${name}=`));
   return match ? decodeURIComponent(match.slice(name.length + 1)) : null;
 }
 
-// Double-submit CSRF token: echo the readable pm_csrf cookie in a header on state-changing requests.
+// Double-submit CSRF token: echo the readable pm_csrf cookie or memoryCsrf in a header on state-changing requests.
 api.interceptors.request.use((config) => {
   const method = (config.method || 'get').toLowerCase();
   if (!['get', 'head', 'options'].includes(method)) {
-    const token = readCookie('pm_csrf');
+    const token = readCookie('pm_csrf') || memoryCsrf;
     if (token) config.headers['X-CSRF-Token'] = token;
   }
   return config;
@@ -38,7 +41,11 @@ export function refreshSession() {
 }
 
 api.interceptors.response.use(
-  (res) => res,
+  (res) => {
+    const token = res.headers?.['x-csrf-token'];
+    if (token) memoryCsrf = token;
+    return res;
+  },
   async (error) => {
     const { response, config } = error;
     // The browser drops the access cookie when it expires, so the API sees UNAUTHENTICATED (not only TOKEN_EXPIRED).

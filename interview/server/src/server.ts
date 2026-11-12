@@ -38,8 +38,8 @@ async function main(): Promise<void> {
   console.log('MongoDB connected successfully');
 
   const config = getConfig();
-  const server = createApp().listen(config.port, () => {
-    console.log(`PrepMind API listening on http://localhost:${config.port} (${config.env})`);
+  const server = createApp().listen(config.port, '0.0.0.0', () => {
+    console.log(`PrepMind API listening on http://0.0.0.0:${config.port} (${config.env})`);
   });
 
   const shutdown = (signal: string) => {

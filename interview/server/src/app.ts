@@ -43,6 +43,7 @@ export function createApp(rateLimits?: RateLimitOptions): Express {
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'X-CSRF-Token'],
+      exposedHeaders: ['X-CSRF-Token'],
     }),
   );
   // Logs method, URL and status only. No headers/cookies/bodies.
