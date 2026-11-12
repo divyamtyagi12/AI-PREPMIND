@@ -13,6 +13,12 @@ import * as extProblems from '../controllers/externalProblem.controller';
 import * as qbAdmin from '../controllers/questionBankAdmin.controller';
 import * as assessments from '../controllers/assessment.controller';
 import * as assessmentAdmin from '../controllers/assessmentAdmin.controller';
+import * as adaptive from '../controllers/adaptive.controller';
+import {
+  startAdaptiveSessionSchema,
+  submitAdaptiveAnswerSchema,
+  updateBKTConfigSchema,
+} from '../validators/adaptive.validators';
 import { loginSchema, registerSchema } from '../validators/auth.validators';
 import { changePasswordSchema, updateProfileSchema } from '../validators/user.validators';
 import {
@@ -136,6 +142,31 @@ export function buildApiRouter(limiters: ReturnType<typeof createRateLimiters>):
   api.get('/assessment-history', requireAuth, asyncHandler(assessments.getAssessmentHistory));
   api.get('/skill-profiles/me', requireAuth, asyncHandler(assessments.getMySkillProfile));
 
+  // Phase 4: Adaptive Learning, BKT Mastery, Personalized Sessions & Recommendations
+  const adaptiveRouter = Router();
+  adaptiveRouter.use(requireAuth);
+  adaptiveRouter.get('/mastery', asyncHandler(adaptive.getMastery));
+  adaptiveRouter.get('/mastery/:topicId', asyncHandler(adaptive.getTopicMastery));
+  adaptiveRouter.get('/mastery/:topicId/history', asyncHandler(adaptive.getTopicHistory));
+  adaptiveRouter.post(
+    '/sessions',
+    validateBody(startAdaptiveSessionSchema),
+    asyncHandler(adaptive.startSession),
+  );
+  adaptiveRouter.get('/sessions/:sessionId', asyncHandler(adaptive.getSession));
+  adaptiveRouter.post(
+    '/sessions/:sessionId/answer',
+    validateBody(submitAdaptiveAnswerSchema),
+    asyncHandler(adaptive.submitAnswer),
+  );
+  adaptiveRouter.get('/sessions/:sessionId/next', asyncHandler(adaptive.getNextQuestion));
+  adaptiveRouter.post('/sessions/:sessionId/complete', asyncHandler(adaptive.completeSession));
+  adaptiveRouter.get('/sessions/:sessionId/results', asyncHandler(adaptive.getSessionResults));
+  adaptiveRouter.get('/recommendations', asyncHandler(adaptive.getRecommendations));
+  adaptiveRouter.get('/weak-topics', asyncHandler(adaptive.getWeakTopicsList));
+  adaptiveRouter.get('/analytics', asyncHandler(adaptive.getAnalytics));
+  api.use('/adaptive', adaptiveRouter);
+
   // Administrator Management routes (Strictly requires admin role)
   const adminRouter = Router();
   adminRouter.use(requireAuth);
@@ -205,6 +236,14 @@ export function buildApiRouter(limiters: ReturnType<typeof createRateLimiters>):
   adminRouter.delete('/assessments/:id', asyncHandler(assessmentAdmin.deleteAdminAssessment));
   adminRouter.get('/assessment-results', asyncHandler(assessmentAdmin.listAdminAssessmentResults));
   adminRouter.get('/assessment-stats', asyncHandler(assessmentAdmin.getAdminAssessmentStats));
+
+  // Phase 4: Admin Adaptive Learning & BKT Configuration
+  adminRouter.get('/adaptive/config', asyncHandler(adaptive.getAdminBKTConfig));
+  adminRouter.post(
+    '/adaptive/config',
+    validateBody(updateBKTConfigSchema),
+    asyncHandler(adaptive.updateAdminBKTConfig),
+  );
 
   api.use('/admin', adminRouter);
 

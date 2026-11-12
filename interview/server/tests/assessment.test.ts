@@ -16,6 +16,7 @@ import {
   startTestDb,
   stopTestDb,
   TestClient,
+  validUser,
 } from './helpers';
 import { syncExpiredSessionsForUser } from '../src/services/assessment.service';
 

@@ -7,6 +7,7 @@ import { AssessmentTemplate, type AssessmentTemplateDoc } from '../models/Assess
 import { AssessmentSession, type AssessmentSessionDoc } from '../models/AssessmentSession';
 import { AssessmentResult } from '../models/AssessmentResult';
 import { InitialSkillProfile } from '../models/InitialSkillProfile';
+import { replayDiagnosticAssessment } from './adaptive/observation.service';
 import { AppError } from '../utils/AppError';
 import { ASSESSMENT_ELIGIBLE_QUESTION_TYPES } from '../utils/constants';
 
@@ -600,6 +601,13 @@ export async function finalizeAssessmentSession(
       existingProfile.lastAssessedAt = submittedAt;
       await existingProfile.save();
     }
+  }
+
+  // Phase 4: Calibrate BKT KnowledgeState from diagnostic responses
+  try {
+    await replayDiagnosticAssessment(session._id);
+  } catch (diagErr) {
+    console.error('[Diagnostic BKT Replay Warning]:', diagErr);
   }
 
   return { session: updatedSession || session, result: resultDoc };

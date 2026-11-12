@@ -2,6 +2,7 @@ import {
   BarChart3,
   BookOpen,
   Bot,
+  BrainCircuit,
   ClipboardCheck,
   Code2,
   FolderTree,
@@ -12,6 +13,9 @@ import {
   Settings,
   ShieldCheck,
   Sigma,
+  Sparkles,
+  Target,
+  TrendingUp,
   User,
 } from 'lucide-react';
 
@@ -62,6 +66,29 @@ export const NAV_ITEMS = [
     icon: BarChart3,
     ready: true,
     description: 'View your topic-wise baseline skill levels established from completed assessments.',
+  },
+  {
+    label: 'Adaptive Practice',
+    to: '/adaptive',
+    icon: Sparkles,
+    ready: true,
+    description: 'Personalized practice dynamically tuned to your Bayesian topic mastery.',
+    quickAccess: true,
+  },
+  {
+    label: 'Learning Progress',
+    to: '/mastery',
+    icon: TrendingUp,
+    ready: true,
+    description: 'View your Bayesian Knowledge Tracing topic mastery probabilities and learning curves.',
+    quickAccess: true,
+  },
+  {
+    label: 'Recommendations',
+    to: '/recommendations',
+    icon: Target,
+    ready: true,
+    description: 'Personalized preparation suggestions prioritizing weak topics.',
   },
   {
     label: 'AI Tutor',

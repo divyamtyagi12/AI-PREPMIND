@@ -12,8 +12,11 @@ import {
   History,
   Lock,
   Play,
+  Sparkles,
   Target,
+  TrendingUp,
 } from 'lucide-react';
+import api from '@/services/api';
 import { EmptyState } from '@/components/common/States';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -33,13 +36,18 @@ function getBaselineVariant(level) {
 export default function Dashboard() {
   const { user } = useAuth();
   const [stats, setStats] = useState(null);
+  const [adaptiveStats, setAdaptiveStats] = useState(null);
   const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
-    practiceService
-      .getStats()
-      .then(setStats)
-      .catch(() => setStats(null))
+    Promise.all([
+      practiceService.getStats().catch(() => null),
+      api.get('/adaptive/analytics').then((res) => res.data.data).catch(() => null),
+    ])
+      .then(([pStats, aStats]) => {
+        setStats(pStats);
+        setAdaptiveStats(aStats);
+      })
       .finally(() => setLoadingStats(false));
   }, []);
 
@@ -144,7 +152,18 @@ export default function Dashboard() {
       status: assessmentStats.topicsAssessed > 0 ? `${assessmentStats.topicsAssessed} Topics` : 'Not Started',
       done: assessmentStats.topicsAssessed > 0,
     },
-    { label: 'Personalized preparation — Coming Soon', status: 'Coming Soon', locked: true },
+    {
+      label: 'Adaptive practice & BKT',
+      status:
+        adaptiveStats?.adaptiveSessionsCompleted > 0
+          ? `${adaptiveStats.adaptiveSessionsCompleted} Done`
+          : adaptiveStats?.activeSession
+          ? 'In Progress'
+          : 'Ready',
+      done: (adaptiveStats?.adaptiveSessionsCompleted || 0) > 0,
+      inProgress: Boolean(adaptiveStats?.activeSession),
+    },
+    { label: 'Personalized roadmap (Phase 5)', status: 'Coming Soon', locked: true },
   ];
 
   return (
@@ -288,6 +307,127 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Phase 4: Adaptive Learning & BKT Mastery Engine */}
+      <Card className="border-indigo-500/30 bg-indigo-500/5 shadow-xs">
+        <CardHeader className="pb-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="grid size-8 place-items-center rounded-lg bg-indigo-500/10 text-indigo-600">
+                <Sparkles className="size-4" />
+              </span>
+              <div>
+                <CardTitle className="text-base font-bold">Adaptive Learning & BKT Mastery</CardTitle>
+                <CardDescription>
+                  Latent knowledge estimates calibrated through Bayesian updates
+                </CardDescription>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button asChild size="sm" variant="outline">
+                <Link to="/mastery">
+                  <TrendingUp className="mr-1.5 size-3.5" /> My Learning Progress
+                </Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link to="/adaptive/setup">
+                  <Play className="mr-1.5 size-3.5" /> Start Adaptive Session
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Active Session Alert Banner */}
+          {adaptiveStats?.activeSession && (
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs">
+              <div>
+                <span className="font-bold text-amber-900 dark:text-amber-200">
+                  Active Adaptive Session In Progress:
+                </span>{' '}
+                <span className="text-foreground">
+                  {adaptiveStats.activeSession.scopeTitle} ({adaptiveStats.activeSession.answeredCount} of{' '}
+                  {adaptiveStats.activeSession.maxQuestions} answered)
+                </span>
+              </div>
+              <Button asChild size="xs" className="bg-amber-600 hover:bg-amber-700 text-white">
+                <Link to={`/adaptive/sessions/${adaptiveStats.activeSession.id}`}>
+                  Resume <ArrowRight className="ml-1 size-3" />
+                </Link>
+              </Button>
+            </div>
+          )}
+
+          {/* Quick Metrics */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="rounded-lg border bg-card p-3">
+              <p className="text-xs text-muted-foreground">Topics Assessed</p>
+              <p className="mt-1 text-lg font-bold">{adaptiveStats?.topicsAssessed || 0}</p>
+            </div>
+            <div className="rounded-lg border bg-card p-3">
+              <p className="text-xs text-muted-foreground">Topics Needing Attention</p>
+              <p className="mt-1 text-lg font-bold text-rose-500">
+                {adaptiveStats?.topicsNeedingAttention || 0}
+              </p>
+            </div>
+            <div className="rounded-lg border bg-card p-3">
+              <p className="text-xs text-muted-foreground">Proficient Topics</p>
+              <p className="mt-1 text-lg font-bold text-emerald-500">
+                {adaptiveStats?.topicsProgressing || 0}
+              </p>
+            </div>
+            <div className="rounded-lg border bg-card p-3">
+              <p className="text-xs text-muted-foreground">Adaptive Sessions Done</p>
+              <p className="mt-1 text-lg font-bold text-primary">
+                {adaptiveStats?.adaptiveSessionsCompleted || 0}
+              </p>
+            </div>
+          </div>
+
+          {/* Top Recommendations */}
+          {adaptiveStats?.topRecommendations?.length > 0 && (
+            <div className="pt-2">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Recommended For Next Practice
+                </span>
+                <Link to="/recommendations" className="text-xs font-semibold text-primary hover:underline">
+                  View all ({adaptiveStats.topRecommendations.length}+)
+                </Link>
+              </div>
+              <div className="grid gap-2 sm:grid-cols-3">
+                {adaptiveStats.topRecommendations.map((rec) => (
+                  <div
+                    key={rec.topicId}
+                    className="flex flex-col justify-between rounded-lg border bg-card p-3 text-xs"
+                  >
+                    <div>
+                      <span
+                        className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-bold mb-1 ${
+                          rec.priority === 'high'
+                            ? 'bg-rose-500/10 text-rose-600'
+                            : rec.priority === 'medium'
+                            ? 'bg-amber-500/10 text-amber-600'
+                            : 'bg-blue-500/10 text-blue-600'
+                        }`}
+                      >
+                        {rec.priority.toUpperCase()}
+                      </span>
+                      <h4 className="font-bold text-foreground text-sm line-clamp-1">{rec.topicName}</h4>
+                      <p className="text-muted-foreground text-[11px] line-clamp-2 mt-0.5">{rec.reason}</p>
+                    </div>
+                    <Button asChild size="xs" variant="outline" className="mt-2.5 w-full">
+                      <Link to={rec.relatedRoute}>
+                        <Play className="mr-1 size-3" /> Practice
+                      </Link>
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <section
         aria-label="Preparation metrics"

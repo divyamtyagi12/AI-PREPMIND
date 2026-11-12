@@ -28,6 +28,15 @@ import AssessmentReview from '@/pages/assessments/AssessmentReview';
 import AssessmentHistory from '@/pages/assessments/AssessmentHistory';
 import SkillProfile from '@/pages/assessments/SkillProfile';
 
+// Phase 4 Adaptive Learning, BKT Mastery & Recommendations Pages
+import AdaptivePracticeHome from '@/pages/adaptive/AdaptivePracticeHome';
+import AdaptivePracticeSetup from '@/pages/adaptive/AdaptivePracticeSetup';
+import AdaptivePracticeRunner from '@/pages/adaptive/AdaptivePracticeRunner';
+import AdaptivePracticeResults from '@/pages/adaptive/AdaptivePracticeResults';
+import MasteryDashboard from '@/pages/adaptive/MasteryDashboard';
+import TopicMasteryDetails from '@/pages/adaptive/TopicMasteryDetails';
+import LearningRecommendations from '@/pages/adaptive/LearningRecommendations';
+
 // Phase 2 & 3 Admin Pages
 import AdminOverview from '@/pages/admin/AdminOverview';
 import AdminQuestionList from '@/pages/admin/AdminQuestionList';
@@ -81,6 +90,15 @@ export function AppRoutes() {
           <Route path="/assessment-sessions/:sessionId/result" element={<AssessmentResults />} />
           <Route path="/assessment-sessions/:sessionId/review" element={<AssessmentReview />} />
           <Route path="/skill-profile" element={<SkillProfile />} />
+
+          {/* Phase 4: Adaptive Practice, Bayesian Mastery & Recommendations */}
+          <Route path="/adaptive" element={<AdaptivePracticeHome />} />
+          <Route path="/adaptive/setup" element={<AdaptivePracticeSetup />} />
+          <Route path="/adaptive/sessions/:sessionId" element={<AdaptivePracticeRunner />} />
+          <Route path="/adaptive/sessions/:sessionId/results" element={<AdaptivePracticeResults />} />
+          <Route path="/mastery" element={<MasteryDashboard />} />
+          <Route path="/mastery/:topicId" element={<TopicMasteryDetails />} />
+          <Route path="/recommendations" element={<LearningRecommendations />} />
 
           {/* Admin Management Routes */}
           <Route element={<AdminRoute />}>

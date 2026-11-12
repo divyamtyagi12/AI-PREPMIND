@@ -1,6 +1,7 @@
 import { Question } from '../models/Question';
 import { PracticeAttempt } from '../models/PracticeAttempt';
 import { AppError } from '../utils/AppError';
+import { recordObservationAndApplyBKT } from './adaptive/observation.service';
 
 export interface EvaluationResult {
   isCorrect: boolean | null;
@@ -118,6 +119,25 @@ export async function recordPracticeAttempt(userId: string, input: any) {
       }
     }
     throw err;
+  }
+
+  // Phase 4: Durably apply BKT update for verified objective questions
+  if (evalResult.evaluationStatus === 'evaluated' && evalResult.isCorrect !== null) {
+    try {
+      await recordObservationAndApplyBKT({
+        userId,
+        topicId: question.topicId,
+        questionId: question._id,
+        sourceType: 'practice',
+        sourceId: attempt._id,
+        observationId: `practice:${attempt._id}`,
+        isCorrect: evalResult.isCorrect,
+        difficulty: question.difficulty as 'Easy' | 'Medium' | 'Hard',
+        observedAt: attempt.submittedAt,
+      });
+    } catch (bktErr) {
+      console.warn('[Practice BKT Update Warning]:', bktErr);
+    }
   }
 
   return {

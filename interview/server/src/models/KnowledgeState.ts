@@ -8,33 +8,49 @@ import { Schema, model, type HydratedDocument, type InferSchemaType } from 'mong
  * Learning: P(T) - probability of transitioning from non-mastery to mastery after an opportunity
  */
 export const DEFAULT_BKT_PARAMETERS = {
-  prior: 0.20,
+  initialMastery: 0.20,
   slip: 0.10,
   guess: 0.20,
   learning: 0.15,
+  version: 'bkt-v1',
 } as const;
+
+export type BKTParameters = {
+  initialMastery: number;
+  slip: number;
+  guess: number;
+  learning: number;
+  version?: string;
+};
 
 const knowledgeStateSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     topicId: { type: Schema.Types.ObjectId, ref: 'Topic', required: true, index: true },
 
-    // Latent posterior probability of topic mastery: P(L_t)
+    // Latent posterior probability of topic mastery: P(L_t) in [0, 1]
     masteryProbability: {
       type: Number,
       required: true,
       min: 0,
       max: 1,
-      default: DEFAULT_BKT_PARAMETERS.prior,
+      default: DEFAULT_BKT_PARAMETERS.initialMastery,
     },
 
-    // Population or diagnostic prior baseline: P(L_0)
+    // Initial baseline prior: P(L_0)
+    initialMasteryProbability: {
+      type: Number,
+      required: true,
+      min: 0,
+      max: 1,
+      default: DEFAULT_BKT_PARAMETERS.initialMastery,
+    },
     priorProbability: {
       type: Number,
       required: true,
       min: 0,
       max: 1,
-      default: DEFAULT_BKT_PARAMETERS.prior,
+      default: DEFAULT_BKT_PARAMETERS.initialMastery,
     },
 
     // BKT operational parameters
@@ -63,11 +79,23 @@ const knowledgeStateSchema = new Schema(
     // Total practice or diagnostic events incorporated into this mastery estimate
     observationsProcessed: { type: Number, required: true, min: 0, default: 0 },
 
+    // Timestamp of the latest processed learning observation
+    lastObservationAt: { type: Date, default: null },
+
+    // Whether this state received calibration from diagnostic assessment
+    initializedFromDiagnostic: { type: Boolean, default: false },
+
+    // Configuration version of BKT parameters used
+    parameterVersion: { type: String, required: true, default: DEFAULT_BKT_PARAMETERS.version },
+
     // Unique event or attempt identifiers processed to prevent double-counting
     processedEventIds: { type: [String], default: [] },
 
     // Source assessment that established or last calibrated this state
     sourceAssessmentId: { type: Schema.Types.ObjectId, ref: 'AssessmentResult' },
+
+    // Optimistic concurrency sequence number
+    stateVersion: { type: Number, default: 1 },
 
     lastUpdatedAt: { type: Date, required: true, default: Date.now },
   },
@@ -91,9 +119,9 @@ const knowledgeStateSchema = new Schema(
 
 // One knowledge state per student per topic
 knowledgeStateSchema.index({ userId: 1, topicId: 1 }, { unique: true });
+knowledgeStateSchema.index({ userId: 1, masteryProbability: 1 });
 
 export type KnowledgeStateAttrs = InferSchemaType<typeof knowledgeStateSchema>;
 export type KnowledgeStateDoc = HydratedDocument<KnowledgeStateAttrs>;
 
 export const KnowledgeState = model('KnowledgeState', knowledgeStateSchema);
-
