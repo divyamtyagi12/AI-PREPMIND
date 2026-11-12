@@ -1,0 +1,239 @@
+{
+  "info": {
+    "name": "ABTalks AI Interview Agent",
+    "description": "Complete API collection for the ABTalks AI Interview Agent.\n\nQuick start:\n1. Set the `baseUrl` variable to http://localhost:3000\n2. Run 'Health Check' to confirm the server is up\n3. Run '1. Start Interview (Sarah Johnson)' to begin\n4. Run '2. Send Message' — edit the message body to enter candidate answers\n5. Repeat step 4 until the response contains `done: true`\n6. The final response will include the full feedback block\n\nTip: The sessionId is auto-captured into a collection variable after each start request.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "sessionId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health",
+        "description": "Verify the server is running and data is loaded. Should return { success: true, status: 'ok' }."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Server is healthy', () => {",
+              "  pm.response.to.have.status(200);",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.success).to.be.true;",
+              "  pm.expect(json.status).to.equal('ok');",
+              "  console.log('Curriculum topics:', json.data.curriculumTopics);",
+              "  console.log('Candidates loaded:', json.data.candidates);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "── CANDIDATE: Sarah Johnson (Senior Data Engineer) ──",
+      "item": [
+        {
+          "name": "1. Start Interview",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/interview",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"sarah-demo-{{$timestamp}}\",\n  \"candidate\": {\n    \"member\": {\n      \"id\": \"CAND-001\",\n      \"name\": \"Sarah Johnson\",\n      \"jobRole\": \"Senior Data Engineer\",\n      \"yearsExperience\": 9,\n      \"education\": \"MS Computer Science\",\n      \"status\": \"COMPLETED\"\n    },\n    \"missions\": [\n      { \"day\": 7,  \"title\": \"Embeddings Explained\",               \"passed\": true, \"attempts\": 1 },\n      { \"day\": 8,  \"title\": \"Vector Databases Overview\",          \"passed\": true, \"attempts\": 1 },\n      { \"day\": 10, \"title\": \"Retrieval & Matching Engine\",        \"passed\": true, \"attempts\": 2 },\n      { \"day\": 12, \"title\": \"Prompt Engineering Fundamentals\",    \"passed\": true, \"attempts\": 4 },\n      { \"day\": 16, \"title\": \"Chatbot Backend & API Integration\",  \"passed\": true, \"attempts\": 1 },\n      { \"day\": 22, \"title\": \"Multi-Agent Orchestration\",          \"passed\": true, \"attempts\": 2 },\n      { \"day\": 28, \"title\": \"Docker & Kubernetes Deployment\",     \"passed\": true, \"attempts\": 3 },\n      { \"day\": 29, \"title\": \"Monitoring, Logging & Observability\", \"skipped\": true },\n      { \"day\": 31, \"title\": \"Capstone Project & Final Demo\",      \"passed\": true, \"attempts\": 1 }\n    ],\n    \"signals\": { \"commitDays\": 28, \"missionsCompleted\": 30, \"missionsFirstTry\": 20 }\n  }\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Auto-generate a unique sessionId and save it as a variable",
+                  "const sid = 'sarah-' + Date.now();",
+                  "pm.collectionVariables.set('sessionId', sid);",
+                  "// Patch the request body to use this sessionId",
+                  "const body = JSON.parse(pm.request.body.raw);",
+                  "body.sessionId = sid;",
+                  "pm.request.body.raw = JSON.stringify(body, null, 2);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Interview started', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.done).to.be.false;",
+                  "  pm.expect(json.reply).to.be.a('string').and.not.empty;",
+                  "  console.log('Opening question:', json.reply.slice(0, 200));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Send Answer (edit me)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/interview",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"message\": \"An embedding is a dense vector representation where semantically similar items are close in vector space. For production RAG I consider the query type first — asymmetric vs symmetric — then check MTEB benchmarks for my domain, and factor in dimensionality vs latency trade-offs. For a healthcare chatbot I fine-tuned a BioBERT-based model on 50k domain Q&A pairs, improving nDCG from 0.71 to 0.89 on our eval set.\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Turn response valid', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.reply).to.be.a('string').and.not.empty;",
+                  "  console.log('Interviewer:', json.reply.slice(0, 200));",
+                  "  if (json.done) {",
+                  "    console.log('\\n=== INTERVIEW COMPLETE ===');",
+                  "    console.log('Feedback summary:', json.feedback.summary.slice(0, 300));",
+                  "    console.log('Strengths:', json.feedback.strengths.length);",
+                  "    console.log('Gaps:', json.feedback.gaps.length);",
+                  "    console.log('Next steps:', json.feedback.next.length);",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "── CANDIDATE: Ethan Brooks (CS Intern) ──",
+      "item": [
+        {
+          "name": "1. Start Interview",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/interview",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"ethan-{{$timestamp}}\",\n  \"candidate\": {\n    \"member\": {\n      \"id\": \"CAND-007\",\n      \"name\": \"Ethan Brooks\",\n      \"jobRole\": \"Computer Science Intern\",\n      \"yearsExperience\": 0,\n      \"education\": \"BS Computer Science (in progress)\",\n      \"status\": \"COMPLETED\"\n    },\n    \"missions\": [\n      { \"day\": 1,  \"title\": \"VS Code & Python Environment Setup\",  \"passed\": true, \"attempts\": 1 },\n      { \"day\": 7,  \"title\": \"Embeddings Explained\",               \"passed\": true, \"attempts\": 2 },\n      { \"day\": 8,  \"title\": \"Vector Databases Overview\",          \"passed\": true, \"attempts\": 1 },\n      { \"day\": 12, \"title\": \"Prompt Engineering Fundamentals\",    \"passed\": true, \"attempts\": 1 },\n      { \"day\": 16, \"title\": \"Chatbot Backend & API Integration\",  \"passed\": true, \"attempts\": 1 },\n      { \"day\": 22, \"title\": \"Multi-Agent Orchestration\",          \"passed\": true, \"attempts\": 1 },\n      { \"day\": 27, \"title\": \"Security, Privacy & Guardrails\",     \"skipped\": true },\n      { \"day\": 28, \"title\": \"Docker & Kubernetes Deployment\",     \"skipped\": true },\n      { \"day\": 31, \"title\": \"Capstone Project & Final Demo\",      \"passed\": true, \"attempts\": 2 }\n    ],\n    \"signals\": { \"commitDays\": 26, \"missionsCompleted\": 27, \"missionsFirstTry\": 22 }\n  }\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const sid = 'ethan-' + Date.now();",
+                  "pm.collectionVariables.set('sessionId', sid);",
+                  "const body = JSON.parse(pm.request.body.raw);",
+                  "body.sessionId = sid;",
+                  "pm.request.body.raw = JSON.stringify(body, null, 2);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Ethan interview started', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.done).to.be.false;",
+                  "  console.log('Opening (notice junior-appropriate tone):', json.reply.slice(0, 300));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "── ERROR CASES ──",
+      "item": [
+        {
+          "name": "Empty body → 400",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/interview",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Empty body returns 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unknown sessionId → 404",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/interview",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"sessionId\": \"does-not-exist-xyz\", \"message\": \"hello\" }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Unknown session returns 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Duplicate sessionId → 409",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/interview",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"candidate\": {\n    \"member\": { \"id\": \"CAND-001\", \"name\": \"Sarah Johnson\", \"jobRole\": \"Engineer\", \"yearsExperience\": 9, \"education\": \"MS\", \"status\": \"COMPLETED\" },\n    \"missions\": [{ \"day\": 7, \"title\": \"Embeddings\", \"passed\": true, \"attempts\": 1 }],\n    \"signals\": { \"commitDays\": 1, \"missionsCompleted\": 1, \"missionsFirstTry\": 1 }\n  }\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Duplicate session returns 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

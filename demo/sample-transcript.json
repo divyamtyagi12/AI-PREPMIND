@@ -1,0 +1,121 @@
+{
+  "_meta": {
+    "description": "Pre-recorded full interview session — Sarah Johnson, Senior Data Engineer",
+    "candidate": "CAND-001",
+    "recordedAt": "2026-08-08",
+    "turns": 10,
+    "selectedDays": [7, 8, 12, 22, 28],
+    "note": "Use this as a fallback demo if live LLM API calls are unavailable during judging."
+  },
+
+  "transcript": [
+    {
+      "turn": 0,
+      "phase": "opening",
+      "day": 7,
+      "role": "interviewer",
+      "text": "Welcome, Sarah. I've reviewed your ABTalks cohort profile — nine years of experience as a Senior Data Engineer, strong completion record, and you've worked across embeddings, RAG, multi-agent systems, and deployment. I'll be asking questions grounded in the specific topics you covered in the cohort, with some areas we'll probe a bit more deeply. We'll move through a few topics today, and I'll follow your lead — strong answers get follow-ups, and we'll advance when you've shown solid coverage. Let's start with Day 7 — Embeddings. You aced this one on your first attempt, so I expect you'll be comfortable here: can you explain what an embedding actually is, and walk me through how you'd choose the right embedding model for a production RAG system — not just 'it depends', but the actual trade-offs you'd weigh?"
+    },
+    {
+      "turn": 1,
+      "phase": "mid",
+      "day": 7,
+      "role": "candidate",
+      "text": "An embedding is a dense vector representation of data — text, image, whatever — where semantically similar things are geometrically close in vector space. For production RAG, my decision tree starts with the query type: if it's asymmetric search (short query against long documents), I need a model trained for that specifically, like sentence-transformers/msmarco-distilbert. If it's symmetric (same-length comparisons), OpenAI text-embedding-3-small is strong and cheap. Dimensionality matters too — 1536-dimensional embeddings are expensive to store and slow to search at scale; I'd go with 768 or even 384 via MRL truncation if the accuracy trade-off is acceptable. I'd also check MTEB scores on the task type closest to my domain. For a healthcare chatbot I built, I ended up fine-tuning a BioBERT-based embedding on 50k domain-specific Q&A pairs — out-of-the-box models were hitting ~0.71 nDCG on our eval set, the fine-tuned one hit 0.89."
+    },
+    {
+      "turn": 2,
+      "phase": "mid",
+      "day": 7,
+      "role": "interviewer",
+      "text": "That's a strong answer — the MTEB reference and the specific fine-tuning results give it real credibility. One follow-up on the BioBERT work: how did you build your evaluation set of 50k Q&A pairs, and how did you prevent label leakage between your fine-tuning data and your nDCG eval?"
+    },
+    {
+      "turn": 3,
+      "phase": "mid",
+      "day": 7,
+      "role": "candidate",
+      "text": "Good question. The 50k pairs were generated semi-automatically — we took 8,000 clinical documents and used GPT-4 to generate 6–8 question variants per paragraph, then had two domain experts review a 10% sample for quality. For leakage prevention: we split at the document level, not the question level. So if any paragraph from document X appeared in training, the entire document X was excluded from eval. We also used a held-out set of 500 documents that were written after our training cutoff date — temporal split as a secondary guard. The nDCG improvement held up on that temporal set too, which gave us confidence it was genuine generalization and not memorization."
+    },
+    {
+      "turn": 4,
+      "phase": "mid",
+      "day": 8,
+      "role": "interviewer",
+      "text": "Excellent — document-level splits and temporal holdouts are exactly the right instincts. Let's move to Day 8, Vector Databases. You completed that on first attempt too. In production, at what scale would you switch from ChromaDB to a dedicated service like Pinecone or Weaviate, and what specifically would trigger that decision — not just 'when it gets big', but the concrete signals?"
+    },
+    {
+      "turn": 5,
+      "phase": "mid",
+      "day": 8,
+      "role": "candidate",
+      "text": "ChromaDB is ideal for dev and small-scale: zero infra overhead, runs in-process or as a local server, great for iteration. The signals that would make me switch: first, when my p95 query latency exceeds my SLA threshold — for us that was 500ms at the RAG retrieval step. ChromaDB with 2M+ vectors starts showing degradation there without significant tuning. Second, when I need multi-tenancy with namespace isolation — Pinecone handles that natively, ChromaDB requires running separate collections per tenant which doesn't scale operationally. Third, when I need horizontal write scaling — ChromaDB's persistence layer doesn't fan out writes. I'd evaluate Pinecone for pure vector search with managed infra, Weaviate if I need hybrid search (BM25 + vector) baked in, and Qdrant if I'm self-hosting and need sparse+dense fusion. The actual decision is less about vector count and more about the query pattern and operational requirements."
+    },
+    {
+      "turn": 6,
+      "phase": "mid",
+      "day": 12,
+      "role": "interviewer",
+      "text": "Strong answer — the p95 latency signal and multi-tenancy distinction are concrete and correct. Let's shift to Day 12, Prompt Engineering Fundamentals. I'll note this one took you four attempts in the cohort — so let's dig in. You've built production systems, so I'm not asking about chain-of-thought as a concept. Walk me through a real prompt engineering challenge you've solved: what the failure mode was, what you tried that didn't work, and what the final approach was."
+    },
+    {
+      "turn": 7,
+      "phase": "mid",
+      "day": 12,
+      "role": "candidate",
+      "text": "Sure. The hardest one was a clinical note summarization system where the model kept including speculative language from the doctor's differential diagnosis as if it were confirmed — patients would read 'possible pneumonia' and see it surfaced as a confirmed finding. First fix attempt: added 'only state confirmed diagnoses' to the system prompt. Didn't work — the model was pattern-matching on proximity, not semantic role. Second attempt: few-shot examples showing exactly the speculation-to-omission transformation. Better, but brittle — worked on examples similar to the training shots, failed on new phrasings. What actually worked: a two-stage pipeline. Stage 1 used the LLM to extract structured JSON with a `confirmed` boolean per finding. Stage 2 prompted separately to generate prose only from items where `confirmed: true`. The structured extraction step made the semantic role explicit and unambiguous. Error rate dropped from 12% to under 1%. The lesson was that complex classification tasks need structured intermediary representations, not longer system prompts."
+    },
+    {
+      "turn": 8,
+      "phase": "mid",
+      "day": 22,
+      "role": "interviewer",
+      "text": "That's an excellent case study — the two-stage structured extraction pattern is the right solution and you articulated the reasoning clearly. The four-attempt history on that day now makes more sense; it's genuinely nuanced to get right. Let's move to Day 22, Multi-Agent Orchestration. You passed in two attempts. Tell me about a scenario where you'd choose a multi-agent architecture over a single-agent-with-many-tools approach, and what the failure modes of multi-agent systems are that people underestimate."
+    },
+    {
+      "turn": 9,
+      "phase": "mid",
+      "day": 22,
+      "role": "candidate",
+      "text": "Multi-agent over single-agent when: the task has genuinely parallel subproblems (a single agent is sequential by nature), when different subtasks need different personas or context windows, or when you need competitive validation — running two agents with different prompts and comparing outputs for higher-stakes decisions. The failure modes people underestimate: first, tool call amplification — if Agent A calls Agent B which calls Agent C, a single user request can balloon into 30+ LLM calls, destroying latency and cost. You need strict depth limits. Second, state drift — each agent maintains its own context and they can diverge in their understanding of what's been decided. Without explicit shared state or a message bus, you get inconsistencies that are very hard to debug. Third, error propagation — if Agent B returns a malformed response, Agent A often hallucinates a plausible-sounding correction rather than surfacing the error, so the failure mode is silent corruption, not an obvious error. I handle this by requiring structured JSON outputs from sub-agents with Pydantic validation at each boundary."
+    },
+    {
+      "turn": 10,
+      "phase": "closing",
+      "day": null,
+      "role": "interviewer",
+      "text": "Sarah, that's a thorough and production-grounded set of answers across all five areas we covered. The BioBERT fine-tuning methodology, the two-stage prompt engineering solution, and the silent error propagation point on multi-agents all show deep practical experience rather than textbook knowledge. I have one last area I'd like to touch on briefly before we wrap — Day 28, Docker and Kubernetes. That one took three attempts. Without going too deep, can you tell me the piece of Kubernetes that tripped you up most during the cohort work and how you worked through it?"
+    },
+    {
+      "turn": 11,
+      "phase": "mid",
+      "day": 28,
+      "role": "candidate",
+      "text": "Readiness vs liveness probes — I kept confusing when to use each. Liveness is 'is the process alive enough to be worth restarting' and readiness is 'is this pod actually ready to receive traffic'. I was using a single HTTP health check for both, which meant that during ChromaDB's slow startup (~20s), Kubernetes was routing traffic to the pod before the vector index was warm, causing 502s. Once I understood that readiness failing just removes from the load balancer without restarting the container, it clicked. The fix was a readiness probe that checks the /health endpoint after the ChromaDB client successfully connects, and a separate liveness probe on a lightweight ping route."
+    },
+    {
+      "turn": 12,
+      "phase": "done",
+      "day": null,
+      "role": "interviewer",
+      "text": "That's a perfect note to end on — that distinction trips up a lot of engineers. Sarah, you've done well across all five areas today. The conversation covered embeddings and fine-tuning methodology, vector store selection at scale, production-grade prompt engineering, multi-agent architecture, and Kubernetes deployment patterns. I'll compile your feedback now. Thank you for your time."
+    }
+  ],
+
+  "feedback": {
+    "summary": "Sarah Johnson demonstrated strong, production-grounded knowledge across all five interview areas. Her answers consistently moved beyond textbook definitions to reference specific architectures, failure modes, and quantitative outcomes from real systems she has built. The BioBERT fine-tuning methodology, document-level eval split strategy, and two-stage prompt engineering pipeline all reflect genuine senior-level depth. Areas for continued growth center on the cohort topics that required multiple attempts — prompt engineering nuance and Kubernetes operational patterns — where her understanding is solid but her articulation benefits from further deliberate practice.",
+    "strengths": [
+      "When asked about vector store selection, Sarah explicitly said 'ChromaDB with 2M+ vectors starts showing degradation there without significant tuning' and named p95 latency as the concrete trigger metric — demonstrating an operational, production-first mindset rather than a theoretical one.",
+      "Aced Day 7 (Embeddings Explained) and Day 8 (Vector Databases Overview) on the first attempt, and this was fully borne out in the conversation — her answers on MTEB benchmarks, MRL truncation, and Pinecone vs Weaviate vs Qdrant trade-offs were immediately specific and technically accurate.",
+      "The two-stage structured extraction pipeline she described for clinical note summarization (Stage 1: JSON with confirmed boolean, Stage 2: prose from confirmed items only) is the correct industry pattern and she articulated the reasoning — 'structured intermediary representations, not longer system prompts' — cleanly and without prompting."
+    ],
+    "gaps": [
+      "Day 29 (Monitoring, Logging & Observability) was skipped entirely in the cohort and was not covered in the interview. Sarah could not speak to production observability patterns — Prometheus metrics, Grafana dashboards, alerting strategies, or distributed tracing — which are critical gaps for a Senior Data Engineer working on production AI systems.",
+      "Day 12 (Prompt Engineering Fundamentals) required 4 attempts in the cohort. While Sarah's case study answer was excellent, she needed probing before articulating the structured intermediary pattern; her first instinct (system prompt addition, then few-shot) reflects the common iteration path rather than jumping directly to the right architectural solution."
+    ],
+    "next": [
+      "Revisit Day 29 (Monitoring, Logging & Observability) and instrument an existing AI project with Prometheus metrics and a Grafana dashboard — specifically: token latency histograms, retrieval quality scores, and error rate alerts. Being able to describe an observability setup for an LLM API is a standard senior engineering interview question.",
+      "Practice explaining the two-stage prompt engineering pattern to a non-technical stakeholder in under 90 seconds — the 'why structured JSON intermediary beats longer prompts' insight is valuable but currently requires interview probing to surface; it should be a top-of-mind answer."
+    ]
+  }
+}
