@@ -51,9 +51,18 @@ export async function runStriverLeetCodeImport() {
   console.log('=== Striver A2Z DSA Sheet -> LeetCode Importer ===');
 
   // Load matching results
-  const resultsPath = path.resolve(__dirname, '../../../../scripts/matching_results.json');
+  let resultsPath = path.resolve(__dirname, '../data/striverLeetCodeMatches.json');
   if (!fs.existsSync(resultsPath)) {
-    throw new Error(`Matching results not found at: ${resultsPath}. Run scripts/match_problems.js first.`);
+    resultsPath = path.resolve(__dirname, '../../src/data/striverLeetCodeMatches.json');
+  }
+  if (!fs.existsSync(resultsPath)) {
+    resultsPath = path.resolve(process.cwd(), 'src/data/striverLeetCodeMatches.json');
+  }
+  if (!fs.existsSync(resultsPath)) {
+    resultsPath = path.resolve(process.cwd(), 'interview/server/src/data/striverLeetCodeMatches.json');
+  }
+  if (!fs.existsSync(resultsPath)) {
+    throw new Error(`Matching results not found at: ${resultsPath}.`);
   }
 
   const rawData = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));

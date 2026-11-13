@@ -1,241 +1,112 @@
-# ABTalks AI Interview Agent
+# PrepMind AI — AI-Powered Adaptive Learning & Placement Preparation System
 
-An AI-powered technical interview backend that conducts **personalized, adaptive mock interviews** for ABTalks AI Cohort graduates — grounded in each candidate's real mission history.
+PrepMind AI is a full-stack MERN + TypeScript adaptive placement preparation platform combining **Bayesian Knowledge Tracing (BKT)**, **Timed Diagnostic Assessments**, **Prerequisite-Aware Personalized Roadmaps**, **Context-Aware Gemini AI Tutoring**, **Sandboxed Online Coding Evaluation (Judge0 + Monaco Editor)**, and **AI Mock Interviews with Multi-Criteria Rubric Scoring**.
 
 ---
 
-## Quick Start
+## 1. Complete Feature Matrix (Phases 1–9.1)
 
-### 1. Prerequisites
+| Phase | Module | Key Capabilities |
+|---|---|---|
+| **Phase 1** | Foundation & Auth | JWT Access + Rotating Refresh Tokens (`HttpOnly` cookies, `User`, `Session`), Double-Submit CSRF protection, Student Onboarding, RBAC (`student` / `admin`) |
+| **Phase 2** | Automated Question Bank | Hierarchical Taxonomy (`Category -> Subject -> Topic -> Question`), LeetCode/CodeChef external problem tracking, Gemini AI question generation, Admin review queue & bulk import |
+| **Phase 3** | Diagnostic & Timed Assessments | Server-authoritative timed sessions, optimistic concurrency answer autosave, instant scoring, attempt/cooldown limits, and `InitialSkillProfile` |
+| **Phase 4** | Adaptive Learning & BKT | Mathematical Bayesian Knowledge Tracing ($P(L_0), P(T), P(S), P(G)$) across `KnowledgeState`, `LearningObservation`, and `MasteryHistory`, adaptive difficulty selection, weak-topic detection, and mastery learning curves |
+| **Phase 5** | Learning Roadmaps & Spaced Revision | Prerequisite DAG cycle detection (`TopicPrerequisite`), priority-aware topological scheduling, daily/weekly study plans, `[1, 3, 7, 14, 30]`-day spaced repetition, and dynamic replanning |
+| **Phase 6** | Gemini AI Tutor | 6 Pedagogical Modes (`explain`, `hint` L1–L4, `guided`, `solution`, `quiz`, `review`), bounded student context, spoiler prevention, and daily token/request quotas |
+| **Phase 7** | Online Coding Platform | Monaco Editor (`cpp`, `java`, `python`, `javascript`), isolated Judge0 sandbox execution, sample vs. hidden test cases, draft autosave, and first-solve BKT updates |
+| **Phase 8** | AI Mock Interviews | Technical, DSA, HR, Behavioral, Project & Mixed tracks, adaptive follow-up questions, weighted rubric scoring (0–5 scale), and speech-to-text voice support |
+| **Phase 9 & 9.1** | Unified Analytics, Hardening & E2E Verification | Multi-pillar Placement Readiness Index (`/analytics`), `React.lazy()` route code splitting (82.6% entry bundle reduction), NoSQL/Regex sanitization, 41 Mongoose models, 202 backend tests, 31 frontend tests, and 10 Playwright E2E browser test specs |
+| **Phase 9.2** | External Integration Verification & Resilience | Gemini & Judge0 credential verification, fail-closed `503 Service Unavailable` on missing provider, transparent demonstration labeling (`Mock Execution`, `Mock Response`, `Mock Evaluation`), Data Completeness & Insufficient Evidence guardrails (<40%), 205 backend tests, and 11 Playwright E2E browser test specs (17 tests) |
 
-| Tool | Version |
-|------|---------|
-| Node.js | 20+ |
-| npm | 9+ |
-| Gemini API key | Free tier or paid |
+---
 
-### 2. Install
+## 2. Technology Stack
+
+- **Frontend (`interview/client`)**: React 19, Vite 8, React Router 7 (61 route entries), Tailwind CSS 4, Radix UI, Lucide React, Recharts, `@monaco-editor/react`, Axios, Vitest + React Testing Library, Playwright E2E
+- **Backend (`interview/server`)**: Node.js, Express 4 (136 REST endpoint routes), TypeScript (Strict), MongoDB + Mongoose 9 (41 Models), Zod 4, `@google/genai` (Gemini 2.5 Flash), Judge0 Execution Provider, JWT + Bcrypt + Helmet + Express Rate Limit
+
+---
+
+## 3. Quick Start & Local Setup
+
+### Prerequisites
+- Node.js 20+
+- MongoDB 7.0+ (local or MongoDB Atlas)
+
+### 1. Configure Environment Variables
+```bash
+cp interview/.env.example interview/.env
+cp interview/server/.env.example interview/server/.env
+cp interview/client/.env.example interview/client/.env
+```
+Edit `interview/server/.env` and set your `MONGODB_URI`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `GEMINI_API_KEY`, and `CODE_EXECUTION_API_KEY`.
+
+### 2. Install Dependencies
+```bash
+npm --prefix interview/server install
+npm --prefix interview/client install
+```
+
+### 3. Seed Taxonomy, External Problems & Diagnostic Assessments
+```bash
+npm --prefix interview/server run seed:taxonomy
+npm --prefix interview/server run seed:external
+npm --prefix interview/server run seed:assessments
+```
+
+### 4. Start Development Servers
+```bash
+# Terminal 1 — Backend API (http://localhost:4000)
+npm --prefix interview/server run dev
+
+# Terminal 2 — Frontend Client (http://localhost:5173)
+npm --prefix interview/client run dev
+```
+
+---
+
+## 4. Verification, Testing & Final-Year Demo Commands
 
 ```bash
-git clone <repo-url>
-cd interview
-npm install
-```
+# Production build verification (Server TypeScript + Client Vite Bundle)
+npm --prefix interview/server run build
+npm --prefix interview/client run build
 
-### 3. Configure
+# Run all 22 Backend Integration & Unit Test Suites (205 tests)
+npm --prefix interview/server test
 
-```bash
-cp .env.example .env
-# Open .env and set your Gemini API key:
-# GEMINI_API_KEY=AIzaSy...
-```
+# Run Frontend Component & Unit Test Suite (31 tests)
+npm --prefix interview/client test
 
-### 4. Run
+# Run all 11 Playwright E2E Browser Test Specs (17 tests)
+npm --prefix interview/client run test:e2e
 
-```bash
-npm run dev
-# Server starts at http://localhost:3000
-```
-
-### 5. Open the Demo UI
-
-Visit **http://localhost:3000** in your browser — the interview UI loads automatically.
-
-### 6. Verify Health
-
-```bash
-curl http://localhost:3000/health
-# → { "success": true, "status": "ok", ... }
+# Run 9-Stage Final-Year Project Demonstration Script
+npm --prefix interview/server run demo
 ```
 
 ---
 
-## Architecture
+## 5. Documentation Index (`interview/docs/`)
 
-```
-interview/
-├── public/
-│   └── index.html          # Single-page demo frontend (no build step)
-├── data/
-│   ├── curriculum.json     # 31 curriculum days across 8 modules (loaded at startup)
-│   └── candidates.json     # 20 candidate profiles with mission histories
-├── src/
-│   ├── index.ts            # Express server entry point
-│   ├── store.ts            # In-memory data loader (curriculum + candidates)
-│   ├── sessionStore.ts     # In-memory session Map<sessionId, SessionState>
-│   ├── types.ts            # All TypeScript interfaces
-│   ├── llm.ts              # Gemini API client with 429-retry + bearer auth
-│   ├── questionBank.ts     # buildTopicPool → selectInterviewDays → getDayContext
-│   ├── interviewOrchestrator.ts  # LLM-driven state machine (the core logic)
-│   ├── prompts.ts          # All prompt templates + JSON parser + quality checker
-│   ├── routes/
-│   │   ├── health.ts       # GET /health
-│   │   └── interview.ts    # POST /api/interview
-│   └── middleware/
-│       └── errorHandler.ts # Central 500 handler
-├── scripts/
-│   ├── test-phase5-acceptance.ts  # 96-test acceptance suite (PRD §9)
-│   ├── test-feedback-parser.ts    # 33-test feedback parser unit tests
-│   └── test-llm-interview.ts      # Full 15-turn live LLM simulation
-├── demo/
-│   └── sample-transcript.json     # Pre-recorded full interview (fallback demo)
-└── .env.example
-```
-
-### Request Flow
-
-```
-POST /api/interview
-      │
-      ▼
-  route/interview.ts
-      │  validate shape (isStartRequest / isTurnRequest)
-      ▼
-  sessionStore  ──────────────────────────────────────────┐
-  (get/create)                                            │
-      │                                                   │ Map<sessionId, SessionState>
-      ▼                                                   │ (pure in-memory, no DB)
-  interviewOrchestrator.ts                               └──────────────────────────
-      │
-      ├─ processOpeningTurn()
-      │     buildTopicPool(candidate)           ← classifies missions: aced/struggled/gap
-      │     selectInterviewDays(pool)           ← picks 4-6 days, ≥2 modules
-      │     LLM: buildOpeningPrompt()           ← first question grounded in Day 1's context
-      │
-      ├─ processTurn() [mid-turns]
-      │     buildTurnPrompt(state)              ← feeds: day context, coverage, history
-      │     LLM: → { reply, decision }
-      │     decision = "follow_up" | "advance" | "close"
-      │     Enforces: min 8 questions + 4 topics before allowing close
-      │     Enforces: hard cap at 15 turns
-      │
-      └─ handleClose()
-            LLM: buildClosingPrompt()           ← warm wrap-up message
-            LLM: buildFeedbackPrompt()          ← full transcript + mission evidence
-            parseFeedbackOutput()               ← validates 6 hard quality rules
-            [retry once if quality fails]
-            → { reply, done: true, feedback }
-```
+- [ARCHITECTURE.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/ARCHITECTURE.md) — System architecture & subsystem boundaries
+- [DATABASE_SCHEMA.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/DATABASE_SCHEMA.md) — All 41 Mongoose models & compound indexes
+- [API_DOCUMENTATION.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/API_DOCUMENTATION.md) — Complete REST endpoint catalog
+- [BKT_ALGORITHM.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/BKT_ALGORITHM.md) — Bayesian Knowledge Tracing mathematics & invariants
+- [ROADMAP_ENGINE.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/ROADMAP_ENGINE.md) — Prerequisite DAG, priority formula & spaced revision
+- [AI_TUTOR.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/AI_TUTOR.md) — 6 pedagogical modes, progressive hints & quotas
+- [CODING_EXECUTION.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/CODING_EXECUTION.md) — Judge0 sandbox provider & hidden test case security
+- [MOCK_INTERVIEWS.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/MOCK_INTERVIEWS.md) — Adaptive follow-up logic & rubric evaluation
+- [SECURITY.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/SECURITY.md) — Auth, CSRF, RBAC, IDOR & anti-cheating controls
+- [DEPLOYMENT.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/DEPLOYMENT.md) — Production deployment checklist
+- [TESTING.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/TESTING.md) — Automated unit, integration & E2E test suite breakdown
+- [DEMO_GUIDE.md](file:///c:/Users/divyam/Desktop/interview-agent/interview/docs/DEMO_GUIDE.md) — Viva & final-year project demonstration script
 
 ---
 
-## Model & Provider
+## 6. Known Limitations & Engineering Trade-offs
 
-| | |
-|---|---|
-| **Provider** | Google Gemini |
-| **Model** | `gemini-2.0-flash` |
-| **Auth** | API key (`AIza...`) or OAuth2 bearer token (`AQ...`) — auto-detected |
-| **Rate limiting** | Exponential backoff with jitter; reads `retryDelay` from 429 response body |
-| **Temperature** | 0.7 for conversation turns, 0.4 for feedback generation |
-
----
-
-## What Makes This Personalized
-
-> The interview isn't just "AI asking generic ML questions." Before the first question is sent, the system reads the candidate's full mission history — every day they attempted, how many tries it took, and what they skipped. It classifies each mission as **aced** (passed first try), **struggled** (passed after 3+ attempts), or **gap** (skipped entirely). From this evidence, it selects 4–6 curriculum days that span at least 2 curriculum modules — deliberately mixing strengths and weaknesses. The interviewer persona is seniority-aware: a 28-year Distinguished Engineer gets architectural trade-off questions while a 0-year intern gets concept-first probing. During the conversation, the LLM decides turn-by-turn whether to follow up (shallow answer), advance (solid answer), or close (sufficient coverage) — all grounded in that specific candidate's real cohort data. The final feedback cites exact things the candidate said and specific curriculum day titles from their missed areas — not generic praise.
-
----
-
-## API Reference
-
-### `POST /api/interview`
-
-**Start session (first call):**
-```json
-{
-  "sessionId": "unique-session-id",
-  "candidate": { ...candidate profile from candidates.json... }
-}
-```
-
-**Send message (subsequent calls):**
-```json
-{
-  "sessionId": "unique-session-id",
-  "message": "The candidate's answer..."
-}
-```
-
-**Mid-turn response:**
-```json
-{ "reply": "...", "done": false }
-```
-
-**Final response:**
-```json
-{
-  "reply": "Thank you, that completes our session...",
-  "done": true,
-  "feedback": {
-    "summary": "...",
-    "strengths": ["..."],
-    "gaps": ["..."],
-    "next": ["..."]
-  }
-}
-```
-
-**Error codes:**
-| Code | Meaning |
-|------|---------|
-| 400 | Malformed request (missing fields, invalid candidate) |
-| 404 | Unknown sessionId on mid-turn |
-| 409 | Duplicate sessionId on start |
-| 410 | Session already completed |
-| 500 | Internal error (logged, safe fallback returned) |
-
-### `GET /health`
-
-```json
-{
-  "success": true,
-  "status": "ok",
-  "timestamp": "...",
-  "uptime": 12.3,
-  "environment": "development",
-  "data": { "curriculumTopics": 31, "candidates": 20 }
-}
-```
-
----
-
-## Running Tests
-
-```bash
-# Phase 5: full acceptance suite (96 tests, offline + HTTP)
-npx ts-node --transpile-only scripts/test-phase5-acceptance.ts
-
-# Phase 4: feedback parser unit tests (33 tests, no API needed)
-npx ts-node --transpile-only scripts/test-feedback-parser.ts
-
-# Phase 3: live LLM simulation (needs Gemini API quota)
-npx ts-node --transpile-only scripts/test-llm-interview.ts
-```
-
----
-
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3000` | HTTP port |
-| `NODE_ENV` | `development` | Runtime environment |
-| `GEMINI_API_KEY` | — | **Required** — Gemini API key or OAuth token |
-| `GEMINI_MODEL` | `gemini-2.0-flash` | Model name |
-| `CURRICULUM_PATH` | `./data/curriculum.json` | Path to curriculum file |
-| `CANDIDATES_PATH` | `./data/candidates.json` | Path to candidates file |
-
-> **Security**: Never commit `.env`. The `.gitignore` excludes it automatically.
-
----
-
-## Demo Fallback
-
-If live LLM calls are unavailable during judging, a pre-recorded full interview transcript is available at:
-
-```
-demo/sample-transcript.json
-```
-
-This shows a complete session with Sarah Johnson (Senior Data Engineer) — from the opening question through 10 turns of adaptive conversation to the final feedback block.
+1. **External Code Execution Dependency**: Live code compilation (`cpp`, `java`, `python`, `javascript`) requires a reachable Judge0 CE or RapidAPI endpoint (`CODE_EXECUTION_BASE_URL` / `CODE_EXECUTION_API_KEY`). If unconfigured, the backend fails safely with `503 Service Unavailable` rather than executing untrusted code on the host.
+2. **Browser Speech-to-Text Support**: Voice mode in AI Mock Interviews uses the browser Web Speech API (`SpeechRecognition` / `webkitSpeechRecognition`), which is supported natively in Chromium-based browsers (Chrome/Edge) and automatically falls back to text input in unsupported browsers.
+3. **LLM Evaluation Determinism**: While rubric weights and overall scores are computed deterministically on the backend, individual criterion scores (0–5) in AI Mock Interviews are generated by Gemini (`temperature: 0.3`) with Zod schema validation and deterministic fallback handling.
