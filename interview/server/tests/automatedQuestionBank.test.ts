@@ -52,13 +52,12 @@ describe('Automated Question Bank: External DSA Problems & Progress Tracking', (
         tags: ['array', 'hash-table'],
       },
       {
-        sourcePlatform: 'codechef',
-        externalProblemId: 'LUCKFOUR',
-        title: 'Lucky Four',
-        sourceUrl: 'https://www.codechef.com/problems/LUCKFOUR',
+        sourcePlatform: 'leetcode',
+        externalProblemId: 'valid-anagram',
+        title: 'Valid Anagram',
+        sourceUrl: 'https://leetcode.com/problems/valid-anagram/',
         difficulty: 'Easy',
-        externalRating: 600,
-        tags: ['basic-math'],
+        tags: ['string', 'hash-table'],
       },
     ];
 
@@ -81,8 +80,8 @@ describe('Automated Question Bank: External DSA Problems & Progress Tracking', (
     // Student lists external problems
     const listRes = await studentClient.get('/api/external-problems?platform=leetcode');
     expect(listRes.status).toBe(200);
-    expect(listRes.body.data.problems.length).toBe(1);
-    expect(listRes.body.data.problems[0].title).toBe('Two Sum');
+    expect(listRes.body.data.problems.length).toBe(2);
+    expect(listRes.body.data.problems.some((p: any) => p.title === 'Two Sum')).toBe(true);
   });
 
   it('allows students to update self-reported problem progress', async () => {

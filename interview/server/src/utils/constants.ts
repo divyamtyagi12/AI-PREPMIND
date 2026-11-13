@@ -9,6 +9,7 @@ export const QUESTION_STATUSES = ['Draft', 'Published', 'Archived'] as const;
 export const EVALUATION_STATUSES = ['evaluated', 'self_review', 'pending'] as const;
 
 export const EXTERNAL_PLATFORMS = ['leetcode', 'codechef'] as const;
+export const ACTIVE_EXTERNAL_PLATFORMS = ['leetcode'] as const;
 
 export const EXTERNAL_PROGRESS_STATUSES = ['Not Started', 'In Progress', 'Solved', 'Revisit'] as const;
 

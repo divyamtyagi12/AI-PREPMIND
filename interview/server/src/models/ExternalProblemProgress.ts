@@ -6,6 +6,8 @@ const externalProblemProgressSchema = new Schema(
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     externalProblemId: { type: Schema.Types.ObjectId, ref: 'ExternalProblem', required: true, index: true },
     status: { type: String, enum: EXTERNAL_PROGRESS_STATUSES, default: 'Not Started', index: true },
+    isBookmarked: { type: Boolean, default: false, index: true },
+    isRevision: { type: Boolean, default: false, index: true },
     notes: { type: String, trim: true, default: '', maxlength: 2000 },
     solvedAt: { type: Date },
   },

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import {
   DIFFICULTY_LEVELS,
-  EXTERNAL_PLATFORMS,
+  ACTIVE_EXTERNAL_PLATFORMS,
   EXTERNAL_PROGRESS_STATUSES,
   QUESTION_TYPES,
 } from '../utils/constants';
@@ -10,7 +10,7 @@ import { objectIdSchema } from './topic.validators';
 // External Problem Import Item Validator
 export const importExternalProblemItemSchema = z
   .object({
-    sourcePlatform: z.enum(EXTERNAL_PLATFORMS),
+    sourcePlatform: z.enum(ACTIVE_EXTERNAL_PLATFORMS),
     externalProblemId: z.string({ error: 'External problem ID is required' }).trim().min(1),
     title: z.string({ error: 'Title is required' }).trim().min(1).max(200),
     sourceUrl: z.string({ error: 'Source URL is required' }).trim().url('Must be a valid URL'),
@@ -31,7 +31,9 @@ export const importExternalProblemsSchema = z
 // Student Progress Update Validator
 export const updateExternalProgressSchema = z
   .object({
-    status: z.enum(EXTERNAL_PROGRESS_STATUSES),
+    status: z.enum(EXTERNAL_PROGRESS_STATUSES).optional(),
+    isBookmarked: z.boolean().optional(),
+    isRevision: z.boolean().optional(),
     notes: z.string().trim().max(2000).optional(),
   })
   .strict();

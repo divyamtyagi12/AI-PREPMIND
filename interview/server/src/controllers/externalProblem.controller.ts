@@ -6,18 +6,12 @@ import { Topic } from '../models/Topic';
 import { AppError } from '../utils/AppError';
 
 // Normalize difficulty from diverse rating scales
-export function normalizeDifficulty(platform: string, rawDifficulty: string | number): 'Easy' | 'Medium' | 'Hard' {
+export function normalizeDifficulty(rawDifficulty: string | number, _unused?: unknown): 'Easy' | 'Medium' | 'Hard' {
   if (typeof rawDifficulty === 'string') {
     const lower = rawDifficulty.toLowerCase().trim();
     if (lower.includes('easy') || lower === 'basic') return 'Easy';
     if (lower.includes('hard') || lower.includes('advanced')) return 'Hard';
     return 'Medium';
-  }
-  if (typeof rawDifficulty === 'number') {
-    // e.g. CodeChef rating: < 1400 = Easy, 1400-1799 = Medium, >= 1800 = Hard
-    if (rawDifficulty < 1400) return 'Easy';
-    if (rawDifficulty < 1800) return 'Medium';
-    return 'Hard';
   }
   return 'Medium';
 }
@@ -25,11 +19,14 @@ export function normalizeDifficulty(platform: string, rawDifficulty: string | nu
 export async function listExternalProblems(req: Request, res: Response) {
   const { platform, difficulty, topicId, status, search } = req.query;
   const page = Math.max(1, parseInt(String(req.query.page || '1'), 10));
-  const limit = Math.min(50, Math.max(1, parseInt(String(req.query.limit || '15'), 10)));
+  const limit = Math.min(100, Math.max(1, parseInt(String(req.query.limit || '15'), 10)));
   const skip = (page - 1) * limit;
 
-  const filter: any = { status: 'Published' };
-  if (platform && typeof platform === 'string') filter.sourcePlatform = platform;
+  // In DSA practice module, only Published problems are exposed; CodeChef is excluded/archived
+  const filter: any = { status: 'Published', sourcePlatform: 'leetcode' };
+  if (platform && typeof platform === 'string' && platform.toLowerCase() === 'leetcode') {
+    filter.sourcePlatform = 'leetcode';
+  }
   if (difficulty && typeof difficulty === 'string') filter.difficulty = difficulty;
   if (topicId && typeof topicId === 'string') filter.topicIds = topicId;
   if (search && typeof search === 'string') {
@@ -76,11 +73,19 @@ export async function getExternalProblemById(req: Request, res: Response) {
 export async function getStudentExternalProgress(req: Request, res: Response) {
   const { user } = getAuth(req);
   const progressList = await ExternalProblemProgress.find({ userId: user._id }).lean();
-  const progressMap: Record<string, { status: string; notes: string; solvedAt?: any }> = {};
+  const progressMap: Record<string, {
+    status: string;
+    isBookmarked: boolean;
+    isRevision: boolean;
+    notes: string;
+    solvedAt?: any;
+  }> = {};
 
   for (const p of progressList) {
     progressMap[String(p.externalProblemId)] = {
       status: p.status,
+      isBookmarked: Boolean(p.isBookmarked),
+      isRevision: Boolean(p.isRevision || p.status === 'Revisit'),
       notes: p.notes,
       solvedAt: p.solvedAt,
     };
@@ -91,18 +96,35 @@ export async function getStudentExternalProgress(req: Request, res: Response) {
 
 export async function updateExternalProgress(req: Request, res: Response) {
   const { user } = getAuth(req);
-  const { status, notes } = req.body;
+  const { status, isBookmarked, isRevision, notes } = req.body;
 
   const problem = await ExternalProblem.findById(req.params.id);
   if (!problem) throw new AppError(404, 'External problem not found', 'NOT_FOUND');
 
   const updateDoc: any = {
-    status,
-    notes: notes || '',
     updatedAt: new Date(),
   };
-  if (status === 'Solved') {
-    updateDoc.solvedAt = new Date();
+
+  if (status !== undefined) {
+    updateDoc.status = status;
+    if (status === 'Solved') {
+      updateDoc.solvedAt = new Date();
+    }
+  }
+
+  if (isBookmarked !== undefined) {
+    updateDoc.isBookmarked = Boolean(isBookmarked);
+  }
+
+  if (isRevision !== undefined) {
+    updateDoc.isRevision = Boolean(isRevision);
+    if (isRevision && !updateDoc.status) {
+      updateDoc.status = 'Revisit';
+    }
+  }
+
+  if (notes !== undefined) {
+    updateDoc.notes = notes;
   }
 
   const progress = await ExternalProblemProgress.findOneAndUpdate(

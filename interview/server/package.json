@@ -12,6 +12,7 @@
     "seed:assessments": "tsx src/utils/seedAssessments.ts",
     "seed:taxonomy": "tsx src/utils/seedTaxonomy.ts",
     "seed:external": "tsx src/utils/seedExternalProblems.ts",
+    "import:striver": "tsx src/scripts/importStriverLeetCode.ts",
     "demo": "tsx src/scripts/demonstrateFullPlatform.ts",
     "e2e:server": "tsx src/scripts/startE2EServer.ts",
     "test": "vitest run"

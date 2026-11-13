@@ -1,0 +1,2386 @@
+[
+  {
+    "section": "Step 2 — Sorting Arrays",
+    "title": "Sort an Array",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/sort-an-array/",
+    "pattern": "Merge Sort",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 2 — Sorting Arrays",
+    "title": "Sort Colors",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/sort-colors/",
+    "pattern": "Two Pointers",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 2 — Sorting Arrays",
+    "title": "Largest Number",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/largest-number/",
+    "pattern": "Custom Sort",
+    "companies": "Amazon, Apple"
+  },
+  {
+    "section": "Step 2 — Sorting Arrays",
+    "title": "Relative Sort Array",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/relative-sort-array/",
+    "pattern": "Counting Sort",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Remove Duplicates from Sorted Array",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
+    "pattern": "Two Pointers",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Rotate Array",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/rotate-array/",
+    "pattern": "Reversal",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Move Zeroes",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/move-zeroes/",
+    "pattern": "Two Pointers",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Intersection of Two Arrays",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/intersection-of-two-arrays/",
+    "pattern": "Hash Set",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Missing Number",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/missing-number/",
+    "pattern": "Bit Manipulation",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Max Consecutive Ones",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/max-consecutive-ones/",
+    "pattern": "Arrays",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Single Number",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/single-number/",
+    "pattern": "Bit Manipulation",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Maximum Size Subarray Sum Equals k",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/",
+    "pattern": "Prefix Sum",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Two Sum",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/two-sum/",
+    "pattern": "Hash Map",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Majority Element",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/majority-element/",
+    "pattern": "Boyer-Moore",
+    "companies": "Amazon, Adobe"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Maximum Subarray",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-subarray/",
+    "pattern": "Kadane's",
+    "companies": "Microsoft, LinkedIn"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Best Time to Buy and Sell Stock",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
+    "pattern": "Greedy",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 3 — Arrays (Easy)",
+    "title": "Rearrange Array Elements by Sign",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/rearrange-array-elements-by-sign/",
+    "pattern": "Arrays",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Next Permutation",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/next-permutation/",
+    "pattern": "Arrays",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Find Pivot Index",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/find-pivot-index/",
+    "pattern": "Prefix Sum",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Longest Consecutive Sequence",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-consecutive-sequence/",
+    "pattern": "Hash Set",
+    "companies": "Google, Meta"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Set Matrix Zeroes",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/set-matrix-zeroes/",
+    "pattern": "Matrix",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Rotate Image",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/rotate-image/",
+    "pattern": "Matrix",
+    "companies": "Amazon, Apple"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Spiral Matrix",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/spiral-matrix/",
+    "pattern": "Matrix",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Subarray Sum Equals K",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/subarray-sum-equals-k/",
+    "pattern": "Prefix Sum",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Pascal's Triangle",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/pascals-triangle/",
+    "pattern": "Arrays",
+    "companies": "Amazon, Apple"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Majority Element II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/majority-element-ii/",
+    "pattern": "Boyer-Moore",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "3Sum",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/3sum/",
+    "pattern": "Two Pointers",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "4Sum",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/4sum/",
+    "pattern": "Two Pointers",
+    "companies": "Amazon, Adobe"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Contiguous Array",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/contiguous-array/",
+    "pattern": "Prefix Sum",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Medium)",
+    "title": "Merge Intervals",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/merge-intervals/",
+    "pattern": "Intervals",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 3 — Arrays (Hard)",
+    "title": "Merge Sorted Array",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/merge-sorted-array/",
+    "pattern": "Two Pointers",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Hard)",
+    "title": "Find the Duplicate Number",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/find-the-duplicate-number/",
+    "pattern": "Fast & Slow",
+    "companies": "Amazon, Adobe"
+  },
+  {
+    "section": "Step 3 — Arrays (Hard)",
+    "title": "Set Mismatch",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/set-mismatch/",
+    "pattern": "Arrays",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Hard)",
+    "title": "Reverse Pairs",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/reverse-pairs/",
+    "pattern": "Merge Sort",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Hard)",
+    "title": "Count of Smaller Numbers After Self",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/count-of-smaller-numbers-after-self/",
+    "pattern": "Merge Sort",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 3 — Arrays (Hard)",
+    "title": "Maximum Product Subarray",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-product-subarray/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 3 — Arrays (Hard)",
+    "title": "Search a 2D Matrix",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/search-a-2d-matrix/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 3 — Arrays (Hard)",
+    "title": "Search a 2D Matrix II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/search-a-2d-matrix-ii/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Binary Search",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-search/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Search Insert Position",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/search-insert-position/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Find First and Last Position of Element in Sorted Array",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Search in Rotated Sorted Array",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/search-in-rotated-sorted-array/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Search in Rotated Sorted Array II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/search-in-rotated-sorted-array-ii/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Find Minimum in Rotated Sorted Array",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Single Element in a Sorted Array",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/single-element-in-a-sorted-array/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Find Peak Element",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/find-peak-element/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Sqrt(x)",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/sqrtx/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Koko Eating Bananas",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/koko-eating-bananas/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Minimum Number of Days to Make m Bouquets",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Find the Smallest Divisor Given a Threshold",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold/",
+    "pattern": "Binary Search",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Capacity To Ship Packages Within D Days",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Kth Missing Positive Number",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/kth-missing-positive-number/",
+    "pattern": "Binary Search",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Magnetic Force Between Two Balls",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/magnetic-force-between-two-balls/",
+    "pattern": "Binary Search",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Split Array Largest Sum",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/split-array-largest-sum/",
+    "pattern": "Binary Search",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Median of Two Sorted Arrays",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/median-of-two-sorted-arrays/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Kth Smallest Element in a Sorted Matrix",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/",
+    "pattern": "Binary Search",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Count Negative Numbers in a Sorted Matrix",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/",
+    "pattern": "Binary Search",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 4 — Binary Search",
+    "title": "Pow(x, n)",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/powx-n/",
+    "pattern": "Divide & Conquer",
+    "companies": "Google, Meta"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Remove Outermost Parentheses",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/remove-outermost-parentheses/",
+    "pattern": "Strings",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Reverse Words in a String",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/reverse-words-in-a-string/",
+    "pattern": "Strings",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Largest Odd Number in String",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/largest-odd-number-in-string/",
+    "pattern": "Strings",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Longest Common Prefix",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-common-prefix/",
+    "pattern": "Strings",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Isomorphic Strings",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/isomorphic-strings/",
+    "pattern": "Hash Map",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Rotate String",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/rotate-string/",
+    "pattern": "Strings",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Valid Anagram",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/valid-anagram/",
+    "pattern": "Hash Map",
+    "companies": "Amazon, Bloomberg"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Sort Characters By Frequency",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/sort-characters-by-frequency/",
+    "pattern": "Heap",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Maximum Nesting Depth of the Parentheses",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-nesting-depth-of-the-parentheses/",
+    "pattern": "Strings",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Roman to Integer",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/roman-to-integer/",
+    "pattern": "Strings",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "String to Integer (atoi)",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/string-to-integer-atoi/",
+    "pattern": "Strings",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Longest Palindromic Substring",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-palindromic-substring/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 5 — Strings (Basic & Medium)",
+    "title": "Sum of Beauty of All Substrings",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/sum-of-beauty-of-all-substrings/",
+    "pattern": "Hash Map",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Reverse Linked List",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/reverse-linked-list/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Middle of the Linked List",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/middle-of-the-linked-list/",
+    "pattern": "Fast & Slow",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Linked List Cycle",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/linked-list-cycle/",
+    "pattern": "Fast & Slow",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Linked List Cycle II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/linked-list-cycle-ii/",
+    "pattern": "Fast & Slow",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Palindrome Linked List",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/palindrome-linked-list/",
+    "pattern": "Fast & Slow",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Odd Even Linked List",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/odd-even-linked-list/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Remove Nth Node From End of List",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
+    "pattern": "Two Pointers",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Delete the Middle Node of a Linked List",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/",
+    "pattern": "Fast & Slow",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Sort List",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/sort-list/",
+    "pattern": "Merge Sort",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Merge Two Sorted Lists",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/merge-two-sorted-lists/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Apple"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Merge k Sorted Lists",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/merge-k-sorted-lists/",
+    "pattern": "Heap",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Intersection of Two Linked Lists",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/intersection-of-two-linked-lists/",
+    "pattern": "Two Pointers",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Add Two Numbers",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/add-two-numbers/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Add Two Numbers II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/add-two-numbers-ii/",
+    "pattern": "Stack",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Reverse Nodes in k-Group",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/reverse-nodes-in-k-group/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Reverse Linked List II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/reverse-linked-list-ii/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Rotate List",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/rotate-list/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Copy List with Random Pointer",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/copy-list-with-random-pointer/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Swap Nodes in Pairs",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/swap-nodes-in-pairs/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Remove Duplicates from Sorted List II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Partition List",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/partition-list/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "Flatten a Multilevel Doubly Linked List",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/",
+    "pattern": "Linked List",
+    "companies": "Amazon, Bloomberg"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "LRU Cache",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/lru-cache/",
+    "pattern": "Design",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 6 — Linked List",
+    "title": "LFU Cache",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/lfu-cache/",
+    "pattern": "Design",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Subsets",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/subsets/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Subsets II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/subsets-ii/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Combination Sum",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/combination-sum/",
+    "pattern": "Backtracking",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Combination Sum II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/combination-sum-ii/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Combination Sum III",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/combination-sum-iii/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Permutations",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/permutations/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Permutations II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/permutations-ii/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Letter Combinations of a Phone Number",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/letter-combinations-of-a-phone-number/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Generate Parentheses",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/generate-parentheses/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Palindrome Partitioning",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/palindrome-partitioning/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Word Search",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/word-search/",
+    "pattern": "Backtracking",
+    "companies": "Microsoft, Amazon"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "N-Queens",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/n-queens/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Sudoku Solver",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/sudoku-solver/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Uber"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Word Break II",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/word-break-ii/",
+    "pattern": "Backtracking",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 7 — Recursion & Backtracking",
+    "title": "Count Good Numbers",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/count-good-numbers/",
+    "pattern": "Fast Exponentiation",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Number of 1 Bits",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/number-of-1-bits/",
+    "pattern": "Bit Manipulation",
+    "companies": "Apple, Microsoft"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Counting Bits",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/counting-bits/",
+    "pattern": "Bit Manipulation",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Power of Two",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/power-of-two/",
+    "pattern": "Bit Manipulation",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Reverse Bits",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/reverse-bits/",
+    "pattern": "Bit Manipulation",
+    "companies": "Apple"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Minimum Bit Flips to Convert Number",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/minimum-bit-flips-to-convert-number/",
+    "pattern": "Bit Manipulation",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Single Number II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/single-number-ii/",
+    "pattern": "Bit Manipulation",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Single Number III",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/single-number-iii/",
+    "pattern": "Bit Manipulation",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Divide Two Integers",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/divide-two-integers/",
+    "pattern": "Bit Manipulation",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Bitwise AND of Numbers Range",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/bitwise-and-of-numbers-range/",
+    "pattern": "Bit Manipulation",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 8 — Bit Manipulation",
+    "title": "Sum of Two Integers",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/sum-of-two-integers/",
+    "pattern": "Bit Manipulation",
+    "companies": "Meta"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Valid Parentheses",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/valid-parentheses/",
+    "pattern": "Stack",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Min Stack",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/min-stack/",
+    "pattern": "Stack",
+    "companies": "Amazon, Bloomberg"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Implement Queue using Stacks",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/implement-queue-using-stacks/",
+    "pattern": "Stack",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Implement Stack using Queues",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/implement-stack-using-queues/",
+    "pattern": "Queue",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Next Greater Element I",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/next-greater-element-i/",
+    "pattern": "Monotonic Stack",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Next Greater Element II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/next-greater-element-ii/",
+    "pattern": "Monotonic Stack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Daily Temperatures",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/daily-temperatures/",
+    "pattern": "Monotonic Stack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Online Stock Span",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/online-stock-span/",
+    "pattern": "Monotonic Stack",
+    "companies": "Amazon, Bloomberg"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Sum of Subarray Minimums",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/sum-of-subarray-minimums/",
+    "pattern": "Monotonic Stack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Asteroid Collision",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/asteroid-collision/",
+    "pattern": "Stack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Remove K Digits",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/remove-k-digits/",
+    "pattern": "Monotonic Stack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Evaluate Reverse Polish Notation",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/evaluate-reverse-polish-notation/",
+    "pattern": "Stack",
+    "companies": "Amazon, LinkedIn"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Simplify Path",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/simplify-path/",
+    "pattern": "Stack",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Decode String",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/decode-string/",
+    "pattern": "Stack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Basic Calculator",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/basic-calculator/",
+    "pattern": "Stack",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Largest Rectangle in Histogram",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/largest-rectangle-in-histogram/",
+    "pattern": "Monotonic Stack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Maximal Rectangle",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/maximal-rectangle/",
+    "pattern": "Monotonic Stack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Sliding Window Maximum",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/sliding-window-maximum/",
+    "pattern": "Deque",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 9 — Stacks & Queues",
+    "title": "Trapping Rain Water",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/trapping-rain-water/",
+    "pattern": "Monotonic Stack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Longest Substring Without Repeating Characters",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+    "pattern": "Sliding Window",
+    "companies": "Amazon, Adobe"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Max Consecutive Ones III",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/max-consecutive-ones-iii/",
+    "pattern": "Sliding Window",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Fruit Into Baskets",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/fruit-into-baskets/",
+    "pattern": "Sliding Window",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Longest Repeating Character Replacement",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-repeating-character-replacement/",
+    "pattern": "Sliding Window",
+    "companies": "Google"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Binary Subarrays With Sum",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-subarrays-with-sum/",
+    "pattern": "Sliding Window",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Count Number of Nice Subarrays",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/count-number-of-nice-subarrays/",
+    "pattern": "Sliding Window",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Number of Substrings Containing All Three Characters",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/",
+    "pattern": "Sliding Window",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Permutation in String",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/permutation-in-string/",
+    "pattern": "Sliding Window",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Container With Most Water",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/container-with-most-water/",
+    "pattern": "Two Pointers",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Subarrays with K Different Integers",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/subarrays-with-k-different-integers/",
+    "pattern": "Sliding Window",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 10 — Sliding Window & Two Pointers",
+    "title": "Minimum Window Substring",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/minimum-window-substring/",
+    "pattern": "Sliding Window",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Kth Largest Element in a Stream",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/kth-largest-element-in-a-stream/",
+    "pattern": "Heap",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Last Stone Weight",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/last-stone-weight/",
+    "pattern": "Heap",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Kth Largest Element in an Array",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+    "pattern": "Quickselect",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "K Closest Points to Origin",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/k-closest-points-to-origin/",
+    "pattern": "Heap",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Top K Frequent Elements",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/top-k-frequent-elements/",
+    "pattern": "Heap",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Task Scheduler",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/task-scheduler/",
+    "pattern": "Heap",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Hand of Straights",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/hand-of-straights/",
+    "pattern": "Heap",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Design Twitter",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/design-twitter/",
+    "pattern": "Heap",
+    "companies": "Amazon, Twitter"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Ugly Number II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/ugly-number-ii/",
+    "pattern": "Heap",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Minimum Cost to Connect Sticks",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/minimum-cost-to-connect-sticks/",
+    "pattern": "Heap",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 11 — Heaps",
+    "title": "Find Median from Data Stream",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/find-median-from-data-stream/",
+    "pattern": "Heap",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Assign Cookies",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/assign-cookies/",
+    "pattern": "Greedy",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Lemonade Change",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/lemonade-change/",
+    "pattern": "Greedy",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Meeting Rooms",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/meeting-rooms/",
+    "pattern": "Greedy",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Jump Game",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/jump-game/",
+    "pattern": "Greedy",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Jump Game II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/jump-game-ii/",
+    "pattern": "Greedy",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Gas Station",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/gas-station/",
+    "pattern": "Greedy",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Insert Interval",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/insert-interval/",
+    "pattern": "Intervals",
+    "companies": "Google, LinkedIn"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Non-overlapping Intervals",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/non-overlapping-intervals/",
+    "pattern": "Intervals",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Meeting Rooms II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/meeting-rooms-ii/",
+    "pattern": "Intervals",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Valid Parenthesis String",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/valid-parenthesis-string/",
+    "pattern": "Greedy",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Partition Labels",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/partition-labels/",
+    "pattern": "Greedy",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Candy",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/candy/",
+    "pattern": "Greedy",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 12 — Greedy",
+    "title": "Maximum Profit in Job Scheduling",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-profit-in-job-scheduling/",
+    "pattern": "Greedy",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Binary Tree Inorder Traversal",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
+    "pattern": "DFS",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Binary Tree Preorder Traversal",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-preorder-traversal/",
+    "pattern": "DFS",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Binary Tree Postorder Traversal",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-postorder-traversal/",
+    "pattern": "DFS",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Binary Tree Level Order Traversal",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+    "pattern": "BFS",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Maximum Depth of Binary Tree",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
+    "pattern": "DFS",
+    "companies": "Amazon, LinkedIn"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Balanced Binary Tree",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/balanced-binary-tree/",
+    "pattern": "DFS",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Diameter of Binary Tree",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/diameter-of-binary-tree/",
+    "pattern": "DFS",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Same Tree",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/same-tree/",
+    "pattern": "DFS",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Symmetric Tree",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/symmetric-tree/",
+    "pattern": "DFS",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Invert Binary Tree",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/invert-binary-tree/",
+    "pattern": "DFS",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Subtree of Another Tree",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/subtree-of-another-tree/",
+    "pattern": "DFS",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Path Sum",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/path-sum/",
+    "pattern": "DFS",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Binary Tree Paths",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-paths/",
+    "pattern": "DFS",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Count Complete Tree Nodes",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/count-complete-tree-nodes/",
+    "pattern": "Binary Search",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Binary Tree Zigzag Level Order Traversal",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/",
+    "pattern": "BFS",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Binary Tree Right Side View",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-right-side-view/",
+    "pattern": "BFS",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Binary Tree Vertical Order Traversal",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-vertical-order-traversal/",
+    "pattern": "BFS",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Lowest Common Ancestor of a Binary Tree",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
+    "pattern": "DFS",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "All Nodes Distance K in Binary Tree",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/",
+    "pattern": "BFS",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Amount of Time for Binary Tree to Be Infected",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/amount-of-time-for-binary-tree-to-be-infected/",
+    "pattern": "BFS",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Flatten Binary Tree to Linked List",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/",
+    "pattern": "DFS",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/",
+    "pattern": "DFS",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Construct Binary Tree from Inorder and Postorder Traversal",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/",
+    "pattern": "DFS",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Binary Tree Maximum Path Sum",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-maximum-path-sum/",
+    "pattern": "DFS",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 13 — Binary Trees",
+    "title": "Serialize and Deserialize Binary Tree",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/",
+    "pattern": "DFS",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Search in a Binary Search Tree",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/search-in-a-binary-search-tree/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Convert Sorted Array to Binary Search Tree",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Two Sum IV - Input is a BST",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/two-sum-iv-input-is-a-bst/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Minimum Distance Between BST Nodes",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/minimum-distance-between-bst-nodes/",
+    "pattern": "Binary Search Tree",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Insert into a Binary Search Tree",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/insert-into-a-binary-search-tree/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Delete Node in a BST",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/delete-node-in-a-bst/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Kth Smallest Element in a BST",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Validate Binary Search Tree",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/validate-binary-search-tree/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Lowest Common Ancestor of a Binary Search Tree",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Construct Binary Search Tree from Preorder Traversal",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Inorder Successor in BST",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/inorder-successor-in-bst/",
+    "pattern": "Binary Search Tree",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Binary Search Tree Iterator",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-search-tree-iterator/",
+    "pattern": "Binary Search Tree",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Largest BST Subtree",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/largest-bst-subtree/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 14 — Binary Search Trees",
+    "title": "Recover Binary Search Tree",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/recover-binary-search-tree/",
+    "pattern": "Binary Search Tree",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Flood Fill",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/flood-fill/",
+    "pattern": "BFS/DFS",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Number of Provinces",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/number-of-provinces/",
+    "pattern": "Union Find",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Number of Islands",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/number-of-islands/",
+    "pattern": "BFS/DFS",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Clone Graph",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/clone-graph/",
+    "pattern": "BFS/DFS",
+    "companies": "Meta, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Rotting Oranges",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/rotting-oranges/",
+    "pattern": "BFS",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "01 Matrix",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/01-matrix/",
+    "pattern": "BFS",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Surrounded Regions",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/surrounded-regions/",
+    "pattern": "BFS/DFS",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Number of Enclaves",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/number-of-enclaves/",
+    "pattern": "BFS/DFS",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Number of Distinct Islands",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/number-of-distinct-islands/",
+    "pattern": "BFS/DFS",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Is Graph Bipartite?",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/is-graph-bipartite/",
+    "pattern": "BFS/DFS",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Pacific Atlantic Water Flow",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/pacific-atlantic-water-flow/",
+    "pattern": "BFS/DFS",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Course Schedule",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/course-schedule/",
+    "pattern": "Topological Sort",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Course Schedule II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/course-schedule-ii/",
+    "pattern": "Topological Sort",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Find Eventual Safe States",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/find-eventual-safe-states/",
+    "pattern": "Topological Sort",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Network Delay Time",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/network-delay-time/",
+    "pattern": "Dijkstra",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Path With Minimum Effort",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/path-with-minimum-effort/",
+    "pattern": "Dijkstra",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Cheapest Flights Within K Stops",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/cheapest-flights-within-k-stops/",
+    "pattern": "Bellman-Ford",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Number of Ways to Arrive at Destination",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/",
+    "pattern": "Dijkstra",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Find the City With the Smallest Number of Neighbors at a Threshold Distance",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/",
+    "pattern": "Floyd-Warshall",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Min Cost to Connect All Points",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/min-cost-to-connect-all-points/",
+    "pattern": "Minimum Spanning Tree",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Redundant Connection",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/redundant-connection/",
+    "pattern": "Union Find",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Accounts Merge",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/accounts-merge/",
+    "pattern": "Union Find",
+    "companies": "Meta"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Most Stones Removed with Same Row or Column",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/",
+    "pattern": "Union Find",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Word Ladder",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/word-ladder/",
+    "pattern": "BFS",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Word Ladder II",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/word-ladder-ii/",
+    "pattern": "BFS",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Alien Dictionary",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/alien-dictionary/",
+    "pattern": "Topological Sort",
+    "companies": "Amazon, Airbnb"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Making A Large Island",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/making-a-large-island/",
+    "pattern": "Union Find",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Critical Connections in a Network",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/critical-connections-in-a-network/",
+    "pattern": "Tarjan",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 15 — Graphs",
+    "title": "Swim in Rising Water",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/swim-in-rising-water/",
+    "pattern": "Dijkstra",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Climbing Stairs",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/climbing-stairs/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Adobe"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Min Cost Climbing Stairs",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/min-cost-climbing-stairs/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "House Robber",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/house-robber/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, LinkedIn"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "House Robber II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/house-robber-ii/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Unique Paths",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/unique-paths/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Unique Paths II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/unique-paths-ii/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Minimum Path Sum",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/minimum-path-sum/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Triangle",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/triangle/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Minimum Falling Path Sum",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/minimum-falling-path-sum/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Cherry Pickup II",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/cherry-pickup-ii/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Partition Equal Subset Sum",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/partition-equal-subset-sum/",
+    "pattern": "0/1 Knapsack",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Target Sum",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/target-sum/",
+    "pattern": "0/1 Knapsack",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Coin Change",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/coin-change/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Coin Change II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/coin-change-ii/",
+    "pattern": "Unbounded Knapsack",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Combination Sum IV",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/combination-sum-iv/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Perfect Squares",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/perfect-squares/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Best Time to Buy and Sell Stock II",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Best Time to Buy and Sell Stock III",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Best Time to Buy and Sell Stock IV",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Best Time to Buy and Sell Stock with Cooldown",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Best Time to Buy and Sell Stock with Transaction Fee",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Longest Increasing Subsequence",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-increasing-subsequence/",
+    "pattern": "Dynamic Programming",
+    "companies": "Microsoft, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Number of Longest Increasing Subsequence",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/number-of-longest-increasing-subsequence/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Longest String Chain",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-string-chain/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Longest Common Subsequence",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-common-subsequence/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Longest Palindromic Subsequence",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-palindromic-subsequence/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Shortest Common Supersequence",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/shortest-common-supersequence/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Distinct Subsequences",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/distinct-subsequences/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Edit Distance",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/edit-distance/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Wildcard Matching",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/wildcard-matching/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Regular Expression Matching",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/regular-expression-matching/",
+    "pattern": "Dynamic Programming",
+    "companies": "Meta, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Burst Balloons",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/burst-balloons/",
+    "pattern": "Matrix Chain Multiplication",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Minimum Cost to Cut a Stick",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/minimum-cost-to-cut-a-stick/",
+    "pattern": "Matrix Chain Multiplication",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Palindrome Partitioning II",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/palindrome-partitioning-ii/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Partition Array for Maximum Sum",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/partition-array-for-maximum-sum/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Count Square Submatrices with All Ones",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/count-square-submatrices-with-all-ones/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Word Break",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/word-break/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon, Meta"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Decode Ways",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/decode-ways/",
+    "pattern": "Dynamic Programming",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Palindromic Substrings",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/palindromic-substrings/",
+    "pattern": "Dynamic Programming",
+    "companies": "Amazon"
+  },
+  {
+    "section": "Step 16 — Dynamic Programming",
+    "title": "Super Egg Drop",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/super-egg-drop/",
+    "pattern": "Dynamic Programming",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 17 — Tries",
+    "title": "Implement Trie (Prefix Tree)",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/implement-trie-prefix-tree/",
+    "pattern": "Trie",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 17 — Tries",
+    "title": "Implement Trie II (Prefix Tree)",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/implement-trie-ii-prefix-tree/",
+    "pattern": "Trie",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 17 — Tries",
+    "title": "Design Add and Search Words Data Structure",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/design-add-and-search-words-data-structure/",
+    "pattern": "Trie",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 17 — Tries",
+    "title": "Longest Word in Dictionary",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-word-in-dictionary/",
+    "pattern": "Trie",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 17 — Tries",
+    "title": "Replace Words",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/replace-words/",
+    "pattern": "Trie",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 17 — Tries",
+    "title": "Maximum XOR of Two Numbers in an Array",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/",
+    "pattern": "Trie",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 17 — Tries",
+    "title": "Maximum XOR With an Element From Array",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-xor-with-an-element-from-array/",
+    "pattern": "Trie",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 17 — Tries",
+    "title": "Word Search II",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/word-search-ii/",
+    "pattern": "Trie",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 18 — Strings (Hard)",
+    "title": "Repeated Substring Pattern",
+    "difficulty": "Easy",
+    "leetcodeUrl": "https://leetcode.com/problems/repeated-substring-pattern/",
+    "pattern": "KMP",
+    "companies": "Amazon, Google"
+  },
+  {
+    "section": "Step 18 — Strings (Hard)",
+    "title": "Repeated String Match",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/repeated-string-match/",
+    "pattern": "Rabin-Karp",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 18 — Strings (Hard)",
+    "title": "Count and Say",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/count-and-say/",
+    "pattern": "Strings",
+    "companies": "Meta, Amazon"
+  },
+  {
+    "section": "Step 18 — Strings (Hard)",
+    "title": "Group Anagrams",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/group-anagrams/",
+    "pattern": "Hash Map",
+    "companies": "Amazon, Uber"
+  },
+  {
+    "section": "Step 18 — Strings (Hard)",
+    "title": "Integer to Roman",
+    "difficulty": "Medium",
+    "leetcodeUrl": "https://leetcode.com/problems/integer-to-roman/",
+    "pattern": "Strings",
+    "companies": "Amazon, Microsoft"
+  },
+  {
+    "section": "Step 18 — Strings (Hard)",
+    "title": "Shortest Palindrome",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/shortest-palindrome/",
+    "pattern": "KMP",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 18 — Strings (Hard)",
+    "title": "Longest Duplicate Substring",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-duplicate-substring/",
+    "pattern": "Rabin-Karp",
+    "companies": "Google, Amazon"
+  },
+  {
+    "section": "Step 18 — Strings (Hard)",
+    "title": "Text Justification",
+    "difficulty": "Hard",
+    "leetcodeUrl": "https://leetcode.com/problems/text-justification/",
+    "pattern": "Strings",
+    "companies": "Amazon, Google"
+  }
+]

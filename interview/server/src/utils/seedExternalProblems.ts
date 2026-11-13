@@ -7,7 +7,7 @@ import { ExternalProblem } from '../models/ExternalProblem';
 import { normalizeDifficulty } from '../controllers/externalProblem.controller';
 
 /**
- * Permitted metadata seed for LeetCode and CodeChef problems mapped to topics.
+ * Permitted metadata seed for LeetCode problems mapped to topics.
  * Complies with educational fair use & source attribution: only public title, difficulty,
  * problem slug, and direct canonical links are stored.
  */
@@ -115,38 +115,6 @@ export async function seedExternalProblems() {
       topicSlug: 'dynamic-programming',
       tags: ['dp', 'breadth-first-search'],
     },
-
-    // CodeChef problems
-    {
-      sourcePlatform: 'codechef' as const,
-      externalProblemId: 'LUCKFOUR',
-      title: 'Lucky Four',
-      sourceUrl: 'https://www.codechef.com/problems/LUCKFOUR',
-      difficulty: 'Easy' as const,
-      externalRating: 600,
-      topicSlug: 'arrays-two-pointers',
-      tags: ['basic-math', 'loops'],
-    },
-    {
-      sourcePlatform: 'codechef' as const,
-      externalProblemId: 'SUBINC',
-      title: 'Count Subarrays',
-      sourceUrl: 'https://www.codechef.com/problems/SUBINC',
-      difficulty: 'Medium' as const,
-      externalRating: 1450,
-      topicSlug: 'dynamic-programming',
-      tags: ['dp', 'arrays'],
-    },
-    {
-      sourcePlatform: 'codechef' as const,
-      externalProblemId: 'CHEFQUE',
-      title: 'Chef and Queries',
-      sourceUrl: 'https://www.codechef.com/problems/CHEFQUE',
-      difficulty: 'Hard' as const,
-      externalRating: 1900,
-      topicSlug: 'heaps',
-      tags: ['data-structures', 'bitset'],
-    },
   ];
 
   let added = 0;
@@ -164,7 +132,7 @@ export async function seedExternalProblems() {
         title: item.title,
         sourceUrl: item.sourceUrl,
         difficulty: item.difficulty,
-        externalRating: item.externalRating,
+        externalRating: (item as any).externalRating,
         topicIds: topic ? [topic._id] : [],
         tags: item.tags,
         status: 'Published',
