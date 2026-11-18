@@ -1,5 +1,10 @@
 # PrepMind AI — AI-Powered Adaptive Learning & Placement Preparation System
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Railway-00C7B7?style=for-the-badge&logo=railway&logoColor=white)](https://prepmind-frontend-production.up.railway.app)
+[![Stack](https://img.shields.io/badge/Stack-MERN%20%2B%20TypeScript-blue?style=for-the-badge)](https://prepmind-frontend-production.up.railway.app)
+
+> **Live Production URL:** [https://prepmind-frontend-production.up.railway.app](https://prepmind-frontend-production.up.railway.app)
+
 PrepMind AI is a full-stack MERN + TypeScript adaptive placement preparation platform combining **Bayesian Knowledge Tracing (BKT)**, **Timed Diagnostic Assessments**, **Prerequisite-Aware Personalized Roadmaps**, **Context-Aware Gemini AI Tutoring**, **Sandboxed Online Coding Evaluation (Judge0 + Monaco Editor)**, and **AI Mock Interviews with Multi-Criteria Rubric Scoring**.
 
 ---
